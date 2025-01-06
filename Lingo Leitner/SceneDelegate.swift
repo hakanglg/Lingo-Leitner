@@ -19,9 +19,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
         
-        let authVC = AuthViewController()
-        let navController = UINavigationController(rootViewController: authVC)
-        window?.rootViewController = navController
+        if AuthManager.shared.currentUser != nil {
+            let mainVC = MainTabBarController()
+            window?.rootViewController = mainVC
+        } else {
+            let authVC = AuthViewController()
+            let navController = UINavigationController(rootViewController: authVC)
+            window?.rootViewController = navController
+        }
+        
         window?.makeKeyAndVisible()
     }
 
