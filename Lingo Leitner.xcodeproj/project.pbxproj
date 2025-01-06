@@ -6,6 +6,18 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		AE5A4ACA2D2804A100A3B676 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = AE5A4AC92D2804A100A3B676 /* FirebaseAnalytics */; };
+		AE5A4ACC2D2804A100A3B676 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = AE5A4ACB2D2804A100A3B676 /* FirebaseAuth */; };
+		AE5A4ACE2D2804A100A3B676 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = AE5A4ACD2D2804A100A3B676 /* FirebaseCore */; };
+		AE5A4AD02D2804A100A3B676 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = AE5A4ACF2D2804A100A3B676 /* FirebaseFirestore */; };
+		AE5A4AD22D2804A100A3B676 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = AE5A4AD12D2804A100A3B676 /* FirebaseStorage */; };
+		AE5A4AD52D28050600A3B676 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = AE5A4AD42D28050600A3B676 /* GoogleSignIn */; };
+		AE5A4AD72D28050600A3B676 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = AE5A4AD62D28050600A3B676 /* GoogleSignInSwift */; };
+		AE5A4ADA2D28071400A3B676 /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = AE5A4AD92D28071400A3B676 /* Alamofire */; };
+		AE5A4ADF2D28072600A3B676 /* SwiftyJSON in Frameworks */ = {isa = PBXBuildFile; productRef = AE5A4ADE2D28072600A3B676 /* SwiftyJSON */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		AEF10DED2D273F00008026EE /* Lingo Leitner.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Lingo Leitner.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -14,7 +26,7 @@
 		AEF10DFF2D273F01008026EE /* Exceptions for "Lingo Leitner" folder in "Lingo Leitner" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				"Supporting Files/Info.plist",
 			);
 			target = AEF10DEC2D273F00008026EE /* Lingo Leitner */;
 		};
@@ -36,6 +48,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE5A4ACA2D2804A100A3B676 /* FirebaseAnalytics in Frameworks */,
+				AE5A4ADA2D28071400A3B676 /* Alamofire in Frameworks */,
+				AE5A4AD02D2804A100A3B676 /* FirebaseFirestore in Frameworks */,
+				AE5A4AD72D28050600A3B676 /* GoogleSignInSwift in Frameworks */,
+				AE5A4ACE2D2804A100A3B676 /* FirebaseCore in Frameworks */,
+				AE5A4AD22D2804A100A3B676 /* FirebaseStorage in Frameworks */,
+				AE5A4ACC2D2804A100A3B676 /* FirebaseAuth in Frameworks */,
+				AE5A4ADF2D28072600A3B676 /* SwiftyJSON in Frameworks */,
+				AE5A4AD52D28050600A3B676 /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +99,15 @@
 			);
 			name = "Lingo Leitner";
 			packageProductDependencies = (
+				AE5A4AC92D2804A100A3B676 /* FirebaseAnalytics */,
+				AE5A4ACB2D2804A100A3B676 /* FirebaseAuth */,
+				AE5A4ACD2D2804A100A3B676 /* FirebaseCore */,
+				AE5A4ACF2D2804A100A3B676 /* FirebaseFirestore */,
+				AE5A4AD12D2804A100A3B676 /* FirebaseStorage */,
+				AE5A4AD42D28050600A3B676 /* GoogleSignIn */,
+				AE5A4AD62D28050600A3B676 /* GoogleSignInSwift */,
+				AE5A4AD92D28071400A3B676 /* Alamofire */,
+				AE5A4ADE2D28072600A3B676 /* SwiftyJSON */,
 			);
 			productName = "Lingo Leitner";
 			productReference = AEF10DED2D273F00008026EE /* Lingo Leitner.app */;
@@ -107,6 +137,12 @@
 			);
 			mainGroup = AEF10DE42D273F00008026EE;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				AE5A4AC82D2804A100A3B676 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				AE5A4AD32D28050600A3B676 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				AE5A4AD82D28071400A3B676 /* XCRemoteSwiftPackageReference "Alamofire" */,
+				AE5A4ADD2D28072600A3B676 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AEF10DEE2D273F00008026EE /* Products */;
 			projectDirPath = "";
@@ -147,12 +183,12 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4Z4G6RC499;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Lingo Leitner/Info.plist";
+				INFOPLIST_FILE = "Lingo Leitner/Supporting Files/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Lingo Leitner";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -160,6 +196,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "xovasoftware.Lingo-Leitner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -175,12 +214,12 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4Z4G6RC499;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Lingo Leitner/Info.plist";
+				INFOPLIST_FILE = "Lingo Leitner/Supporting Files/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Lingo Leitner";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -188,6 +227,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = "xovasoftware.Lingo-Leitner";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -335,6 +377,89 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		AE5A4AC82D2804A100A3B676 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 11.6.0;
+			};
+		};
+		AE5A4AD32D28050600A3B676 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.0.0;
+			};
+		};
+		AE5A4AD82D28071400A3B676 /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.10.2;
+			};
+		};
+		AE5A4ADD2D28072600A3B676 /* XCRemoteSwiftPackageReference "SwiftyJSON" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyJSON/SwiftyJSON.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AE5A4AC92D2804A100A3B676 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AE5A4AC82D2804A100A3B676 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		AE5A4ACB2D2804A100A3B676 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AE5A4AC82D2804A100A3B676 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		AE5A4ACD2D2804A100A3B676 /* FirebaseCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AE5A4AC82D2804A100A3B676 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCore;
+		};
+		AE5A4ACF2D2804A100A3B676 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AE5A4AC82D2804A100A3B676 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		AE5A4AD12D2804A100A3B676 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AE5A4AC82D2804A100A3B676 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		AE5A4AD42D28050600A3B676 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AE5A4AD32D28050600A3B676 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		AE5A4AD62D28050600A3B676 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AE5A4AD32D28050600A3B676 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		AE5A4AD92D28071400A3B676 /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AE5A4AD82D28071400A3B676 /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		AE5A4ADE2D28072600A3B676 /* SwiftyJSON */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AE5A4ADD2D28072600A3B676 /* XCRemoteSwiftPackageReference "SwiftyJSON" */;
+			productName = SwiftyJSON;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = AEF10DE52D273F00008026EE /* Project object */;
 }

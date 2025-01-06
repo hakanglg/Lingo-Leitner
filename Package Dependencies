@@ -1,0 +1,19 @@
+// Firebase
+https://github.com/firebase/firebase-ios-sdk.git
+- FirebaseAnalytics
+- FirebaseAuth
+- FirebaseCore
+- FirebaseFirestore
+- FirebaseStorage
+
+// Google Sign In
+https://github.com/google/GoogleSignIn-iOS.git
+- GoogleSignIn
+- GoogleSignInSwift
+
+// Networking
+https://github.com/Alamofire/Alamofire.git
+- Alamofire
+
+https://github.com/SwiftyJSON/SwiftyJSON.git
+- SwiftyJSON 
