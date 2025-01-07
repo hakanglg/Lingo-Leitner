@@ -14,22 +14,15 @@ final class MainTabBarController: UITabBarController {
     
     // MARK: - Setup
     private func setupTabs() {
-        let cardsVC = createNavigationController(
-            rootViewController: CardsViewController(),
-            title: "Ana Sayfa",
-            image: "house",
-            selectedImage: "house.fill"
-        )
-        
         let boxesVC = createNavigationController(
             rootViewController: BoxesViewController(),
-            title: "Favoriler",
+            title: "Kelime Kutuları",
             image: "heart",
-            selectedImage: "heart.fill"
+            selectedImage: "graduationcap.fill"
         )
         
-        let statsVC = createNavigationController(
-            rootViewController: StatsViewController(),
+        let addWordVC = createNavigationController(
+            rootViewController: AddWordViewController(),
             title: "Ekle",
             image: "plus",
             selectedImage: "plus.circle.fill"
@@ -49,7 +42,7 @@ final class MainTabBarController: UITabBarController {
             selectedImage: "bell.fill"
         )
         
-        viewControllers = [cardsVC, boxesVC, statsVC, profileVC, notificationsVC]
+        viewControllers = [boxesVC, addWordVC, profileVC, notificationsVC]
         tabBar.isHidden = true
     }
     
@@ -214,12 +207,3 @@ struct TabBarItem {
     let image: UIImage?
     let selectedImage: UIImage?
 }
-
-// MARK: - NotificationsViewController (Placeholder)
-class NotificationsViewController: UIViewController {
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = Theme.primary
-        title = "Bildirimler"
-    }
-} 

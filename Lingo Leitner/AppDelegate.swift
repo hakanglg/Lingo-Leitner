@@ -8,12 +8,23 @@
 import UIKit
 import FirebaseCore
 import GoogleSignIn
+import FirebaseFirestore
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        print("Firebase yapılandırması başlıyor...")
         FirebaseApp.configure()
+        
+        // Firebase yapılandırmasını kontrol edelim
+        if let projectID = FirebaseApp.app()?.options.projectID {
+            print("Firebase project ID: \(projectID)")
+        }
+        
+        print("Firestore instance kontrol ediliyor...")
+        let db = Firestore.firestore()
+        print("Firestore instance oluşturuldu: \(db)")
         
         // Google Sign In yapılandırması
         GIDSignIn.sharedInstance.configuration = GIDConfiguration(clientID: FirebaseApp.app()?.options.clientID ?? "")

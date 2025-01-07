@@ -11,6 +11,12 @@ final class AuthManager {
     private init() {}
     
     var currentUser: User? {
+        print("AuthManager - currentUser çağrıldı")
+        if let user = authService.currentUser {
+            print("AuthManager - currentUser ID: \(user.id)")
+        } else {
+            print("AuthManager - currentUser nil")
+        }
         return authService.currentUser
     }
     
@@ -40,8 +46,16 @@ final class AuthManager {
             print("AuthManager: AuthService.signInWithGoogle çağrılıyor...")
             let user = try await authService.signInWithGoogle(presenting: presenting)
             print("AuthManager: Google ile giriş başarılı. Kullanıcı: \(user.email)")
+            
+            // Yeni kullanıcı için Firestore'da gerekli yapıları oluştur
+            try await FirestoreService.shared.setupInitialUserData(userId: user.id)
+            
         } catch {
             print("AuthManager: Google Sign In hatası: \(error.localizedDescription)")
+            if let nsError = error as NSError? {
+                print("AuthManager: Hata detayı - Domain: \(nsError.domain), Code: \(nsError.code)")
+                print("AuthManager: User Info: \(nsError.userInfo)")
+            }
             throw handleAuthError(error)
         }
     }
@@ -71,15 +85,15 @@ final class AuthManager {
         }
         
         let nsError = error as NSError
+        print("Auth Error - Domain: \(nsError.domain), Code: \(nsError.code)")
+        
         switch nsError.code {
-        case AuthErrorCode.userNotFound.rawValue:
-            return .userNotFound
-        case AuthErrorCode.invalidEmail.rawValue:
-            return .invalidEmail
-        case AuthErrorCode.weakPassword.rawValue:
-            return .weakPassword
-        case AuthErrorCode.emailAlreadyInUse.rawValue:
-            return .emailAlreadyInUse
+        case -5:  // Permissions error
+            return .permissionDenied
+        case NSURLErrorNotConnectedToInternet:
+            return .networkError
+        case 17020:  // Invalid credentials
+            return .invalidCredentials
         default:
             return .unknown
         }
