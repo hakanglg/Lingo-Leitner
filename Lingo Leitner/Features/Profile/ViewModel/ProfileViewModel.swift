@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 protocol ProfileViewModelDelegate: AnyObject {
     func didUpdateProfile(_ user: User)
@@ -24,14 +25,17 @@ final class ProfileViewModel {
     // MARK: - Public Methods
     func fetchUserProfile() async {
         guard let user = authManager.currentUser else {
-            delegate?.didReceiveError(AuthError.userNotFound)
+            await MainActor.run {
+                delegate?.didReceiveError(AuthError.userNotFound)
+            }
             return
         }
         
-        delegate?.didUpdateProfile(user)
+        await MainActor.run {
+            delegate?.didUpdateProfile(user)
+        }
         
         do {
-            // Tüm kutulardaki kelimeleri al
             var totalWords = 0
             var masteredWords = 0
             var reviewDueWords = 0
@@ -49,21 +53,32 @@ final class ProfileViewModel {
                 reviewDueWords: reviewDueWords
             )
             
-            delegate?.didUpdateStats(stats)
+            await MainActor.run {
+                delegate?.didUpdateStats(stats)
+            }
         } catch {
-            delegate?.didReceiveError(error)
+            await MainActor.run {
+                delegate?.didReceiveError(error)
+            }
         }
     }
     
     func signOut() async {
         do {
             try authManager.signOut()
-            DispatchQueue.main.async {
-                // Çıkış yapıldığında bildirim gönder
-                NotificationCenter.default.post(name: .userDidSignOut, object: nil)
+            await MainActor.run {
+                if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
+                    let authVC = AuthViewController()
+                    let nav = UINavigationController(rootViewController: authVC)
+                    nav.modalPresentationStyle = .fullScreen
+                    sceneDelegate.window?.rootViewController = nav
+                    sceneDelegate.window?.makeKeyAndVisible()
+                }
             }
         } catch {
-            delegate?.didReceiveError(error)
+            await MainActor.run {
+                delegate?.didReceiveError(error)
+            }
         }
     }
 } 
