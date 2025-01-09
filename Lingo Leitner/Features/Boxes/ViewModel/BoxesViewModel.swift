@@ -12,8 +12,8 @@ final class BoxesViewModel {
     private let authManager: AuthManager
     weak var delegate: BoxesViewModelDelegate?
     
-    private var wordCounts: [Int: Int] = [:] // [boxNumber: count]
-    private var reviewCounts: [Int: Int] = [:] // [boxNumber: reviewCount]
+    private var boxCounts: [Int: Int] = [:]
+    private var reviewCounts: [Int: Int] = [:]
     
     // MARK: - Init
     init(
@@ -27,7 +27,9 @@ final class BoxesViewModel {
     // MARK: - Public Methods
     func fetchBoxes() async {
         guard let userId = authManager.currentUser?.id else {
-            delegate?.didReceiveError(AuthError.userNotFound)
+            DispatchQueue.main.async {
+                self.delegate?.didReceiveError(AuthError.userNotFound)
+            }
             return
         }
         
@@ -36,10 +38,11 @@ final class BoxesViewModel {
         }
         
         do {
-            for boxNumber in 1...5 {
-                let words = try await firestoreService.getWordsInBox(box: boxNumber, userId: userId)
-                wordCounts[boxNumber] = words.count
-                reviewCounts[boxNumber] = words.filter { $0.needsReview }.count
+            // Her kutu için kelimeleri al
+            for box in 1...5 {
+                let words = try await firestoreService.getWordsInBox(box: box, userId: userId)
+                boxCounts[box] = words.count
+                reviewCounts[box] = words.filter { $0.needsReview }.count
             }
             
             DispatchQueue.main.async {
@@ -52,11 +55,11 @@ final class BoxesViewModel {
         }
     }
     
-    func wordCount(forBox boxNumber: Int) -> Int {
-        return wordCounts[boxNumber] ?? 0
+    func wordCount(forBox box: Int) -> Int {
+        return boxCounts[box] ?? 0
     }
     
-    func reviewCount(forBox boxNumber: Int) -> Int {
-        return reviewCounts[boxNumber] ?? 0
+    func reviewCount(forBox box: Int) -> Int {
+        return reviewCounts[box] ?? 0
     }
 } 

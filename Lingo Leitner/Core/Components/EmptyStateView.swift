@@ -12,7 +12,7 @@ final class EmptyStateView: UIView {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.font = Theme.font(.title)
+        label.font = Theme.font(.title1)
         label.textAlignment = .center
         label.numberOfLines = 0
         return label

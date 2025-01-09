@@ -48,7 +48,7 @@ final class PremiumViewController: UIViewController {
     private let trialLabel: UILabel = {
         let label = UILabel()
         label.text = "1 Hafta Ücretsiz Deneyin"
-        label.font = Theme.font(.title)
+        label.font = Theme.font(.title1)
         label.textAlignment = .center
         label.textColor = Theme.gradient[0]
         return label
@@ -107,8 +107,8 @@ final class PremiumViewController: UIViewController {
             containerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Theme.spacing()),
-            closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Theme.spacing()),
+            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Theme.spacing(1)),
+            closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Theme.spacing(1)),
             closeButton.widthAnchor.constraint(equalToConstant: 52),
             closeButton.heightAnchor.constraint(equalToConstant: 52),
             
@@ -175,7 +175,7 @@ final class PremiumViewController: UIViewController {
         
         let titleLabel = UILabel()
         titleLabel.text = title
-        titleLabel.font = Theme.font(.title)
+        titleLabel.font = Theme.font(.title3)
         
         let descriptionLabel = UILabel()
         descriptionLabel.text = description
@@ -188,19 +188,19 @@ final class PremiumViewController: UIViewController {
         }
         
         NSLayoutConstraint.activate([
-            imageView.leadingAnchor.constraint(equalTo: container.leadingAnchor),
+            imageView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: Theme.spacing(2)),
             imageView.centerYAnchor.constraint(equalTo: container.centerYAnchor),
             imageView.widthAnchor.constraint(equalToConstant: 32),
             imageView.heightAnchor.constraint(equalToConstant: 32),
             
-            titleLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: Theme.spacing()),
-            titleLabel.topAnchor.constraint(equalTo: container.topAnchor, constant: Theme.spacing()),
+            titleLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: Theme.spacing(2)),
+            titleLabel.topAnchor.constraint(equalTo: container.topAnchor, constant: Theme.spacing(2)),
             titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor),
             
             descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
             descriptionLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            descriptionLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -Theme.spacing())
+            descriptionLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -Theme.spacing(1))
         ])
         
         return container

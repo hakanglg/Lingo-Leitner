@@ -91,6 +91,7 @@ final class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        setupNavigationBar()
         setupActions()
         setupGestures()
         setupTextFields()
@@ -226,7 +227,7 @@ final class LoginViewController: UIViewController {
     }
     
     @objc private func handleBackTap() {
-        dismiss(animated: true)
+        navigationController?.popViewController(animated: true)
     }
     
     @objc private func handleForgotPasswordTap() {
@@ -276,6 +277,16 @@ final class LoginViewController: UIViewController {
         alert.addAction(cancelAction)
         
         present(alert, animated: true)
+    }
+    
+    private func setupNavigationBar() {
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "chevron.left"),
+            style: .plain,
+            target: self,
+            action: #selector(handleBackTap)
+        )
+        navigationItem.leftBarButtonItem?.tintColor = .label
     }
 }
 

@@ -1,9 +1,8 @@
 import UIKit
 
-final class BoxDetailViewController: UIViewController {
+final class FlashcardViewController: UIViewController {
     // MARK: - Properties
-    private let viewModel: BoxDetailViewModel
-    private var currentWordIndex = 0
+    private let viewModel: FlashcardViewModel
     private var isShowingMeaning = false
     
     // MARK: - UI Components
@@ -62,26 +61,8 @@ final class BoxDetailViewController: UIViewController {
         return button
     }()
     
-    private let loadingView: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(style: .medium)
-        view.hidesWhenStopped = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    private let emptyStateView: EmptyStateView = {
-        let view = EmptyStateView(
-            image: UIImage(systemName: "tray"),
-            title: "Kutu Boş",
-            message: "Bu kutuda henüz kelime bulunmuyor"
-        )
-        view.isHidden = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     // MARK: - Init
-    init(viewModel: BoxDetailViewModel) {
+    init(viewModel: FlashcardViewModel) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
@@ -95,24 +76,18 @@ final class BoxDetailViewController: UIViewController {
         super.viewDidLoad()
         setupUI()
         setupGestures()
-        setupNavigation()
-        setupViewModel()
-        Task {
-            await viewModel.fetchWords()
-        }
+        updateCard()
     }
     
     // MARK: - Setup
     private func setupUI() {
-        view.backgroundColor = Theme.primary
+        view.backgroundColor = .systemBackground
         
         view.addSubview(cardView)
         cardView.addSubview(wordLabel)
         cardView.addSubview(exampleLabel)
         view.addSubview(rememberButton)
         view.addSubview(forgotButton)
-        view.addSubview(loadingView)
-        view.addSubview(emptyStateView)
         
         NSLayoutConstraint.activate([
             cardView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
@@ -137,25 +112,8 @@ final class BoxDetailViewController: UIViewController {
             forgotButton.leadingAnchor.constraint(equalTo: view.centerXAnchor, constant: 8),
             forgotButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -32),
             forgotButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -32),
-            forgotButton.heightAnchor.constraint(equalToConstant: 56),
-            
-            loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            
-            emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            emptyStateView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            emptyStateView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8)
+            forgotButton.heightAnchor.constraint(equalToConstant: 56)
         ])
-    }
-    
-    private func setupNavigation() {
-        title = "Kutu \(viewModel.boxNumber)"
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "xmark"),
-            style: .plain,
-            target: self,
-            action: #selector(handleCloseTap)
-        )
     }
     
     private func setupGestures() {
@@ -164,15 +122,7 @@ final class BoxDetailViewController: UIViewController {
         cardView.isUserInteractionEnabled = true
     }
     
-    private func setupViewModel() {
-        viewModel.delegate = self
-    }
-    
     // MARK: - Actions
-    @objc private func handleCloseTap() {
-        navigationController?.popViewController(animated: true)
-    }
-    
     @objc private func handleCardTap() {
         UIView.transition(with: cardView, duration: 0.3, options: .transitionFlipFromRight) {
             self.isShowingMeaning.toggle()
@@ -183,8 +133,8 @@ final class BoxDetailViewController: UIViewController {
     @objc private func handleRememberTap() {
         Task {
             do {
-                try await viewModel.moveWordToNextBox(at: currentWordIndex)
-                moveToNextWord()
+                try await viewModel.moveWordToNextBox()
+                dismiss(animated: true)
             } catch {
                 showError(error)
             }
@@ -194,35 +144,21 @@ final class BoxDetailViewController: UIViewController {
     @objc private func handleForgotTap() {
         Task {
             do {
-                try await viewModel.moveWordToPreviousBox(at: currentWordIndex)
-                moveToNextWord()
+                try await viewModel.moveWordToPreviousBox()
+                dismiss(animated: true)
             } catch {
                 showError(error)
             }
         }
     }
     
-    private func moveToNextWord() {
-        currentWordIndex += 1
-        if currentWordIndex >= viewModel.words.count {
-            // Tüm kelimeler bitti, geri dön
-            navigationController?.popViewController(animated: true)
-        } else {
-            isShowingMeaning = false
-            updateCard()
-        }
-    }
-    
     private func updateCard() {
-        guard currentWordIndex < viewModel.words.count else { return }
-        
-        let currentWord = viewModel.words[currentWordIndex]
         if isShowingMeaning {
-            wordLabel.text = currentWord.meaning
+            wordLabel.text = viewModel.currentWord.meaning
             exampleLabel.text = nil
         } else {
-            wordLabel.text = currentWord.word
-            exampleLabel.text = currentWord.example
+            wordLabel.text = viewModel.currentWord.word
+            exampleLabel.text = viewModel.currentWord.example
         }
     }
     
@@ -234,37 +170,5 @@ final class BoxDetailViewController: UIViewController {
         )
         alert.addAction(UIAlertAction(title: "Tamam", style: .default))
         present(alert, animated: true)
-    }
-}
-
-// MARK: - BoxDetailViewModelDelegate
-extension BoxDetailViewController: BoxDetailViewModelDelegate {
-    func didStartLoading() {
-        loadingView.startAnimating()
-        cardView.isHidden = true
-        rememberButton.isHidden = true
-        forgotButton.isHidden = true
-        emptyStateView.isHidden = true
-    }
-    
-    func didFinishLoading() {
-        loadingView.stopAnimating()
-        
-        if viewModel.words.isEmpty {
-            emptyStateView.isHidden = false
-            cardView.isHidden = true
-            rememberButton.isHidden = true
-            forgotButton.isHidden = true
-        } else {
-            emptyStateView.isHidden = true
-            cardView.isHidden = false
-            rememberButton.isHidden = false
-            forgotButton.isHidden = false
-            updateCard()
-        }
-    }
-    
-    func didReceiveError(_ error: Error) {
-        showError(error)
     }
 } 

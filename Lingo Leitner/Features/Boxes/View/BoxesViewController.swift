@@ -4,15 +4,17 @@ final class BoxesViewController: UIViewController {
     // MARK: - Properties
     private let viewModel = BoxesViewModel()
     
+    // MARK: - UI Components
     private let collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
-        layout.minimumInteritemSpacing = 16
+        layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 16
-        layout.sectionInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
+        layout.minimumInteritemSpacing = 16
         
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.backgroundColor = .clear
         collectionView.register(BoxCell.self, forCellWithReuseIdentifier: BoxCell.reuseIdentifier)
+        collectionView.contentInset = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -70,34 +72,16 @@ final class BoxesViewController: UIViewController {
             
             emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             emptyStateView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            emptyStateView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Theme.spacing(2)),
-            emptyStateView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -Theme.spacing(2))
+            emptyStateView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8)
         ])
     }
     
     private func setupNavigation() {
-        title = "Kelime Kutuları"
-        navigationController?.navigationBar.prefersLargeTitles = true
-        
-        let addButton = UIBarButtonItem(
-            image: UIImage(systemName: "plus.circle.fill"),
-            style: .plain,
-            target: self,
-            action: #selector(handleAddTap)
-        )
-        navigationItem.rightBarButtonItem = addButton
+        title = "Kutular"
+//        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
     private func setupCollectionView() {
-        let layout = UICollectionViewFlowLayout()
-        let spacing: CGFloat = 16
-        let width = (view.bounds.width - spacing * 3) / 2
-        layout.itemSize = CGSize(width: width, height: width * 1.2)
-        layout.minimumInteritemSpacing = spacing
-        layout.minimumLineSpacing = spacing
-        layout.sectionInset = UIEdgeInsets(top: spacing, left: spacing, bottom: spacing, right: spacing)
-        
-        collectionView.collectionViewLayout = layout
         collectionView.delegate = self
         collectionView.dataSource = self
     }
@@ -105,18 +89,12 @@ final class BoxesViewController: UIViewController {
     private func setupViewModel() {
         viewModel.delegate = self
     }
-    
-    // MARK: - Actions
-    @objc private func handleAddTap() {
-        let addWordVC = AddWordViewController()
-        navigationController?.pushViewController(addWordVC, animated: true)
-    }
 }
 
 // MARK: - UICollectionViewDataSource
 extension BoxesViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5 // 5 kutu
+        return 5 // Sabit 5 kutu
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -130,7 +108,12 @@ extension BoxesViewController: UICollectionViewDataSource {
         let boxNumber = indexPath.item + 1
         let wordCount = viewModel.wordCount(forBox: boxNumber)
         let reviewCount = viewModel.reviewCount(forBox: boxNumber)
-        cell.configure(boxNumber: boxNumber, wordCount: wordCount, reviewCount: reviewCount)
+        
+        cell.configure(
+            boxNumber: boxNumber,
+            wordCount: wordCount,
+            reviewCount: reviewCount
+        )
         return cell
     }
 }
@@ -138,8 +121,8 @@ extension BoxesViewController: UICollectionViewDataSource {
 // MARK: - UICollectionViewDelegateFlowLayout
 extension BoxesViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let width = (collectionView.bounds.width - 48) / 2 // 2 sütun
-        return CGSize(width: width, height: width)
+        let width = (collectionView.bounds.width - 48) / 2 // 16 left + 16 right + 16 spacing
+        return CGSize(width: width, height: width * 1.2)
     }
 }
 
@@ -147,40 +130,45 @@ extension BoxesViewController: UICollectionViewDelegateFlowLayout {
 extension BoxesViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let boxNumber = indexPath.item + 1
-        let boxDetailVC = BoxDetailViewController(boxNumber: boxNumber)
-        navigationController?.pushViewController(boxDetailVC, animated: true)
+        let viewModel = BoxDetailViewModel(boxNumber: boxNumber)
+        let detailVC = BoxDetailViewController(viewModel: viewModel)
+        navigationController?.pushViewController(detailVC, animated: true)
     }
 }
 
 // MARK: - BoxesViewModelDelegate
 extension BoxesViewController: BoxesViewModelDelegate {
     func didStartLoading() {
-        loadingView.startAnimating()
-        emptyStateView.isHidden = true
+        DispatchQueue.main.async { [weak self] in
+            self?.loadingView.startAnimating()
+            self?.emptyStateView.isHidden = true
+        }
     }
     
     func didFinishLoading() {
-        loadingView.stopAnimating()
-        
-        // Tüm kutulardaki toplam kelime sayısını kontrol et
-        let totalWords = (1...5).reduce(0) { $0 + viewModel.wordCount(forBox: $1) }
-        emptyStateView.isHidden = totalWords > 0
-        collectionView.isHidden = totalWords == 0
-        
-        collectionView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            self.loadingView.stopAnimating()
+            
+            // Tüm kutulardaki toplam kelime sayısını kontrol et
+            let totalWords = (1...5).reduce(0) { $0 + self.viewModel.wordCount(forBox: $1) }
+            self.emptyStateView.isHidden = totalWords > 0
+            self.collectionView.isHidden = totalWords == 0
+            
+            self.collectionView.reloadData()
+        }
     }
     
     func didReceiveError(_ error: Error) {
-        showError(error)
-    }
-    
-    private func showError(_ error: Error) {
-        let alert = UIAlertController(
-            title: "Hata",
-            message: error.localizedDescription,
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "Tamam", style: .default))
-        present(alert, animated: true)
+        DispatchQueue.main.async { [weak self] in
+            let alert = UIAlertController(
+                title: "Hata",
+                message: error.localizedDescription,
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "Tamam", style: .default))
+            self?.present(alert, animated: true)
+        }
     }
 } 

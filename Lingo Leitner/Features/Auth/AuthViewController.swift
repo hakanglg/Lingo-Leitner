@@ -11,7 +11,6 @@ final class AuthViewController: UIViewController {
     
     private let containerView = UIView()
     
-    // Sosyal login butonlarını property olarak tanımlayalım
     private lazy var googleButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .white

@@ -21,9 +21,9 @@ final class AuthManager {
     }
     
     // MARK: - Email/Password Auth
-    func signUp(email: String, password: String) async throws {
+    func signUp(email: String, password: String, displayName: String? = nil) async throws {
         do {
-            _ = try await authService.signUp(with: email, password: password)
+            _ = try await authService.signUp(with: email, password: password, displayName: displayName)
             print("Kullanıcı oluşturuldu")
         } catch {
             throw handleAuthError(error)

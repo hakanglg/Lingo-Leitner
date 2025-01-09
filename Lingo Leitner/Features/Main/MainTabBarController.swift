@@ -2,208 +2,105 @@ import UIKit
 
 final class MainTabBarController: UITabBarController {
     
-    // MARK: - Properties
-    private let customTabBar = CustomTabBar()
-    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTabs()
-        setupCustomTabBar()
+        setupAppearance()
     }
     
     // MARK: - Setup
     private func setupTabs() {
         let boxesVC = createNavigationController(
             rootViewController: BoxesViewController(),
-            title: "Kelime Kutuları",
-            image: "heart",
-            selectedImage: "graduationcap.fill"
+            title: "Kutular",
+            image: UIImage(systemName: "square.stack.3d.up"),
+            selectedImage: UIImage(systemName: "square.stack.3d.up.fill")
         )
         
         let addWordVC = createNavigationController(
             rootViewController: AddWordViewController(),
-            title: "Ekle",
-            image: "plus",
-            selectedImage: "plus.circle.fill"
+            title: "Kelime Ekle",
+            image: UIImage(systemName: "plus.circle"),
+            selectedImage: UIImage(systemName: "plus.circle.fill")
+        )
+        
+        let notificationsVC = createNavigationController(
+            rootViewController: NotificationsViewController(),
+            title: "Tekrarlar",
+            image: UIImage(systemName: "bell"),
+            selectedImage: UIImage(systemName: "bell.fill")
         )
         
         let profileVC = createNavigationController(
             rootViewController: ProfileViewController(),
             title: "Profil",
-            image: "person",
-            selectedImage: "person.fill"
+            image: UIImage(systemName: "person"),
+            selectedImage: UIImage(systemName: "person.fill")
         )
         
-        let notificationsVC = createNavigationController(
-            rootViewController: NotificationsViewController(),
-            title: "Bildirimler",
-            image: "bell",
-            selectedImage: "bell.fill"
-        )
-        
-        viewControllers = [boxesVC, addWordVC, profileVC, notificationsVC]
-        tabBar.isHidden = true
+        viewControllers = [boxesVC, addWordVC, notificationsVC, profileVC]
     }
     
-    private func setupCustomTabBar() {
-        view.addSubview(customTabBar)
-        customTabBar.translatesAutoresizingMaskIntoConstraints = false
+    private func setupAppearance() {
+        // Tab Bar Görünümü
+        let appearance = UITabBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .systemBackground
         
-        NSLayoutConstraint.activate([
-            customTabBar.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 24),
-            customTabBar.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -24),
-            customTabBar.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -8),
-            customTabBar.heightAnchor.constraint(equalToConstant: 64)
-        ])
+        // Normal Durum
+        appearance.stackedLayoutAppearance.normal.iconColor = .secondaryLabel
+        appearance.stackedLayoutAppearance.normal.titleTextAttributes = [
+            .foregroundColor: UIColor.secondaryLabel,
+            .font: Theme.font(.caption2)
+        ]
         
-        customTabBar.items = viewControllers?.map { vc in
-            TabBarItem(
-                title: vc.tabBarItem.title ?? "",
-                image: vc.tabBarItem.image,
-                selectedImage: vc.tabBarItem.selectedImage
-            )
-        } ?? []
+        // Seçili Durum
+        appearance.stackedLayoutAppearance.selected.iconColor = Theme.accent
+        appearance.stackedLayoutAppearance.selected.titleTextAttributes = [
+            .foregroundColor: Theme.accent,
+            .font: Theme.font(.caption2, .medium)
+        ]
         
-        customTabBar.selectedIndex = 0
-        customTabBar.delegate = self
+        // Gölge Efekti
+        appearance.shadowColor = .black.withAlphaComponent(0.1)
+        
+        tabBar.standardAppearance = appearance
+        if #available(iOS 15.0, *) {
+            tabBar.scrollEdgeAppearance = appearance
+        }
     }
     
     private func createNavigationController(
         rootViewController: UIViewController,
         title: String,
-        image: String,
-        selectedImage: String
+        image: UIImage?,
+        selectedImage: UIImage?
     ) -> UINavigationController {
-        let nav = UINavigationController(rootViewController: rootViewController)
-        nav.tabBarItem.title = title
-        nav.tabBarItem.image = UIImage(systemName: image)
-        nav.tabBarItem.selectedImage = UIImage(systemName: selectedImage)
-        return nav
-    }
-}
-
-// MARK: - CustomTabBarDelegate
-extension MainTabBarController: CustomTabBarDelegate {
-    func customTabBar(_ tabBar: CustomTabBar, didSelectItemAt index: Int) {
-        selectedIndex = index
-    }
-}
-
-// MARK: - CustomTabBar
-final class CustomTabBar: UIView {
-    
-    // MARK: - Properties
-    weak var delegate: CustomTabBarDelegate?
-    
-    var items: [TabBarItem] = [] {
-        didSet { setupItems() }
-    }
-    
-    var selectedIndex: Int = 0 {
-        didSet { updateSelection() }
-    }
-    
-    private let stackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .horizontal
-        stack.distribution = .equalSpacing
-        stack.alignment = .center
-        return stack
-    }()
-    
-    // MARK: - Init
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupView()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    // MARK: - Setup
-    private func setupView() {
-        backgroundColor = .systemBackground
-        layer.cornerRadius = 32
+        let navigationController = UINavigationController(rootViewController: rootViewController)
         
-        // Gölge efekti
-        layer.shadowColor = UIColor.black.cgColor
-        layer.shadowOffset = CGSize(width: 0, height: 4)
-        layer.shadowRadius = 16
-        layer.shadowOpacity = 0.1
+        // Tab Bar Item
+        navigationController.tabBarItem.title = title
+        navigationController.tabBarItem.image = image
+        navigationController.tabBarItem.selectedImage = selectedImage
         
-        addSubview(stackView)
-        stackView.translatesAutoresizingMaskIntoConstraints = false
+        // Navigation Bar Görünümü
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .systemBackground
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor.label,
+            .font: Theme.font(.headline, .medium)
+        ]
+        appearance.largeTitleTextAttributes = [
+            .foregroundColor: UIColor.label,
+            .font: Theme.font(.largeTitle, .bold)
+        ]
         
-        NSLayoutConstraint.activate([
-            stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 24),
-            stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -24),
-            stackView.topAnchor.constraint(equalTo: topAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
-        ])
-    }
-    
-    private func setupItems() {
-        stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        navigationController.navigationBar.standardAppearance = appearance
+        navigationController.navigationBar.scrollEdgeAppearance = appearance
+        navigationController.navigationBar.compactAppearance = appearance
         
-        items.enumerated().forEach { index, item in
-            let button = createTabButton(with: item, at: index)
-            stackView.addArrangedSubview(button)
-        }
-        
-        updateSelection()
+        return navigationController
     }
-    
-    private func createTabButton(with item: TabBarItem, at index: Int) -> UIButton {
-        let button = UIButton()
-        button.tag = index
-        button.tintColor = .secondaryLabel
-        button.setImage(item.image, for: .normal)
-        button.addTarget(self, action: #selector(handleTabTap(_:)), for: .touchUpInside)
-        
-        NSLayoutConstraint.activate([
-            button.widthAnchor.constraint(equalToConstant: 44),
-            button.heightAnchor.constraint(equalToConstant: 44)
-        ])
-        
-        return button
-    }
-    
-    private func updateSelection() {
-        stackView.arrangedSubviews.enumerated().forEach { index, view in
-            guard let button = view as? UIButton else { return }
-            
-            if index == selectedIndex {
-                button.tintColor = Theme.gradient[0]
-                animateSelection(for: button)
-            } else {
-                button.tintColor = .secondaryLabel
-                button.transform = .identity
-            }
-        }
-    }
-    
-    private func animateSelection(for button: UIButton) {
-        UIView.animate(withDuration: 0.3, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 0.5) {
-            button.transform = CGAffineTransform(scaleX: 1.2, y: 1.2)
-        }
-    }
-    
-    // MARK: - Actions
-    @objc private func handleTabTap(_ sender: UIButton) {
-        selectedIndex = sender.tag
-        delegate?.customTabBar(self, didSelectItemAt: sender.tag)
-    }
-}
-
-// MARK: - Protocols & Models
-protocol CustomTabBarDelegate: AnyObject {
-    func customTabBar(_ tabBar: CustomTabBar, didSelectItemAt index: Int)
-}
-
-struct TabBarItem {
-    let title: String
-    let image: UIImage?
-    let selectedImage: UIImage?
 }

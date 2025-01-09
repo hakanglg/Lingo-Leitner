@@ -8,11 +8,11 @@ protocol BoxDetailViewModelDelegate: AnyObject {
 
 final class BoxDetailViewModel {
     // MARK: - Properties
-    private let boxNumber: Int
     private let firestoreService: FirestoreServiceProtocol
     private let authManager: AuthManager
     weak var delegate: BoxDetailViewModelDelegate?
     
+    let boxNumber: Int
     private(set) var words: [Word] = []
     
     // MARK: - Init
@@ -48,5 +48,33 @@ final class BoxDetailViewModel {
                 self.delegate?.didReceiveError(error)
             }
         }
+    }
+    
+    func moveWordToNextBox(at index: Int) async throws {
+        guard let userId = authManager.currentUser?.id else {
+            throw AuthError.userNotFound
+        }
+        
+        let word = words[index]
+        let nextBox = min(word.box + 1, 5)
+        try await firestoreService.updateWordBox(
+            wordId: word.id,
+            newBox: nextBox,
+            userId: userId
+        )
+    }
+    
+    func moveWordToPreviousBox(at index: Int) async throws {
+        guard let userId = authManager.currentUser?.id else {
+            throw AuthError.userNotFound
+        }
+        
+        let word = words[index]
+        let previousBox = max(word.box - 1, 1)
+        try await firestoreService.updateWordBox(
+            wordId: word.id,
+            newBox: previousBox,
+            userId: userId
+        )
     }
 } 
