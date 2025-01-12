@@ -29,7 +29,8 @@ Carthage/Build/
 
 # Configuration Files
 Lingo\ Leitner/GoogleService-Info.plist
-Lingo\ Leitner/Info.plist
+Lingo\ Leitner/Supporting\ Files/Info.plist
+Info.plist
 
 # Firebase
 firestore.rules
