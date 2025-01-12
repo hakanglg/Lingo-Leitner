@@ -1,40 +1,77 @@
 import Foundation
 import FirebaseFirestore
+import UIKit
 
-struct Word: Codable, Identifiable {
-    let id: String
+struct Word: Codable, Equatable {
+    var id: String
     let word: String
     let meaning: String
     let example: String?
-    let box: Int
-    let lastReviewedAt: Date
-    let createdAt: Date
+    var box: Int
+    let nextReviewDate: Date?
+    let lastReviewedAt: Date?
     
-    var nextReviewDate: Date {
-        let calendar = Calendar.current
-        let reviewIntervals = [
-            1,    // Box 1: Her gün
-            2,    // Box 2: 2 günde bir
-            4,    // Box 3: 4 günde bir
-            7,    // Box 4: 7 günde bir
-            14    // Box 5: 14 günde bir
-        ]
-        
-        return calendar.date(byAdding: .day, value: reviewIntervals[box - 1], to: lastReviewedAt) ?? Date()
+    // Yeni kelime oluşturmak için initializer
+    init(id: String = UUID().uuidString,
+         word: String,
+         meaning: String,
+         example: String? = nil,
+         box: Int = 1,
+         nextReviewDate: Date? = nil,
+         lastReviewedAt: Date? = nil) {
+        self.id = id
+        self.word = word
+        self.meaning = meaning
+        self.example = example
+        self.box = box
+        self.nextReviewDate = nextReviewDate
+        self.lastReviewedAt = lastReviewedAt
     }
     
+    enum CodingKeys: String, CodingKey {
+        case id
+        case word
+        case meaning
+        case example
+        case box
+        case nextReviewDate = "next_review_date"
+        case lastReviewedAt = "last_reviewed_at"
+    }
+    
+    // Her kutu için tekrar aralıkları (gün cinsinden)
+    private static let reviewIntervals = [
+        1,    // Kutu 1: Her gün
+        2,    // Kutu 2: 2 günde bir
+        4,    // Kutu 3: 4 günde bir
+        7,    // Kutu 4: 7 günde bir
+        14    // Kutu 5: 14 günde bir
+    ]
+    
+    // Bir sonraki tekrar tarihini hesapla
+    static func calculateNextReviewDate(for box: Int, from date: Date = Date()) -> Date {
+        let interval = reviewIntervals[box - 1]
+        return Calendar.current.date(byAdding: .day, value: interval, to: date) ?? date
+    }
+    
+    // Tekrar durumunu hesapla
     var needsReview: Bool {
-        return Date() >= nextReviewDate
+        guard let nextReview = nextReviewDate else {
+            return true // Hiç tekrar edilmemişse tekrar edilmeli
+        }
+        return Date() >= nextReview
     }
     
-    var daysUntilReview: Int {
-        let calendar = Calendar.current
-        let components = calendar.dateComponents([.day], from: Date(), to: nextReviewDate)
-        return components.day ?? 0
-    }
-    
+    // Tekrar durumunu detaylı olarak hesapla
     var reviewStatus: ReviewStatus {
-        if needsReview {
+        guard let nextReview = nextReviewDate else {
+            return .due
+        }
+        
+        let now = Date()
+        let timeUntilReview = nextReview.timeIntervalSince(now)
+        let daysUntilReview = timeUntilReview / (24 * 3600) // Saat yerine gün kullanıyoruz
+        
+        if timeUntilReview <= 0 {
             return .due
         } else if daysUntilReview <= 1 {
             return .soon
@@ -43,32 +80,51 @@ struct Word: Codable, Identifiable {
         }
     }
     
-    init(id: String = UUID().uuidString,
-         word: String,
-         meaning: String,
-         example: String? = nil,
-         box: Int = 1,
-         lastReviewedAt: Date = Date(),
-         createdAt: Date = Date()) {
-        self.id = id
-        self.word = word
-        self.meaning = meaning
-        self.example = example
-        self.box = box
-        self.lastReviewedAt = lastReviewedAt
-        self.createdAt = createdAt
-    }
-    
+    // Firestore için dictionary dönüşümü
     var dictionary: [String: Any] {
-        return [
+        var dict: [String: Any] = [
             "id": id,
             "word": word,
             "meaning": meaning,
-            "example": example as Any,
-            "box": box,
-            "lastReviewedAt": Timestamp(date: lastReviewedAt),
-            "createdAt": Timestamp(date: createdAt)
+            "box": box
         ]
+        
+        // Opsiyonel alanları ekle
+        if let example = example {
+            dict["example"] = example
+        }
+        if let nextReviewDate = nextReviewDate {
+            dict["next_review_date"] = Timestamp(date: nextReviewDate)
+        }
+        if let lastReviewedAt = lastReviewedAt {
+            dict["last_reviewed_at"] = Timestamp(date: lastReviewedAt)
+        }
+        
+        return dict
+    }
+    
+    // Firestore'dan decode etme
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        id = try container.decode(String.self, forKey: .id)
+        word = try container.decode(String.self, forKey: .word)
+        meaning = try container.decode(String.self, forKey: .meaning)
+        example = try container.decodeIfPresent(String.self, forKey: .example)
+        box = try container.decode(Int.self, forKey: .box)
+        
+        // Timestamp'leri Date'e çevir
+        if let nextReviewTimestamp = try container.decodeIfPresent(Timestamp.self, forKey: .nextReviewDate) {
+            nextReviewDate = nextReviewTimestamp.dateValue()
+        } else {
+            nextReviewDate = nil
+        }
+        
+        if let lastReviewedTimestamp = try container.decodeIfPresent(Timestamp.self, forKey: .lastReviewedAt) {
+            lastReviewedAt = lastReviewedTimestamp.dateValue()
+        } else {
+            lastReviewedAt = nil
+        }
     }
 }
 

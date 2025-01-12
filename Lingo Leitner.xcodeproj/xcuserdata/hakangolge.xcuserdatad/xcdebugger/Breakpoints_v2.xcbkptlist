@@ -88,7 +88,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "18D1B7BD-1B4C-4941-98A1-605B21371521"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Lingo Leitner/Core/Services/FirestoreService.swift"
@@ -96,7 +96,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "70"
             endingLineNumber = "70"
-            landmarkName = "setupInitialUserData(userId:)"
+            landmarkName = "updateWordBox(wordId:newBox:userId:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -104,7 +104,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "261A87F3-4DF0-4B78-82F7-4A2296D999BC"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Lingo Leitner/Core/Services/FirestoreService.swift"
@@ -112,8 +112,398 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "63"
             endingLineNumber = "63"
-            landmarkName = "setupInitialUserData(userId:)"
+            landmarkName = "updateWordBox(wordId:newBox:userId:)"
             landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B6AD0703-D1D0-459A-A26D-24A9DE25584A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Lingo Leitner/Features/Main/MainTabBarController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "125"
+            endingLineNumber = "125"
+            landmarkName = "setupNotifications()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "24205130-5DD6-4CC4-AA41-264D1F193D47"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Lingo Leitner/Features/Main/MainTabBarController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "123"
+            endingLineNumber = "123"
+            landmarkName = "setupNotifications()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A3F7A95F-7D4A-4453-AD62-730830F996EA"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Lingo Leitner/Features/Main/MainTabBarController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "120"
+            endingLineNumber = "120"
+            landmarkName = "setupNotifications()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5B378C1D-4B37-4998-8ECA-FE9B7AC76365"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Lingo Leitner/Core/Services/FirestoreService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
+            landmarkName = "FirestoreError"
+            landmarkType = "13">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "9B900B0D-EAE7-472C-9012-85D6F021393D"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Lingo Leitner/Features/Boxes/View/FlashcardViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "66"
+            endingLineNumber = "66"
+            landmarkName = "init(viewModel:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B05E1818-FAF7-4F91-AFAF-5C7490F12B14"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Lingo Leitner/Features/AddWord/ViewModel/AddWordViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
+            landmarkName = "saveWord(word:meaning:example:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "A11EACEA-28E7-476B-BA52-5C33BD4C8DED"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Lingo Leitner/Features/AddWord/ViewModel/AddWordViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "58"
+            endingLineNumber = "58"
+            landmarkName = "saveWord(word:meaning:example:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "A11EACEA-28E7-476B-BA52-5C33BD4C8DED - 8a776206d9f5d35"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Lingo_Leitner.AddWordViewModel.saveWord(word: Swift.String, meaning: Swift.String, example: Swift.Optional&lt;Swift.String&gt;) async -&gt; ()"
+                  moduleName = "Lingo Leitner.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hakangolge/Projects/Swift/Lingo%20Leitner/Lingo%20Leitner/Features/AddWord/ViewModel/AddWordViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "58"
+                  endingLineNumber = "58">
+               </Location>
+               <Location
+                  uuid = "A11EACEA-28E7-476B-BA52-5C33BD4C8DED - c737c62d43af1cd7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(4) await resume partial function for Lingo_Leitner.AddWordViewModel.saveWord(word: Swift.String, meaning: Swift.String, example: Swift.Optional&lt;Swift.String&gt;) async -&gt; ()"
+                  moduleName = "Lingo Leitner.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hakangolge/Projects/Swift/Lingo%20Leitner/Lingo%20Leitner/Features/AddWord/ViewModel/AddWordViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "58"
+                  endingLineNumber = "58">
+               </Location>
+               <Location
+                  uuid = "A11EACEA-28E7-476B-BA52-5C33BD4C8DED - b17ace983ff65933"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(5) suspend resume partial function for Lingo_Leitner.AddWordViewModel.saveWord(word: Swift.String, meaning: Swift.String, example: Swift.Optional&lt;Swift.String&gt;) async -&gt; ()"
+                  moduleName = "Lingo Leitner.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hakangolge/Projects/Swift/Lingo%20Leitner/Lingo%20Leitner/Features/AddWord/ViewModel/AddWordViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "58"
+                  endingLineNumber = "58">
+               </Location>
+               <Location
+                  uuid = "A11EACEA-28E7-476B-BA52-5C33BD4C8DED - c6c0fb1b13c3122c"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(10) suspend resume partial function for Lingo_Leitner.AddWordViewModel.saveWord(word: Swift.String, meaning: Swift.String, example: Swift.Optional&lt;Swift.String&gt;) async -&gt; ()"
+                  moduleName = "Lingo Leitner.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hakangolge/Projects/Swift/Lingo%20Leitner/Lingo%20Leitner/Features/AddWord/ViewModel/AddWordViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "44"
+                  endingLineNumber = "44">
+               </Location>
+               <Location
+                  uuid = "A11EACEA-28E7-476B-BA52-5C33BD4C8DED - c6c0fb1b13c31c7a"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(10) suspend resume partial function for Lingo_Leitner.AddWordViewModel.saveWord(word: Swift.String, meaning: Swift.String, example: Swift.Optional&lt;Swift.String&gt;) async -&gt; ()"
+                  moduleName = "Lingo Leitner.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hakangolge/Projects/Swift/Lingo%20Leitner/Lingo%20Leitner/Features/AddWord/ViewModel/AddWordViewModel.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "58"
+                  endingLineNumber = "58">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "4D971C60-894A-47FA-98F5-97C0BAF4BC74"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Lingo Leitner/Features/Boxes/ViewModel/FlashcardViewModel.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "28"
+            endingLineNumber = "28"
+            landmarkName = "moveWordToNextBox()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1E1B5F9B-C58A-4D44-BB31-6352BBA04F78"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Lingo Leitner/Core/Services/FirestoreService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "56"
+            endingLineNumber = "56"
+            landmarkName = "FirestoreService"
+            landmarkType = "3">
+            <Locations>
+               <Location
+                  uuid = "1E1B5F9B-C58A-4D44-BB31-6352BBA04F78 - ca22da8f13521927"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Lingo_Leitner.FirestoreService.updateWordBox(wordId: Swift.String, newBox: Swift.Int, userId: Swift.String) async throws -&gt; ()"
+                  moduleName = "Lingo Leitner.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hakangolge/Projects/Swift/Lingo%20Leitner/Lingo%20Leitner/Core/Services/FirestoreService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "56"
+                  endingLineNumber = "56">
+               </Location>
+               <Location
+                  uuid = "1E1B5F9B-C58A-4D44-BB31-6352BBA04F78 - 68aa0892464238ec"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Lingo_Leitner.FirestoreService.updateWordBox(wordId: Swift.String, newBox: Swift.Int, userId: Swift.String) async throws -&gt; ()"
+                  moduleName = "Lingo Leitner.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hakangolge/Projects/Swift/Lingo%20Leitner/Lingo%20Leitner/Core/Services/FirestoreService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57">
+               </Location>
+               <Location
+                  uuid = "1E1B5F9B-C58A-4D44-BB31-6352BBA04F78 - ca22da8f135219c6"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Lingo_Leitner.FirestoreService.updateWordBox(wordId: Swift.String, newBox: Swift.Int, userId: Swift.String) async throws -&gt; ()"
+                  moduleName = "Lingo Leitner.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hakangolge/Projects/Swift/Lingo%20Leitner/Lingo%20Leitner/Core/Services/FirestoreService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "57"
+                  endingLineNumber = "57">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "2AE07F8F-9ADE-4599-93EE-D463AD899673"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Lingo Leitner/Core/Services/FirestoreService.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "updateWordBox(wordId:newBox:userId:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "2AE07F8F-9ADE-4599-93EE-D463AD899673 - ca22da8f13521980"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Lingo_Leitner.FirestoreService.updateWordBox(wordId: Swift.String, newBox: Swift.Int, userId: Swift.String) async throws -&gt; ()"
+                  moduleName = "Lingo Leitner.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hakangolge/Projects/Swift/Lingo%20Leitner/Lingo%20Leitner/Core/Services/FirestoreService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59">
+               </Location>
+               <Location
+                  uuid = "2AE07F8F-9ADE-4599-93EE-D463AD899673 - ee72c6ac00a2fe97"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for Lingo_Leitner.FirestoreService.updateWordBox(wordId: Swift.String, newBox: Swift.Int, userId: Swift.String) async throws -&gt; ()"
+                  moduleName = "Lingo Leitner.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hakangolge/Projects/Swift/Lingo%20Leitner/Lingo%20Leitner/Core/Services/FirestoreService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59">
+               </Location>
+               <Location
+                  uuid = "2AE07F8F-9ADE-4599-93EE-D463AD899673 - f5aad18537785502"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Lingo_Leitner.FirestoreService.updateWordBox(wordId: Swift.String, newBox: Swift.Int, userId: Swift.String) async throws -&gt; ()"
+                  moduleName = "Lingo Leitner.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hakangolge/Projects/Swift/Lingo%20Leitner/Lingo%20Leitner/Core/Services/FirestoreService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59">
+               </Location>
+               <Location
+                  uuid = "2AE07F8F-9ADE-4599-93EE-D463AD899673 - 5c76cefcc93bf0c7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(6) suspend resume partial function for Lingo_Leitner.FirestoreService.updateWordBox(wordId: Swift.String, newBox: Swift.Int, userId: Swift.String) async throws -&gt; ()"
+                  moduleName = "Lingo Leitner.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hakangolge/Projects/Swift/Lingo%20Leitner/Lingo%20Leitner/Core/Services/FirestoreService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59">
+               </Location>
+               <Location
+                  uuid = "2AE07F8F-9ADE-4599-93EE-D463AD899673 - ca22da8f13521842"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(1) suspend resume partial function for Lingo_Leitner.FirestoreService.updateWordBox(wordId: Swift.String, newBox: Swift.Int, userId: Swift.String) async throws -&gt; ()"
+                  moduleName = "Lingo Leitner.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hakangolge/Projects/Swift/Lingo%20Leitner/Lingo%20Leitner/Core/Services/FirestoreService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "61"
+                  endingLineNumber = "61">
+               </Location>
+               <Location
+                  uuid = "2AE07F8F-9ADE-4599-93EE-D463AD899673 - ee72c6ac00a2ff55"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(2) await resume partial function for Lingo_Leitner.FirestoreService.updateWordBox(wordId: Swift.String, newBox: Swift.Int, userId: Swift.String) async throws -&gt; ()"
+                  moduleName = "Lingo Leitner.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hakangolge/Projects/Swift/Lingo%20Leitner/Lingo%20Leitner/Core/Services/FirestoreService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "61"
+                  endingLineNumber = "61">
+               </Location>
+               <Location
+                  uuid = "2AE07F8F-9ADE-4599-93EE-D463AD899673 - f5aad185377854c0"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(3) suspend resume partial function for Lingo_Leitner.FirestoreService.updateWordBox(wordId: Swift.String, newBox: Swift.Int, userId: Swift.String) async throws -&gt; ()"
+                  moduleName = "Lingo Leitner.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hakangolge/Projects/Swift/Lingo%20Leitner/Lingo%20Leitner/Core/Services/FirestoreService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "61"
+                  endingLineNumber = "61">
+               </Location>
+               <Location
+                  uuid = "2AE07F8F-9ADE-4599-93EE-D463AD899673 - 5c76cefcc93bf105"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "(6) suspend resume partial function for Lingo_Leitner.FirestoreService.updateWordBox(wordId: Swift.String, newBox: Swift.Int, userId: Swift.String) async throws -&gt; ()"
+                  moduleName = "Lingo Leitner.debug.dylib"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/hakangolge/Projects/Swift/Lingo%20Leitner/Lingo%20Leitner/Core/Services/FirestoreService.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "61"
+                  endingLineNumber = "61">
+               </Location>
+            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

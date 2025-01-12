@@ -48,16 +48,37 @@ final class FirestoreService: FirestoreServiceProtocol {
         let snapshot = try await collectionRef.whereField("box", isEqualTo: box).getDocuments()
         
         return try snapshot.documents.compactMap { document in
-            try document.data(as: Word.self)
+            var word = try document.data(as: Word.self)
+            word.id = document.documentID
+            return word
         }
     }
     
     func updateWordBox(wordId: String, newBox: Int, userId: String) async throws {
         let docRef = db.collection("users").document(userId).collection("words").document(wordId)
-        try await docRef.updateData([
-            "box": newBox,
-            "lastReviewedAt": Timestamp(date: Date())
-        ])
+        
+        // Önce dokümanın var olup olmadığını kontrol et
+        let snapshot = try await docRef.getDocument()
+        guard snapshot.exists else {
+            print("FirestoreService - Belge bulunamadı: \(wordId)")
+            throw FirestoreError.documentNotFound
+        }
+        
+        let now = Date()
+        let nextReviewDate = Word.calculateNextReviewDate(for: newBox, from: now)
+        
+        do {
+            try await docRef.updateData([
+                "box": newBox,
+                "last_reviewed_at": Timestamp(date: now),
+                "next_review_date": Timestamp(date: nextReviewDate)
+            ])
+            print("FirestoreService - Kelime kutusu güncellendi: \(wordId) -> Kutu \(newBox)")
+            print("FirestoreService - Bir sonraki tekrar tarihi: \(nextReviewDate)")
+        } catch {
+            print("FirestoreService - Güncelleme hatası: \(error.localizedDescription)")
+            throw error
+        }
     }
     
     func setupInitialUserData(userId: String) async throws {
@@ -117,6 +138,7 @@ final class FirestoreService: FirestoreServiceProtocol {
             .collection("words").document()
 
         var wordData = word.dictionary
+        wordData["id"] = wordRef.documentID
         wordData["createdAt"] = FieldValue.serverTimestamp()
 
         try await wordRef.setData(wordData)
@@ -207,13 +229,16 @@ extension Double {
 enum FirestoreError: Error {
     case limitExceeded
     case documentNotFound
+    case invalidData
     
     var message: String {
         switch self {
         case .limitExceeded:
             return "Günlük kelime ekleme limitine ulaştınız. Premium'a yükselerek sınırsız kelime ekleyebilirsiniz."
         case .documentNotFound:
-            return "Belge bulunamadı"
+            return "Kelime veritabanında bulunamadı. Lütfen kelime listesini yenileyip tekrar deneyin."
+        case .invalidData:
+            return "Geçersiz veri formatı"
         }
     }
 }
