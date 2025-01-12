@@ -19,7 +19,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = UIWindow(frame: windowScene.coordinateSpace.bounds)
         window?.windowScene = windowScene
         
-        if AuthManager.shared.currentUser != nil {
+        let hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
+        
+        if !hasCompletedOnboarding {
+            let onboardingVC = OnboardingViewController()
+            window?.rootViewController = onboardingVC
+        } else if AuthManager.shared.currentUser != nil {
             let mainVC = MainTabBarController()
             window?.rootViewController = mainVC
         } else {

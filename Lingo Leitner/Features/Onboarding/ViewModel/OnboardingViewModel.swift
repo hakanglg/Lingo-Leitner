@@ -8,24 +8,28 @@ final class OnboardingViewModel {
     
     let slides: [OnboardingSlide] = [
         OnboardingSlide(
-            image: configureImage(systemName: "brain.head.profile"),
-            title: "Kelime Öğrenmenin En Etkili Yolu",
-            description: "Leitner sistemi, bilimsel olarak kanıtlanmış bir öğrenme metodudur. Bu sistem, beynin nasıl öğrendiğini ve bilgiyi nasıl kalıcı hale getirdiğini temel alır."
+//            image: configureImage(systemName: "brain.head.profile"),
+            image: UIImage(named: "onboarding1")!,
+            title: "onboarding_title_1".localized,
+            description: "onboarding_desc_1".localized
         ),
         OnboardingSlide(
-            image: configureImage(systemName: "rectangle.stack.fill.badge.plus"),
-            title: "Akıllı Tekrar Sistemi",
-            description: "Her kelime kartı, öğrenme durumunuza göre farklı kutularda saklanır. İyi bildiğiniz kelimeler daha seyrek, zorlandığınız kelimeler daha sık karşınıza çıkar."
+//            image: configureImage(systemName: "rectangle.stack.fill.badge.plus"),
+            image: UIImage(named: "onboarding2")!,
+            title: "onboarding_title_2".localized,
+            description: "onboarding_desc_2".localized
         ),
         OnboardingSlide(
-            image: configureImage(systemName: "person.fill.checkmark"),
-            title: "Kişiselleştirilmiş Öğrenme",
-            description: "Sistem sizin öğrenme hızınıza ve performansınıza göre kendini otomatik olarak ayarlar. Böylece her kelimeyi en uygun zamanda tekrar edersiniz."
+//            image: configureImage(systemName: "person.fill.checkmark"),
+            image: UIImage(named: "onboarding3")!,
+            title: "onboarding_title_3".localized,
+            description: "onboarding_desc_3".localized
         ),
         OnboardingSlide(
-            image: configureImage(systemName: "chart.line.uptrend.xyaxis.circle.fill"),
-            title: "Başarınızı Takip Edin",
-            description: "Günlük, haftalık ve aylık ilerleme raporlarıyla motivasyonunuzu yüksek tutun. Hedeflerinize ne kadar yaklaştığınızı görün."
+//            image: configureImage(systemName: "chart.line.uptrend.xyaxis.circle.fill"),
+            image: UIImage(named: "onboarding4")!,
+            title: "onboarding_title_4".localized,
+            description: "onboarding_desc_4".localized
         )
     ]
 } 

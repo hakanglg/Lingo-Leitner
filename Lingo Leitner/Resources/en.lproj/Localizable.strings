@@ -135,3 +135,21 @@
 "premium_purchase_started" = "Premium purchase process started";
 "watch_ad_started" = "Ad watching process started";
 "daily_word_limit_reduced" = "Daily word limit reduced by";
+
+// Onboarding
+"onboarding_title_1" = "Most Effective Way to Learn Words";
+"onboarding_desc_1" = "The Leitner system is a scientifically proven learning method. This system is based on how the brain learns and retains information.";
+
+"onboarding_title_2" = "Smart Review System";
+"onboarding_desc_2" = "Each flashcard is stored in different boxes based on your learning progress. Words you know well appear less frequently, while challenging words appear more often.";
+
+"onboarding_title_3" = "Personalized Learning";
+"onboarding_desc_3" = "The system automatically adjusts to your learning pace and performance. This way, you review each word at the optimal time.";
+
+"onboarding_title_4" = "Track Your Progress";
+"onboarding_desc_4" = "Stay motivated with daily, weekly, and monthly progress reports. See how close you are to reaching your goals.";
+
+// Navigation
+"next" = "Next";
+"skip" = "Skip";
+"get_started" = "Get Started";

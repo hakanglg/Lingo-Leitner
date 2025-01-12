@@ -91,13 +91,13 @@ final class OnboardingCell: UICollectionViewCell {
             
             imageContainer.topAnchor.constraint(equalTo: containerView.topAnchor, constant: Theme.spacing(4)),
             imageContainer.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            imageContainer.widthAnchor.constraint(equalToConstant: 160),
-            imageContainer.heightAnchor.constraint(equalToConstant: 160),
+            imageContainer.widthAnchor.constraint(equalTo: containerView.widthAnchor, multiplier: 0.6),
+            imageContainer.heightAnchor.constraint(equalTo: imageContainer.widthAnchor),
             
             imageView.centerXAnchor.constraint(equalTo: imageContainer.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: imageContainer.centerYAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 80),
-            imageView.heightAnchor.constraint(equalToConstant: 80),
+            imageView.widthAnchor.constraint(equalTo: imageContainer.widthAnchor, multiplier: 0.8),
+            imageView.heightAnchor.constraint(equalTo: imageView.widthAnchor),
             
             titleLabel.topAnchor.constraint(equalTo: imageContainer.bottomAnchor, constant: Theme.spacing(3)),
             titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Theme.spacing(2)),

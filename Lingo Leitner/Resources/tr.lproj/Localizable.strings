@@ -134,3 +134,21 @@
 "premium_purchase_started" = "Premium satın alma işlemi başlatıldı";
 "watch_ad_started" = "Reklam izleme işlemi başlatıldı";
 "daily_word_limit_reduced" = "Günlük kelime limiti azaltıldı:";
+
+// Onboarding
+"onboarding_title_1" = "Kelime Öğrenmenin En Etkili Yolu";
+"onboarding_desc_1" = "Leitner sistemi, bilimsel olarak kanıtlanmış bir öğrenme metodudur. Bu sistem, beynin nasıl öğrendiğini ve bilgiyi nasıl kalıcı hale getirdiğini temel alır.";
+
+"onboarding_title_2" = "Akıllı Tekrar Sistemi";
+"onboarding_desc_2" = "Her kelime kartı, öğrenme durumunuza göre farklı kutularda saklanır. İyi bildiğiniz kelimeler daha seyrek, zorlandığınız kelimeler daha sık karşınıza çıkar.";
+
+"onboarding_title_3" = "Kişiselleştirilmiş Öğrenme";
+"onboarding_desc_3" = "Sistem sizin öğrenme hızınıza ve performansınıza göre kendini otomatik olarak ayarlar. Böylece her kelimeyi en uygun zamanda tekrar edersiniz.";
+
+"onboarding_title_4" = "Başarınızı Takip Edin";
+"onboarding_desc_4" = "Günlük, haftalık ve aylık ilerleme raporlarıyla motivasyonunuzu yüksek tutun. Hedeflerinize ne kadar yaklaştığınızı görün.";
+
+// Navigation
+"next" = "İleri";
+"skip" = "Atla";
+"get_started" = "Başla";
