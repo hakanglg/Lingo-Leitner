@@ -12,7 +12,7 @@
   <table>
     <tr>
       <td><img src="Screenshots/auth.png" alt="Auth" width="200"/></td>
-      <td><img src="Screenshots/signup.png" alt="Sign Up" width="200"/></td>
+      <td><img src="Screenshots/singup.png" alt="Sign Up" width="200"/></td>
       <td><img src="Screenshots/signin.png" alt="Sign In" width="200"/></td>
     </tr>
     <tr>
@@ -20,18 +20,28 @@
       <td align="center">Sign Up</td>
       <td align="center">Sign In</td>
     </tr>
+  </table>
+
+  <table>
     <tr>
       <td><img src="Screenshots/boxes.png" alt="Boxes" width="200"/></td>
       <td><img src="Screenshots/add_word.png" alt="Add Word" width="200"/></td>
       <td><img src="Screenshots/notifications.png" alt="Notifications" width="200"/></td>
-      <td><img src="Screenshots/profile.png" alt="Profile" width="200"/></td>
-      <td><img src="Screenshots/purchase.png" alt="Purchase" width="200"/></td>
-      <td><img src="Screenshots/flashcard.png" alt="Flashcard" width="200"/></td>
     </tr>
     <tr>
       <td align="center">Boxes</td>
       <td align="center">Add Word</td>
       <td align="center">Notifications</td>
+    </tr>
+  </table>
+
+  <table>
+    <tr>
+      <td><img src="Screenshots/profile.png" alt="Profile" width="200"/></td>
+      <td><img src="Screenshots/purchase.png" alt="Purchase" width="200"/></td>
+      <td><img src="Screenshots/flashcard.png" alt="Flashcard" width="200"/></td>
+    </tr>
+    <tr>
       <td align="center">Profile</td>
       <td align="center">Purchase</td>
       <td align="center">Flashcard</td>
