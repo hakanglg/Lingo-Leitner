@@ -49,23 +49,6 @@
 - ☁️ Firebase ile bulut senkronizasyonu
 - 🌙 Karanlık mod desteği
 
-## 📄 Lisans
-
-Bu proje Creative Commons Attribution-NonCommercial-NoDerivs 4.0 International (CC BY-NC-ND 4.0) lisansı altında lisanslanmıştır.
-
-Bu lisans kapsamında:
-
-✅ **Yapabilecekleriniz:**
-- Projeyi paylaşabilirsiniz
-- Kaynak göstererek alıntı yapabilirsiniz
-
-❌ **Yapamazsınız:**
-- Ticari amaçla kullanamazsınız
-- Değişiklik yapamazsınız
-- Türev çalışmalar oluşturamazsınız
-
-Detaylı bilgi için: [Creative Commons BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
-
 ## 📋 Gereksinimler
 
 - iOS 15.0+
@@ -121,22 +104,22 @@ pod install
 - Dependency Injection
 - Repository Pattern (Veri katmanı için)
 
-## 🔐 Güvenlik ve Yapılandırma
+## 📄 Lisans
 
-Aşağıdaki dosyalar güvenlik nedeniyle repository'de bulunmamaktadır:
+Bu proje Creative Commons Attribution-NonCommercial-NoDerivs 4.0 International (CC BY-NC-ND 4.0) lisansı altında lisanslanmıştır.
 
-- `GoogleService-Info.plist`: Firebase yapılandırması
-- `Info.plist`: Uygulama yapılandırması ve hassas bilgiler
-- Firebase Yapılandırma Dosyaları:
-  - `firestore.rules`: Firestore güvenlik kuralları
-  - `firestore.indexes.json`: Firestore indeks yapılandırması
-  - `.firebaserc`: Firebase proje yapılandırması
-  - `firebase.json`: Firebase genel yapılandırması
-  - `database.rules.json`: Realtime Database kuralları
-- Sertifikalar ve provizyon profilleri
-- Ortam yapılandırma dosyaları
+Bu lisans kapsamında:
 
-Bu dosyaları proje yöneticisinden güvenli bir şekilde temin edebilirsiniz.
+✅ **Yapabilecekleriniz:**
+- Projeyi paylaşabilirsiniz
+- Kaynak göstererek alıntı yapabilirsiniz
+
+❌ **Yapamazsınız:**
+- Ticari amaçla kullanamazsınız
+- Değişiklik yapamazsınız
+- Türev çalışmalar oluşturamazsınız
+
+Detaylı bilgi için: [Creative Commons BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
 
 ## 🤝 İletişim
 
