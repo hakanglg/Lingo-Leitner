@@ -3,10 +3,10 @@
 <div align="center">
   <img src="Screenshots/app_icon.png" alt="Lingo Leitner Icon" width="120"/>
   
-  Lingo Leitner, Leitner sistemini kullanarak yabancı dil öğrenmeyi kolaylaştıran bir iOS uygulamasıdır. Uygulama, kullanıcıların kelime ve deyimleri tekrar kartları (flashcards) yöntemiyle öğrenmesini sağlar.
+  Lingo Leitner is an iOS application that facilitates foreign language learning using the Leitner system. The app enables users to learn words and phrases through flashcards.
 </div>
 
-## 📱 Ekran Görüntüleri
+## 📱 Screenshots
 
 <div align="center">
   <table>
@@ -29,7 +29,7 @@
       <td><img src="Screenshots/flashcard.png" alt="Flashcard" width="200"/></td>
     </tr>
     <tr>
-      <td align="center">Boxes/td>
+      <td align="center">Boxes</td>
       <td align="center">Add Word</td>
       <td align="center">Notifications</td>
       <td align="center">Profile</td>
@@ -39,107 +39,122 @@
   </table>
 </div>
 
-## 🚀 Özellikler
+## 🚀 Features
 
-- 📱 Modern ve kullanıcı dostu arayüz
-- 🔄 Leitner sistemi ile akıllı tekrar
-- 🎯 Günlük kelime hedefleri
-- 📊 İlerleme istatistikleri
-- 🔐 Apple ve Google ile güvenli giriş
-- ☁️ Firebase ile bulut senkronizasyonu
-- 🌙 Karanlık mod desteği
+- 📱 Modern and user-friendly interface
+- 🔄 Smart repetition with Leitner system
+- 🎯 Daily word goals
+- 📊 Progress statistics
+- 🔐 Secure login with Apple and Google
+- ☁️ Cloud synchronization with Firebase
+- 🌙 Dark mode support
+- 🌍 Multiple language support (English & Turkish)
 
-## 📄 Lisans
+## 🌍 Localization
 
-Bu proje Creative Commons Attribution-NonCommercial-NoDerivs 4.0 International (CC BY-NC-ND 4.0) lisansı altında lisanslanmıştır.
+The app supports multiple languages:
+- 🇬🇧 English
+- 🇹🇷 Turkish
 
-Bu lisans kapsamında:
+All text content, including:
+- User interface elements
+- Error messages
+- Notifications
+- App content
 
-✅ **Yapabilecekleriniz:**
-- Projeyi paylaşabilirsiniz
-- Kaynak göstererek alıntı yapabilirsiniz
+is available in both languages and automatically adapts to the user's device language.
 
-❌ **Yapamazsınız:**
-- Ticari amaçla kullanamazsınız
-- Değişiklik yapamazsınız
-- Türev çalışmalar oluşturamazsınız
+## 📄 License
 
-Detaylı bilgi için: [Creative Commons BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+This project is licensed under the Creative Commons Attribution-NonCommercial-NoDerivs 4.0 International (CC BY-NC-ND 4.0).
 
-## 📋 Gereksinimler
+Under this license:
+
+✅ **You can:**
+- Share the project
+- Quote with attribution
+
+❌ **You cannot:**
+- Use for commercial purposes
+- Make modifications
+- Create derivative works
+
+For more information: [Creative Commons BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
+
+## 📋 Requirements
 
 - iOS 15.0+
 - Xcode 14.0+
 - Swift 5.0+
 - CocoaPods
 
-## 🛠 Kurulum
+## 🛠 Installation
 
-1. Projeyi klonlayın:
+1. Clone the project:
 ```bash
 git clone https://github.com/yourusername/Lingo-Leitner.git
 cd Lingo-Leitner
 ```
 
-2. CocoaPods bağımlılıklarını yükleyin:
+2. Install CocoaPods dependencies:
 ```bash
 pod install
 ```
 
-3. Firebase kurulumu:
-   - [Firebase Console](https://console.firebase.google.com)'dan yeni bir proje oluşturun
-   - iOS uygulaması ekleyin ve `GoogleService-Info.plist` dosyasını indirin
-   - İndirilen `GoogleService-Info.plist` dosyasını `Lingo Leitner` klasörüne ekleyin
+3. Firebase setup:
+   - Create a new project from [Firebase Console](https://console.firebase.google.com)
+   - Add iOS app and download `GoogleService-Info.plist`
+   - Add the downloaded `GoogleService-Info.plist` to the `Lingo Leitner` folder
 
-4. Xcode'da `Lingo Leitner.xcworkspace` dosyasını açın
+4. Open `Lingo Leitner.xcworkspace` in Xcode
 
-5. Gerekli sertifikaları ve provizyon profillerini ekleyin
+5. Add required certificates and provisioning profiles
 
-## 👩‍💻 Kullanılan Teknolojiler
+## 👩‍💻 Technologies Used
 
-### Temel Teknolojiler
+### Core Technologies
 - Swift 5
 - UIKit
-- SwiftUI (Bazı bileşenlerde)
+- SwiftUI (In some components)
 - Combine Framework
 
-### Veritabanı ve Backend
+### Database and Backend
 - Firebase Authentication
 - Cloud Firestore
 - Firebase Storage
 
-### Üçüncü Parti Kütüphaneler
-- Alamofire: Ağ istekleri için
-- SwiftyJSON: JSON işleme
-- GoogleSignIn: Google ile giriş entegrasyonu
-- SnapKit: Programmatik UI constraint'leri için
+### Third-Party Libraries
+- Alamofire: For network requests
+- SwiftyJSON: JSON parsing
+- GoogleSignIn: Google sign-in integration
+- SnapKit: Programmatic UI constraints
 
-## 📱 Uygulama Mimarisi
+## 📱 App Architecture
 
-- MVVM (Model-View-ViewModel) mimari pattern'i
+- MVVM (Model-View-ViewModel) architectural pattern
 - Protocol-Oriented Programming
 - Dependency Injection
-- Repository Pattern (Veri katmanı için)
+- Repository Pattern (For data layer)
 
-## 🔐 Güvenlik ve Yapılandırma
+## 🔐 Security and Configuration
 
-Aşağıdaki dosyalar güvenlik nedeniyle repository'de bulunmamaktadır:
+The following files are not included in the repository for security reasons:
 
-- `GoogleService-Info.plist`: Firebase yapılandırması
-- `Info.plist`: Uygulama yapılandırması ve hassas bilgiler
-- Firebase Yapılandırma Dosyaları:
-  - `firestore.rules`: Firestore güvenlik kuralları
-  - `firestore.indexes.json`: Firestore indeks yapılandırması
-  - `.firebaserc`: Firebase proje yapılandırması
-  - `firebase.json`: Firebase genel yapılandırması
-  - `database.rules.json`: Realtime Database kuralları
-- Sertifikalar ve provizyon profilleri
-- Ortam yapılandırma dosyaları
+- `GoogleService-Info.plist`: Firebase configuration
+- `Info.plist`: App configuration and sensitive information
+- Firebase Configuration Files:
+  - `firestore.rules`: Firestore security rules
+  - `firestore.indexes.json`: Firestore index configuration
+  - `.firebaserc`: Firebase project configuration
+  - `firebase.json`: Firebase general configuration
+  - `database.rules.json`: Realtime Database rules
+- Certificates and provisioning profiles
+- Environment configuration files
 
-Bu dosyaları proje yöneticisinden güvenli bir şekilde temin edebilirsiniz.
+You can obtain these files securely from the project manager.
 
-## 🤝 İletişim
+## 🤝 Contact
 
 Hakan Gölge - [@hakangolge](https://twitter.com/hakangolge)
 
-Proje Linki: [https://github.com/yourusername/Lingo-Leitner](https://github.com/yourusername/Lingo-Leitner) 
+Project Link: [https://github.com/yourusername/Lingo-Leitner](https://github.com/yourusername/Lingo-Leitner) 
