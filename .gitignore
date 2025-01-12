@@ -31,6 +31,13 @@ Carthage/Build/
 Lingo\ Leitner/GoogleService-Info.plist
 Lingo\ Leitner/Info.plist
 
+# Firebase
+firestore.rules
+firestore.indexes.json
+.firebaserc
+firebase.json
+database.rules.json
+
 # Environment Configuration
 *.xcconfig
 Environment.swift
