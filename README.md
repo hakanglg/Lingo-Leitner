@@ -90,6 +90,12 @@ Aşağıdaki dosyalar güvenlik nedeniyle repository'de bulunmamaktadır:
 
 - `GoogleService-Info.plist`: Firebase yapılandırması
 - `Info.plist`: Uygulama yapılandırması ve hassas bilgiler
+- Firebase Yapılandırma Dosyaları:
+  - `firestore.rules`: Firestore güvenlik kuralları
+  - `firestore.indexes.json`: Firestore indeks yapılandırması
+  - `.firebaserc`: Firebase proje yapılandırması
+  - `firebase.json`: Firebase genel yapılandırması
+  - `database.rules.json`: Realtime Database kuralları
 - Sertifikalar ve provizyon profilleri
 - Ortam yapılandırma dosyaları
 
