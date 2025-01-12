@@ -12,4 +12,5 @@ protocol FirestoreServiceProtocol: AnyObject {
     func getUserData(userId: String) async throws -> User
     func updateUserFields(userId: String) async throws
     func addWord(_ word: Word, userId: String) async throws
+    func deleteUserData(userId: String) async throws
 } 

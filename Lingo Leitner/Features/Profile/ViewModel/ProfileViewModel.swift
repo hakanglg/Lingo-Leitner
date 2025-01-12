@@ -13,10 +13,15 @@ final class ProfileViewModel {
     // MARK: - Properties
     weak var delegate: ProfileViewModelDelegate?
     private let authManager: AuthManager
+    private let firestoreService: FirestoreServiceProtocol
     
     // MARK: - Init
-    init(authManager: AuthManager = AuthManager.shared) {
+    init(
+        authManager: AuthManager = AuthManager.shared,
+        firestoreService: FirestoreServiceProtocol = FirestoreService.shared
+    ) {
         self.authManager = authManager
+        self.firestoreService = firestoreService
     }
     
     // MARK: - Methods
@@ -92,6 +97,41 @@ final class ProfileViewModel {
             
             await MainActor.run {
                 delegate?.didLogout()
+            }
+        } catch {
+            await MainActor.run {
+                delegate?.didReceiveError(error)
+            }
+        }
+    }
+    
+    func deleteAccount() async {
+        do {
+            guard let userId = authManager.currentUser?.id else {
+                throw AuthError.userNotFound
+            }
+            
+            // Önce Firestore'dan kullanıcı verilerini sil
+            try await firestoreService.deleteUserData(userId: userId)
+            
+            // Sonra Firebase Auth'dan hesabı sil
+            guard let currentUser = Auth.auth().currentUser else {
+                throw AuthError.userNotFound
+            }
+            
+            try await currentUser.delete()
+            
+            // AuthViewController'a yönlendir
+            await MainActor.run {
+                guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                      let sceneDelegate = windowScene.delegate as? SceneDelegate else {
+                    return
+                }
+                
+                let authVC = AuthViewController()
+                let nav = UINavigationController(rootViewController: authVC)
+                sceneDelegate.window?.rootViewController = nav
+                sceneDelegate.window?.makeKeyAndVisible()
             }
         } catch {
             await MainActor.run {

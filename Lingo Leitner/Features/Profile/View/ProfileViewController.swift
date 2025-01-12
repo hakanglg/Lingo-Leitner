@@ -68,6 +68,17 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
     private let streakCountView = StatItemView(title: "Günlük Seri", icon: "flame.fill")
     private let masteredWordsView = StatItemView(title: "Öğrenilen", icon: "checkmark.circle.fill")
     
+    private let premiumButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Premium'a Geç", for: .normal)
+        button.setTitleColor(Theme.accent, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        button.backgroundColor = Theme.accent.withAlphaComponent(0.1)
+        button.layer.cornerRadius = 16
+        button.heightAnchor.constraint(equalToConstant: 56).isActive = true
+        return button
+    }()
+    
     private let logoutButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Çıkış Yap", for: .normal)
@@ -76,6 +87,15 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
         button.backgroundColor = .systemRed.withAlphaComponent(0.1)
         button.layer.cornerRadius = 16
         button.heightAnchor.constraint(equalToConstant: 56).isActive = true
+        return button
+    }()
+    
+    private let deleteAccountButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("Hesabı Sil", for: .normal)
+        button.setTitleColor(.systemRed, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 15, weight: .regular)
+        button.backgroundColor = .clear
         return button
     }()
     
@@ -107,7 +127,9 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
         statsView.addSubview(streakCountView)
         statsView.addSubview(masteredWordsView)
         
+        contentView.addSubview(premiumButton)
         contentView.addSubview(logoutButton)
+        contentView.addSubview(deleteAccountButton)
         
         setupConstraints()
     }
@@ -168,15 +190,30 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
             make.width.equalTo(statsView).multipliedBy(0.3)
         }
         
-        logoutButton.snp.makeConstraints { make in
+        // Premium button constraints
+        premiumButton.snp.makeConstraints { make in
             make.top.equalTo(statsView.snp.bottom).offset(32)
             make.leading.trailing.equalTo(contentView).inset(16)
+        }
+        
+        // Logout button constraints'i güncelle
+        logoutButton.snp.makeConstraints { make in
+            make.top.equalTo(premiumButton.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(contentView).inset(16)
+        }
+        
+        // Delete account button constraints
+        deleteAccountButton.snp.makeConstraints { make in
+            make.top.equalTo(logoutButton.snp.bottom).offset(24)
+            make.centerX.equalTo(contentView)
             make.bottom.equalTo(contentView).offset(-32)
         }
     }
     
     private func setupActions() {
         logoutButton.addTarget(self, action: #selector(handleLogoutTap), for: .touchUpInside)
+        premiumButton.addTarget(self, action: #selector(handlePremiumTap), for: .touchUpInside)
+        deleteAccountButton.addTarget(self, action: #selector(handleDeleteAccountTap), for: .touchUpInside)
     }
     
     private func loadUserData() {
@@ -203,6 +240,73 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
         present(alert, animated: true)
     }
     
+    @objc private func handlePremiumTap() {
+        let premiumVC = PremiumViewController()
+        premiumVC.modalPresentationStyle = .fullScreen
+        present(premiumVC, animated: true)
+    }
+    
+    @objc private func handleDeleteAccountTap() {
+        let alert = UIAlertController(
+            title: "Hesabı Sil",
+            message: "Hesabınızı silmek istediğinize emin misiniz? Bu işlem geri alınamaz ve tüm verileriniz silinecektir.",
+            preferredStyle: .alert
+        )
+        
+        // İptal butonu
+        alert.addAction(UIAlertAction(title: "İptal", style: .cancel))
+        
+        // Silme butonu
+        let deleteAction = UIAlertAction(title: "Hesabı Sil", style: .destructive) { [weak self] _ in
+            // Tekrar onay al
+            self?.showFinalDeleteConfirmation()
+        }
+        alert.addAction(deleteAction)
+        
+        present(alert, animated: true)
+    }
+    
+    private func showFinalDeleteConfirmation() {
+        let alert = UIAlertController(
+            title: "Son Onay",
+            message: "Hesabınızı silmek için 'SİL' yazın.",
+            preferredStyle: .alert
+        )
+        
+        alert.addTextField { textField in
+            textField.placeholder = "SİL yazın"
+        }
+        
+        alert.addAction(UIAlertAction(title: "İptal", style: .cancel))
+        
+        let confirmAction = UIAlertAction(title: "Onayla", style: .destructive) { [weak self] _ in
+            guard let text = alert.textFields?.first?.text,
+                  text.uppercased() == "SİL" else {
+                // Yanlış yazıldıysa uyarı göster
+                self?.showError("Lütfen 'SİL' yazarak onaylayın")
+                return
+            }
+            
+            // Hesabı sil
+            Task {
+                await self?.viewModel.deleteAccount()
+            }
+        }
+        
+        alert.addAction(confirmAction)
+        present(alert, animated: true)
+    }
+    
+    private func showError(_ message: String) {
+        let alert = UIAlertController(
+            title: "Hata",
+            message: message,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Tamam", style: .default))
+        present(alert, animated: true)
+    }
+    
     // MARK: - ProfileViewModelDelegate
     func didUpdateUserData(_ user: User, stats: UserStats) {
         nameLabel.text = user.displayName ?? "Kullanıcı"
@@ -213,9 +317,26 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
         streakCountView.setValue(stats.currentStreak)
         masteredWordsView.setValue(stats.masteredWords)
         
+        // Premium durumuna göre butonu güncelle
+        updatePremiumButton(isPremium: user.isPremium)
+        
         // Profil fotoğrafını yükle
         if let photoURL = user.photoURL {
             // SDWebImage veya Kingfisher kullanarak yükle
+        }
+    }
+    
+    private func updatePremiumButton(isPremium: Bool) {
+        if isPremium {
+            premiumButton.setTitle("Premium Üye", for: .normal)
+            premiumButton.isEnabled = false
+            premiumButton.backgroundColor = .systemGray5
+            premiumButton.setTitleColor(.systemGray, for: .normal)
+        } else {
+            premiumButton.setTitle("Premium'a Geç", for: .normal)
+            premiumButton.isEnabled = true
+            premiumButton.backgroundColor = Theme.accent.withAlphaComponent(0.1)
+            premiumButton.setTitleColor(Theme.accent, for: .normal)
         }
     }
     

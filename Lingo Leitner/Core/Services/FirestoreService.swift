@@ -218,6 +218,22 @@ final class FirestoreService: FirestoreServiceProtocol {
             Constants.lastWordAddDateKey: FieldValue.serverTimestamp()
         ])
     }
+    
+    func deleteUserData(userId: String) async throws {
+        let userRef = db.collection("users").document(userId)
+        
+        // Alt koleksiyonları sil
+        let collections = ["words", "settings", "statistics"]
+        for collection in collections {
+            let snapshot = try await userRef.collection(collection).getDocuments()
+            for document in snapshot.documents {
+                try await document.reference.delete()
+            }
+        }
+        
+        // Kullanıcı dokümanını sil
+        try await userRef.delete()
+    }
 }
 
 extension Double {
