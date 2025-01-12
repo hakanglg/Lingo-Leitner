@@ -12,7 +12,7 @@
   <table>
     <tr>
       <td><img src="Screenshots/auth.png" alt="Auth" width="200"/></td>
-      <td><img src="Screenshots/signup.png" alt="Sign Up" width="200"/></td>
+      <td><img src="Screenshots/singup.png" alt="Sign Up" width="200"/></td>
       <td><img src="Screenshots/signin.png" alt="Sign In" width="200"/></td>
     </tr>
     <tr>
@@ -29,7 +29,7 @@
       <td><img src="Screenshots/flashcard.png" alt="Flashcard" width="200"/></td>
     </tr>
     <tr>
-      <td align="center">Boxes/td>
+      <td align="center">Boxes</td>
       <td align="center">Add Word</td>
       <td align="center">Notifications</td>
       <td align="center">Profile</td>
