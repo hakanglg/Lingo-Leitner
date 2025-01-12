@@ -18,47 +18,12 @@ final class AuthViewController: UIViewController {
     private let containerView = UIView()
     
     private lazy var googleButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.backgroundColor = .white
-        button.layer.cornerRadius = Theme.cornerRadius
-        button.layer.borderWidth = 1
-        button.layer.borderColor = UIColor.systemGray5.cgColor
-        button.isUserInteractionEnabled = true
-        
-        // Test için geçici olarak ekleyelim
-        button.addAction(UIAction { _ in
-            print("Google butonu tıklandı (UIAction)")
-        }, for: .touchUpInside)
-        
-        // Google logosu için imageView
-        let imageView = UIImageView(image: UIImage(named: "google-logo"))
-        imageView.contentMode = .scaleAspectFit
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-        button.addSubview(imageView)
-        
-        // "Google ile devam et" yazısı için label
-        let label = UILabel()
-        label.text = "Google ile devam et"
-        label.font = Theme.font(.body, .medium)
-        label.textColor = .label
-        label.translatesAutoresizingMaskIntoConstraints = false
-        button.addSubview(label)
-        
-        // Constraints
-        NSLayoutConstraint.activate([
-            imageView.leadingAnchor.constraint(equalTo: button.leadingAnchor, constant: 16),
-            imageView.centerYAnchor.constraint(equalTo: button.centerYAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 24),
-            imageView.heightAnchor.constraint(equalToConstant: 24),
-            
-            label.centerXAnchor.constraint(equalTo: button.centerXAnchor),
-            label.centerYAnchor.constraint(equalTo: button.centerYAnchor)
-        ])
-        
-        button.heightAnchor.constraint(equalToConstant: 56).isActive = true
-        
-        // Gölge ekle
-        Theme.applyShadow(to: button)
+        let button = createSocialButton(
+            title: "Google ile devam et",
+            image: UIImage(named: "google-logo"),
+            backgroundColor: .white,
+            titleColor: .label
+        )
         
         // Action ekle
         button.addTarget(self, action: #selector(handleGoogleSignInTap), for: .touchUpInside)
@@ -253,12 +218,30 @@ final class AuthViewController: UIViewController {
         config.cornerStyle = .medium
         
         config.title = title
-        config.image = image
+        
+        // Google logosu için özel boyutlandırma
+        if title.contains("Google"), let originalImage = image {
+            let size = CGSize(width: 24, height: 24)
+            UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale)
+            defer { UIGraphicsEndImageContext() }
+            
+            originalImage.draw(in: CGRect(origin: .zero, size: size))
+            config.image = UIGraphicsGetImageFromCurrentImageContext()
+        } else {
+            config.image = image
+        }
+        
         config.imagePadding = 8
         config.contentInsets = NSDirectionalEdgeInsets(top: 12, leading: 16, bottom: 12, trailing: 16)
         
         button.configuration = config
         button.heightAnchor.constraint(equalToConstant: Theme.buttonHeight).isActive = true
+        
+        // Gölge ve border ekle
+        button.layer.cornerRadius = Theme.cornerRadius
+        button.layer.borderWidth = backgroundColor == .white ? 1 : 0
+        button.layer.borderColor = UIColor.systemGray5.cgColor
+        Theme.applyShadow(to: button)
         
         return button
     }
