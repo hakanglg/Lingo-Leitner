@@ -1,11 +1,12 @@
 import UIKit
-final class CustomTextField: UIView {
-    // MARK: - UI Components
+import SnapKit
+
+final class CustomTextField: UITextField {
+    // MARK: - Properties
     private let containerView: UIView = {
         let view = UIView()
         view.backgroundColor = .secondarySystemBackground
         view.layer.cornerRadius = 12
-        view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
@@ -13,28 +14,10 @@ final class CustomTextField: UIView {
         let imageView = UIImageView()
         imageView.tintColor = .secondaryLabel
         imageView.contentMode = .scaleAspectFit
-        imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }()
     
-    private let textField: UITextField = {
-        let field = UITextField()
-        field.font = Theme.font(.body)
-        field.backgroundColor = .clear
-        field.translatesAutoresizingMaskIntoConstraints = false
-        return field
-    }()
-    
-    // MARK: - Properties
-    var text: String? {
-        get { textField.text }
-        set { textField.text = newValue }
-    }
-    
-    var placeholder: String? {
-        get { textField.placeholder }
-        set { textField.placeholder = newValue }
-    }
+    private let wrapperView = UIView()
     
     // MARK: - Init
     override init(frame: CGRect) {
@@ -48,32 +31,54 @@ final class CustomTextField: UIView {
     
     // MARK: - Setup
     private func setupUI() {
-        addSubview(containerView)
-        containerView.addSubview(iconView)
-        containerView.addSubview(textField)
+        backgroundColor = .clear
+        font = Theme.font(.body)
         
-        NSLayoutConstraint.activate([
-            containerView.topAnchor.constraint(equalTo: topAnchor),
-            containerView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            containerView.heightAnchor.constraint(equalToConstant: 56),
-            
-            iconView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: 16),
-            iconView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
-            iconView.widthAnchor.constraint(equalToConstant: 24),
-            iconView.heightAnchor.constraint(equalToConstant: 24),
-            
-            textField.leadingAnchor.constraint(equalTo: iconView.trailingAnchor, constant: 12),
-            textField.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -16),
-            textField.centerYAnchor.constraint(equalTo: containerView.centerYAnchor)
-        ])
+        // View hiyerarşisi
+        addSubview(wrapperView)
+        wrapperView.addSubview(containerView)
+        containerView.addSubview(iconView)
+        
+        // Constraints
+        wrapperView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        containerView.snp.makeConstraints { make in
+            make.edges.equalTo(wrapperView)
+            make.height.equalTo(56)
+        }
+        
+        iconView.snp.makeConstraints { make in
+            make.leading.equalTo(containerView).offset(16)
+            make.centerY.equalTo(containerView)
+            make.size.equalTo(24)
+        }
+        
+        // Text inset ayarları
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 52, height: frame.height))
+        leftView = paddingView
+        leftViewMode = .always
     }
     
     func configure(icon: String, placeholder: String, keyboardType: UIKeyboardType, returnKeyType: UIReturnKeyType) {
-        iconView.image = UIImage(systemName: icon)
-        textField.placeholder = placeholder
-        textField.keyboardType = keyboardType
-        textField.returnKeyType = returnKeyType
+        let config = UIImage.SymbolConfiguration(pointSize: 16, weight: .medium)
+        iconView.image = UIImage(systemName: icon, withConfiguration: config)
+        self.placeholder = placeholder
+        self.keyboardType = keyboardType
+        self.returnKeyType = returnKeyType
+    }
+    
+    // MARK: - Override methods for proper text positioning
+    override func textRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: UIEdgeInsets(top: 0, left: 52, bottom: 0, right: 16))
+    }
+    
+    override func editingRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: UIEdgeInsets(top: 0, left: 52, bottom: 0, right: 16))
+    }
+    
+    override func placeholderRect(forBounds bounds: CGRect) -> CGRect {
+        return bounds.inset(by: UIEdgeInsets(top: 0, left: 52, bottom: 0, right: 16))
     }
 } 

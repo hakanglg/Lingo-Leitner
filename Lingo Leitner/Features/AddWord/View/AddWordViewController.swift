@@ -1,4 +1,5 @@
 import UIKit
+import SnapKit
 
 final class AddWordViewController: UIViewController {
     // MARK: - Properties
@@ -7,80 +8,147 @@ final class AddWordViewController: UIViewController {
     // MARK: - UI Components
     private let scrollView: UIScrollView = {
         let scroll = UIScrollView()
-        scroll.translatesAutoresizingMaskIntoConstraints = false
+        scroll.backgroundColor = .systemBackground
         scroll.showsVerticalScrollIndicator = false
+        scroll.alwaysBounceVertical = true
         return scroll
     }()
     
-    private let containerStackView: UIStackView = {
-        let stack = UIStackView()
-        stack.axis = .vertical
-        stack.spacing = 32
-        stack.layoutMargins = UIEdgeInsets(top: 24, left: 24, bottom: 24, right: 24)
-        stack.isLayoutMarginsRelativeArrangement = true
-        stack.translatesAutoresizingMaskIntoConstraints = false
-        return stack
+    private let contentView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
+    private let headerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .systemBackground
+        return view
+    }()
+    
+    private let iconImageView: UIImageView = {
+        let iv = UIImageView()
+        let config = UIImage.SymbolConfiguration(pointSize: 40, weight: .medium)
+        iv.image = UIImage(systemName: "plus.circle.fill", withConfiguration: config)
+        iv.tintColor = Theme.accent
+        iv.contentMode = .scaleAspectFit
+        return iv
     }()
     
     private let headerLabel: UILabel = {
         let label = UILabel()
-        label.text = "Yeni Kelime Ekle"
-        label.font = Theme.font(.title1, .bold)
-        label.textAlignment = .center
+        label.text = "Yeni Kelime"
+        label.font = .systemFont(ofSize: 28, weight: .bold)
+        label.textColor = .label
         return label
     }()
     
+    private let subtitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Öğrenmek istediğiniz kelimeyi ekleyin"
+        label.font = .systemFont(ofSize: 17, weight: .regular)
+        label.textColor = .secondaryLabel
+        return label
+    }()
+    
+    private let formStackView: UIStackView = {
+        let stack = UIStackView()
+        stack.axis = .vertical
+        stack.backgroundColor = .systemBackground
+        stack.spacing = 24
+        stack.layoutMargins = UIEdgeInsets(top: 32, left: 24, bottom: 32, right: 24)
+        stack.isLayoutMarginsRelativeArrangement = true
+        return stack
+    }()
+    
     private let wordTextField: CustomTextField = {
-        let textField = CustomTextField()
-        textField.configure(
-            icon: "textformat",
+        let field = CustomTextField()
+        field.configure(
+            icon: "textformat.alt",
             placeholder: "Kelime",
             keyboardType: .default,
             returnKeyType: .next
         )
-        return textField
+        return field
     }()
     
     private let meaningTextField: CustomTextField = {
-        let textField = CustomTextField()
-        textField.configure(
-            icon: "text.book.closed",
+        let field = CustomTextField()
+        field.configure(
+            icon: "text.book.closed.fill",
             placeholder: "Anlamı",
             keyboardType: .default,
             returnKeyType: .next
         )
-        return textField
+        return field
     }()
     
     private let exampleTextField: CustomTextField = {
-        let textField = CustomTextField()
-        textField.configure(
+        let field = CustomTextField()
+        field.configure(
             icon: "text.quote",
-            placeholder: "Örnek Cümle (Opsiyonel)",
+            placeholder: "Örnek Cümle (İsteğe Bağlı)",
             keyboardType: .default,
             returnKeyType: .done
         )
-        return textField
-    }()
-    
-    private let difficultyControl: UISegmentedControl = {
-        let control = UISegmentedControl(items: ["Kolay", "Orta", "Zor"])
-        control.selectedSegmentIndex = 0
-        control.backgroundColor = .systemBackground
-        control.selectedSegmentTintColor = Theme.accent
-        let titleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.label]
-        let selectedTitleTextAttributes = [NSAttributedString.Key.foregroundColor: UIColor.white]
-        control.setTitleTextAttributes(titleTextAttributes, for: .normal)
-        control.setTitleTextAttributes(selectedTitleTextAttributes, for: .selected)
-        control.heightAnchor.constraint(equalToConstant: 44).isActive = true
-        return control
+        return field
     }()
     
     private let saveButton: LoadingButton = {
         let button = LoadingButton(style: .primary)
-        button.setTitle("Kaydet", for: .normal)
-        button.heightAnchor.constraint(equalToConstant: 54).isActive = true
+        button.setTitle("Kelimeyi Kaydet", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        button.layer.cornerRadius = 16
+        button.heightAnchor.constraint(equalToConstant: 56).isActive = true // Apple's minimum touch target
+        
+        // Add shadow for depth
+        button.layer.shadowColor = Theme.accent.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 4)
+        button.layer.shadowRadius = 8
+        button.layer.shadowOpacity = 0.25
         return button
+    }()
+    
+    private let gradientLayer: CAGradientLayer = {
+        let layer = CAGradientLayer()
+        layer.colors = [
+            UIColor.systemBackground.cgColor,
+            Theme.accent.withAlphaComponent(0.1).cgColor,
+            UIColor.systemBackground.cgColor
+        ]
+        layer.locations = [0, 0.5, 1]
+        return layer
+    }()
+    
+    private let characterCountLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 12, weight: .regular)
+        label.textColor = .secondaryLabel
+        label.text = "0/50"
+        return label
+    }()
+    
+    private let tipView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Theme.accent.withAlphaComponent(0.1)
+        view.layer.cornerRadius = 12
+        return view
+    }()
+    
+    private let tipImageView: UIImageView = {
+        let iv = UIImageView()
+        let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .medium)
+        iv.image = UIImage(systemName: "lightbulb.fill", withConfiguration: config)
+        iv.tintColor = Theme.accent
+        return iv
+    }()
+    
+    private let tipLabel: UILabel = {
+        let label = UILabel()
+        label.text = "İpucu: Örnek cümle eklemek, kelimenin bağlamını anlamanıza yardımcı olur."
+        label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.textColor = .secondaryLabel
+        label.numberOfLines = 0
+        return label
     }()
     
     // MARK: - Lifecycle
@@ -92,31 +160,95 @@ final class AddWordViewController: UIViewController {
         setupActions()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        gradientLayer.frame = view.bounds
+    }
+    
     // MARK: - Setup
     private func setupUI() {
         view.backgroundColor = .systemBackground
         navigationItem.largeTitleDisplayMode = .never
         
         view.addSubview(scrollView)
-        scrollView.addSubview(containerStackView)
+        scrollView.addSubview(contentView)
         
-        [headerLabel, wordTextField, meaningTextField, exampleTextField, 
-         difficultyControl, saveButton].forEach {
-            containerStackView.addArrangedSubview($0)
+        contentView.addSubview(headerView)
+        headerView.addSubview(iconImageView)
+        headerView.addSubview(headerLabel)
+        headerView.addSubview(subtitleLabel)
+        
+        contentView.addSubview(formStackView)
+        [wordTextField, meaningTextField, exampleTextField, saveButton].forEach {
+            formStackView.addArrangedSubview($0)
         }
         
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            containerStackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            containerStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            containerStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            containerStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            containerStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor)
-        ])
+        // Tip view setup
+        formStackView.addArrangedSubview(tipView)
+        tipView.addSubview(tipImageView)
+        tipView.addSubview(tipLabel)
+        
+        // Character count setup
+        wordTextField.addSubview(characterCountLabel)
+        
+        view.layer.insertSublayer(gradientLayer, at: 0)
+        
+        setupConstraints()
+        setupTextFieldEffects()
+    }
+    
+    private func setupConstraints() {
+        scrollView.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        contentView.snp.makeConstraints { make in
+            make.edges.equalTo(scrollView)
+            make.width.equalTo(scrollView)
+        }
+        
+        headerView.snp.makeConstraints { make in
+            make.top.leading.trailing.equalTo(contentView)
+        }
+        
+        iconImageView.snp.makeConstraints { make in
+            make.top.equalTo(headerView).offset(32)
+            make.centerX.equalTo(headerView)
+            make.size.equalTo(60)
+        }
+        
+        headerLabel.snp.makeConstraints { make in
+            make.top.equalTo(iconImageView.snp.bottom).offset(16)
+            make.centerX.equalTo(headerView)
+        }
+        
+        subtitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(headerLabel.snp.bottom).offset(8)
+            make.centerX.equalTo(headerView)
+            make.bottom.equalTo(headerView).offset(-32)
+        }
+        
+        formStackView.snp.makeConstraints { make in
+            make.top.equalTo(headerView.snp.bottom)
+            make.leading.trailing.bottom.equalTo(contentView)
+        }
+        
+        tipImageView.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(16)
+            make.centerY.equalToSuperview()
+            make.size.equalTo(24)
+        }
+        
+        tipLabel.snp.makeConstraints { make in
+            make.leading.equalTo(tipImageView.snp.trailing).offset(12)
+            make.trailing.equalToSuperview().offset(-16)
+            make.top.bottom.equalToSuperview().inset(16)
+        }
+        
+        characterCountLabel.snp.makeConstraints { make in
+            make.trailing.equalToSuperview().offset(-16)
+            make.centerY.equalToSuperview()
+        }
     }
     
     private func setupDelegates() {
@@ -131,22 +263,65 @@ final class AddWordViewController: UIViewController {
         saveButton.addTarget(self, action: #selector(handleSaveButtonTap), for: .touchUpInside)
     }
     
+    private func setupTextFieldEffects() {
+        [wordTextField, meaningTextField, exampleTextField].forEach { field in
+            // Animasyonlu focus efekti
+            field.addTarget(self, action: #selector(textFieldDidBeginEditing(_:)), for: .editingDidBegin)
+            field.addTarget(self, action: #selector(textFieldDidEndEditing(_:)), for: .editingDidEnd)
+            // Karakter sayısı kontrolü
+            field.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
+        }
+    }
+    
+    @objc private func textFieldDidBeginEditing(_ textField: CustomTextField) {
+        UIView.animate(withDuration: 0.3) {
+            textField.transform = CGAffineTransform(scaleX: 1.02, y: 1.02)
+            textField.layer.shadowOpacity = 0.2
+        }
+    }
+    
+    @objc private func textFieldDidEndEditing(_ textField: CustomTextField) {
+        UIView.animate(withDuration: 0.3) {
+            textField.transform = .identity
+            textField.layer.shadowOpacity = 0
+        }
+    }
+    
+    @objc private func textFieldDidChange(_ textField: CustomTextField) {
+        guard let text = textField.text else { return }
+        
+        // Kelime için maksimum karakter sınırı
+        if textField == wordTextField {
+            let maxLength = 50
+            if text.count > maxLength {
+                textField.text = String(text.prefix(maxLength))
+            }
+            characterCountLabel.text = "\(text.count)/\(maxLength)"
+            
+            // Karakter limiti yaklaşırken uyarı rengi
+            if text.count > maxLength - 10 {
+                characterCountLabel.textColor = .systemOrange
+            } else {
+                characterCountLabel.textColor = .secondaryLabel
+            }
+        }
+    }
+    
     // MARK: - Actions
     @objc private func handleSaveButtonTap() {
         guard let word = wordTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines),
               let meaning = meaningTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines) else {
+            // Hata mesajı göster
             return
         }
         
         let example = exampleTextField.text?.trimmingCharacters(in: .whitespacesAndNewlines)
-        let difficulty = Difficulty.allCases[difficultyControl.selectedSegmentIndex]
         
         Task {
             await viewModel.saveWord(
                 word: word,
                 meaning: meaning,
-                example: example,
-                difficulty: difficulty
+                example: example
             )
         }
     }
@@ -155,64 +330,89 @@ final class AddWordViewController: UIViewController {
 // MARK: - AddWordViewModelDelegate
 extension AddWordViewController: AddWordViewModelDelegate {
     func didStartLoading() {
-        // Implement loading indicator if needed
+        DispatchQueue.main.async { [weak self] in
+            LoadingView.shared.show(in: self?.view ?? UIView())
+        }
     }
     
     func didFinishLoading() {
-        // Implement loading indicator if needed
+        DispatchQueue.main.async { [weak self] in
+            LoadingView.shared.hide()
+        }
     }
     
     func didReceiveError(_ error: Error) {
-        let alert = UIAlertController(
-            title: "Hata",
-            message: error.localizedDescription,
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "Tamam", style: .default))
-        present(alert, animated: true)
+        DispatchQueue.main.async { [weak self] in
+            LoadingView.shared.hide()
+            
+            let message = (error as? FirestoreError)?.message ?? error.localizedDescription
+            let alert = UIAlertController(
+                title: "Hata",
+                message: message,
+                preferredStyle: .alert
+            )
+            
+            // Eğer limit hatası ise Premium'a yönlendir
+            if error as? FirestoreError == .limitExceeded {
+                alert.addAction(UIAlertAction(title: "Premium'a Yükselt", style: .default) { [weak self] _ in
+                    let premiumVC = PremiumViewController()
+                    premiumVC.modalPresentationStyle = .fullScreen
+                    self?.present(premiumVC, animated: true)
+                })
+            }
+            
+            alert.addAction(UIAlertAction(title: "Tamam", style: .cancel))
+            self?.present(alert, animated: true)
+        }
     }
     
     func didSaveWordSuccessfully() {
-        // Haptic feedback
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.success)
-        
-        // Animasyonlu başarı göstergesi
-        let successView = SuccessView()
-        view.addSubview(successView)
-        successView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            successView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            successView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            successView.widthAnchor.constraint(equalToConstant: 200),
-            successView.heightAnchor.constraint(equalToConstant: 200)
-        ])
-        
-        successView.animate {
-            // Animasyon bittikten sonra
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                // Input alanlarını temizle
-                self.wordTextField.text = nil
-                self.meaningTextField.text = nil
-                self.exampleTextField.text = nil
-                self.difficultyControl.selectedSegmentIndex = 0
-                
-                // Klavyeyi kapat
-                self.view.endEditing(true)
-                
-                // Success view'ı kaldır
-                UIView.animate(withDuration: 0.3) {
-                    successView.alpha = 0
-                } completion: { _ in
-                    successView.removeFromSuperview()
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            // Önce LoadingView'ı gizle
+            LoadingView.shared.hide()
+            
+            // Haptic feedback
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
+            
+            // Animasyonlu başarı göstergesi
+            let successView = SuccessView()
+            self.view.addSubview(successView)
+            successView.translatesAutoresizingMaskIntoConstraints = false
+            
+            NSLayoutConstraint.activate([
+                successView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor),
+                successView.centerYAnchor.constraint(equalTo: self.view.centerYAnchor),
+                successView.widthAnchor.constraint(equalToConstant: 200),
+                successView.heightAnchor.constraint(equalToConstant: 200)
+            ])
+            
+            successView.animate {
+                // Animasyon bittikten sonra
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                    // Input alanlarını temizle
+                    self.wordTextField.text = nil
+                    self.meaningTextField.text = nil
+                    self.exampleTextField.text = nil
                     
-                    // Word TextField'a odaklan
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        self.wordTextField.becomeFirstResponder()
+                    // Klavyeyi kapat
+                    self.view.endEditing(true)
+                    
+                    // Success view'ı kaldır
+                    UIView.animate(withDuration: 0.3) {
+                        successView.alpha = 0
+                    } completion: { _ in
+                        successView.removeFromSuperview()
+                        
+                        // Word TextField'a odaklan
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                            self.wordTextField.becomeFirstResponder()
+                        }
                     }
                 }
             }
         }
     }
-} 
+}

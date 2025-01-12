@@ -1,40 +1,11 @@
 import Foundation
 import FirebaseFirestore
 
-enum Difficulty: Int, Codable, CaseIterable {
-    case easy = 1
-    case medium = 2
-    case hard = 3
-    
-    var displayText: String {
-        switch self {
-        case .easy:
-            return "Kolay"
-        case .medium:
-            return "Orta"
-        case .hard:
-            return "Zor"
-        }
-    }
-    
-    var color: UIColor {
-        switch self {
-        case .easy:
-            return .systemGreen
-        case .medium:
-            return .systemOrange
-        case .hard:
-            return .systemRed
-        }
-    }
-}
-
 struct Word: Codable, Identifiable {
     let id: String
     let word: String
     let meaning: String
     let example: String?
-    let difficulty: Difficulty
     let box: Int
     let lastReviewedAt: Date
     let createdAt: Date
@@ -76,7 +47,6 @@ struct Word: Codable, Identifiable {
          word: String,
          meaning: String,
          example: String? = nil,
-         difficulty: Difficulty,
          box: Int = 1,
          lastReviewedAt: Date = Date(),
          createdAt: Date = Date()) {
@@ -84,10 +54,21 @@ struct Word: Codable, Identifiable {
         self.word = word
         self.meaning = meaning
         self.example = example
-        self.difficulty = difficulty
         self.box = box
         self.lastReviewedAt = lastReviewedAt
         self.createdAt = createdAt
+    }
+    
+    var dictionary: [String: Any] {
+        return [
+            "id": id,
+            "word": word,
+            "meaning": meaning,
+            "example": example as Any,
+            "box": box,
+            "lastReviewedAt": Timestamp(date: lastReviewedAt),
+            "createdAt": Timestamp(date: createdAt)
+        ]
     }
 }
 

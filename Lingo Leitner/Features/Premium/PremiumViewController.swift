@@ -1,39 +1,50 @@
 import UIKit
+import SnapKit
 
 final class PremiumViewController: UIViewController {
     
     // MARK: - Properties
-    private let scrollView: UIScrollView = {
-        let sv = UIScrollView()
-        sv.showsVerticalScrollIndicator = false
-        return sv
+    private let backgroundImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFill
+        iv.clipsToBounds = true
+        iv.alpha = 0.3
+        iv.image = UIImage(named: "premium_bg")
+        return iv
     }()
-    
-    private let containerView = UIView()
     
     private let closeButton: UIButton = {
         let button = UIButton(type: .system)
-        let config = UIImage.SymbolConfiguration(pointSize: 28, weight: .medium)
+        let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
         let image = UIImage(systemName: "xmark.circle.fill", withConfiguration: config)
         button.setImage(image, for: .normal)
-        button.tintColor = .secondaryLabel
-        
-        button.contentEdgeInsets = UIEdgeInsets(top: 12, left: 12, bottom: 12, right: 12)
+        button.tintColor = .white
         return button
-    }()
-    
-    private let headerImageView: UIImageView = {
-        let iv = UIImageView()
-        iv.contentMode = .scaleAspectFit
-        iv.image = UIImage(systemName: "crown.fill")
-        iv.tintColor = Theme.gradient[0]
-        return iv
     }()
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Premium'a Yükseltin"
-        label.font = Theme.font(.largeTitle)
+        label.text = "Premium'a Yükselt"
+        label.font = .systemFont(ofSize: 32, weight: .bold)
+        label.textColor = .white
+        label.textAlignment = .center
+        return label
+    }()
+    
+    private let subtitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "Sınırsız Kelime Ekleyin"
+        label.font = .systemFont(ofSize: 24, weight: .semibold)
+        label.textColor = UIColor(red: 255/255, green: 149/255, blue: 0/255, alpha: 1) // Orange color
+        label.textAlignment = .center
+        return label
+    }()
+    
+    private let subtitleLabel2: UILabel = {
+        let label = UILabel()
+        label.text = "Reklamları kaldırın"
+        label.font = .systemFont(ofSize: 24, weight: .semibold)
+        label.textColor = UIColor(red: 255/255, green: 149/255, blue: 0/255, alpha: 1) // Orange color
         label.textAlignment = .center
         return label
     }()
@@ -41,30 +52,68 @@ final class PremiumViewController: UIViewController {
     private let featuresStackView: UIStackView = {
         let sv = UIStackView()
         sv.axis = .vertical
-        sv.spacing = Theme.spacing(2)
+        sv.spacing = 24
+        sv.alignment = .leading
         return sv
     }()
     
-    private let trialLabel: UILabel = {
-        let label = UILabel()
-        label.text = "1 Hafta Ücretsiz Deneyin"
-        label.font = Theme.font(.title1)
-        label.textAlignment = .center
-        label.textColor = Theme.gradient[0]
-        return label
-    }()
-    
-    private let subscribeButton: GradientButton = {
-        let button = GradientButton(title: "Şimdi Başla")
+    private let purchaseButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .systemOrange
+        button.setTitle("1 Hafta Ücretsiz Deneyin", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
+        button.layer.cornerRadius = 25
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 4)
+        button.layer.shadowRadius = 6
+        button.layer.shadowOpacity = 0.3
+        button.clipsToBounds = false
+        
+        // Add premium icon
+        let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
+//        let premiumImage = UIImage(systemName: "star.fill", withConfiguration: config)?.withRenderingMode(.alwaysTemplate)
+//        button.setImage(premiumImagse, for: .normal)
+        button.tintColor = .white
+//        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -12, bottom: 0, right: 0)
+        button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 12, bottom: 0, right: 0)
+        
+        // Add animation for tap effect
+        button.addTarget(self, action: #selector(handlePurchaseTap), for: .touchUpInside)
+        
         return button
     }()
     
-    private let priceLabel: UILabel = {
+    private let watchAdButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .systemBrown
+        button.setTitle("Reklam İzle ve 5 Kelime Kazan", for: .normal)
+        button.setTitleColor(.white, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 18, weight: .bold)
+        button.layer.cornerRadius = 25
+        button.layer.shadowColor = UIColor.black.cgColor
+        button.layer.shadowOffset = CGSize(width: 0, height: 4)
+        button.layer.shadowRadius = 6
+        button.layer.shadowOpacity = 0.3
+        button.clipsToBounds = false
+        
+        // Add animation for tap effect
+        button.addTarget(self, action: #selector(handleWatchAdTap), for: .touchUpInside)
+        
+        return button
+    }()
+    
+    private let footerLabel: UILabel = {
         let label = UILabel()
-        label.text = "Daha sonra ayda sadece ₺29.99"
-        label.font = Theme.font(.body)
+        let text = "1 hafta ücretsiz, ardından aylık sadece $4.99"
+        let attributedString = NSMutableAttributedString(string: text)
+        let range = (text as NSString).range(of: "$4.99")
+        attributedString.addAttribute(.foregroundColor, value: UIColor.systemYellow, range: range)
+        label.attributedText = attributedString
+        label.font = .systemFont(ofSize: 16)
+        label.textColor = .white
+        label.numberOfLines = 2
         label.textAlignment = .center
-        label.textColor = .secondaryLabel
         return label
     }()
     
@@ -78,166 +127,173 @@ final class PremiumViewController: UIViewController {
     
     // MARK: - Setup
     private func setupUI() {
-        view.backgroundColor = Theme.primary
+        view.backgroundColor = .black
         modalPresentationStyle = .fullScreen
         
-        [scrollView].forEach {
-            view.addSubview($0)
-            $0.translatesAutoresizingMaskIntoConstraints = false
+        view.addSubview(backgroundImageView)
+        view.addSubview(closeButton)
+        view.addSubview(titleLabel)
+        view.addSubview(subtitleLabel)
+        view.addSubview(subtitleLabel2)
+        view.addSubview(featuresStackView)
+        view.addSubview(purchaseButton)
+        view.addSubview(watchAdButton)
+        view.addSubview(footerLabel)
+        
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
+        backgroundImageView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
         }
         
-        scrollView.addSubview(containerView)
-        containerView.translatesAutoresizingMaskIntoConstraints = false
-        
-        [closeButton, headerImageView, titleLabel, featuresStackView,
-         trialLabel, subscribeButton, priceLabel].forEach {
-            containerView.addSubview($0)
-            $0.translatesAutoresizingMaskIntoConstraints = false
+        closeButton.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(16)
+            make.trailing.equalToSuperview().offset(-16)
         }
         
-        NSLayoutConstraint.activate([
-            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            containerView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            containerView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
-            containerView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
-            containerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
-            containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            
-            closeButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: Theme.spacing(1)),
-            closeButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: Theme.spacing(1)),
-            closeButton.widthAnchor.constraint(equalToConstant: 52),
-            closeButton.heightAnchor.constraint(equalToConstant: 52),
-            
-            headerImageView.topAnchor.constraint(equalTo: closeButton.bottomAnchor, constant: Theme.spacing(2)),
-            headerImageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            headerImageView.widthAnchor.constraint(equalToConstant: 80),
-            headerImageView.heightAnchor.constraint(equalToConstant: 80),
-            
-            titleLabel.topAnchor.constraint(equalTo: headerImageView.bottomAnchor, constant: Theme.spacing(2)),
-            titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Theme.spacing(2)),
-            titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Theme.spacing(2)),
-            
-            featuresStackView.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: Theme.spacing(4)),
-            featuresStackView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Theme.spacing(2)),
-            featuresStackView.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Theme.spacing(2)),
-            
-            trialLabel.topAnchor.constraint(equalTo: featuresStackView.bottomAnchor, constant: Theme.spacing(4)),
-            trialLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Theme.spacing(2)),
-            trialLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Theme.spacing(2)),
-            
-            subscribeButton.topAnchor.constraint(equalTo: trialLabel.bottomAnchor, constant: Theme.spacing(2)),
-            subscribeButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Theme.spacing(2)),
-            subscribeButton.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Theme.spacing(2)),
-            subscribeButton.heightAnchor.constraint(equalToConstant: 56),
-            
-            priceLabel.topAnchor.constraint(equalTo: subscribeButton.bottomAnchor, constant: Theme.spacing(2)),
-            priceLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Theme.spacing(2)),
-            priceLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Theme.spacing(2)),
-            priceLabel.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -Theme.spacing(4))
-        ])
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(closeButton.snp.bottom).offset(32)
+            make.leading.trailing.equalToSuperview().inset(16)
+        }
         
-        closeButton.addTarget(self, action: #selector(handleCloseTouchDown), for: .touchDown)
-        closeButton.addTarget(self, action: #selector(handleCloseTouchUp), for: [.touchUpInside, .touchUpOutside, .touchCancel])
+        subtitleLabel.snp.makeConstraints { make in
+            make.top.equalTo(titleLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalToSuperview().inset(16)
+        }
+        
+        subtitleLabel2.snp.makeConstraints { make in
+            make.top.equalTo(subtitleLabel.snp.bottom).offset(16)
+            make.leading.trailing.equalToSuperview().inset(16)
+        }
+        
+        featuresStackView.snp.makeConstraints { make in
+            make.top.equalTo(subtitleLabel.snp.bottom).offset(40)
+            make.leading.trailing.equalToSuperview().inset(40)
+        }
+        
+        purchaseButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(watchAdButton.snp.top).offset(-16)
+            make.width.equalTo(350)
+            make.height.equalTo(50)
+        }
+        
+        watchAdButton.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.bottom.equalTo(footerLabel.snp.top).offset(-24)
+            make.width.equalTo(350)
+            make.height.equalTo(50)
+        }
+        
+        footerLabel.snp.makeConstraints { make in
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-24)
+            make.leading.trailing.equalToSuperview().inset(20)
+        }
     }
     
     private func addFeatures() {
         let features = [
-            ("infinity.circle.fill", "Sınırsız Kelime Kartı", "İstediğiniz kadar kelime ekleyin"),
-            ("wand.and.stars", "Reklamsız Deneyim", "Kesintisiz öğrenme deneyimi"),
-            ("camera.viewfinder", "OCR ile Kelime Tarama", "Fotoğraftan kelime aktarın"),
-            ("chart.bar.fill", "Gelişmiş İstatistikler", "Detaylı öğrenme analizi"),
-            ("paintbrush.fill", "Özel Temalar", "Kişiselleştirilmiş görünüm")
+            ("nosign", "Sınırsız Kelime Ekleme", ""),
+            ("clock", "Reklamsız Deneyim", ""),
+            ("4k", "Özel İçerikler", "")
         ]
         
         features.forEach { feature in
-            let view = createFeatureView(
+            let featureView = createFeatureView(
                 icon: feature.0,
                 title: feature.1,
                 description: feature.2
             )
-            featuresStackView.addArrangedSubview(view)
+            featuresStackView.addArrangedSubview(featureView)
         }
     }
     
     private func createFeatureView(icon: String, title: String, description: String) -> UIView {
         let container = UIView()
+        container.layer.cornerRadius = 12
+        container.backgroundColor = UIColor.black.withAlphaComponent(0.1)
+        container.layer.shadowColor = UIColor.black.cgColor
+        container.layer.shadowOffset = CGSize(width: 0, height: 3)
+        container.layer.shadowRadius = 5
+        container.layer.shadowOpacity = 0.2
+        container.clipsToBounds = true
+        
+        let iconContainer = UIView()
+        iconContainer.backgroundColor = .clear
+        iconContainer.layer.cornerRadius = 12
         
         let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFit
-        imageView.tintColor = Theme.gradient[0]
-        
-        let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
+        imageView.tintColor = .systemYellow
+        let config = UIImage.SymbolConfiguration(pointSize: 28, weight: .medium)
         imageView.image = UIImage(systemName: icon, withConfiguration: config)
         
         let titleLabel = UILabel()
         titleLabel.text = title
-        titleLabel.font = Theme.font(.title3)
+        titleLabel.font = .systemFont(ofSize: 20, weight: .semibold)
+        titleLabel.textColor = .white
         
-        let descriptionLabel = UILabel()
-        descriptionLabel.text = description
-        descriptionLabel.font = Theme.font(.body)
-        descriptionLabel.textColor = .secondaryLabel
+        container.addSubview(iconContainer)
+        iconContainer.addSubview(imageView)
+        container.addSubview(titleLabel)
         
-        [imageView, titleLabel, descriptionLabel].forEach {
-            container.addSubview($0)
-            $0.translatesAutoresizingMaskIntoConstraints = false
+        iconContainer.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.centerY.equalToSuperview()
+            make.size.equalTo(40)
         }
         
-        NSLayoutConstraint.activate([
-            imageView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: Theme.spacing(2)),
-            imageView.centerYAnchor.constraint(equalTo: container.centerYAnchor),
-            imageView.widthAnchor.constraint(equalToConstant: 32),
-            imageView.heightAnchor.constraint(equalToConstant: 32),
-            
-            titleLabel.leadingAnchor.constraint(equalTo: imageView.trailingAnchor, constant: Theme.spacing(2)),
-            titleLabel.topAnchor.constraint(equalTo: container.topAnchor, constant: Theme.spacing(2)),
-            titleLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            
-            descriptionLabel.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
-            descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 4),
-            descriptionLabel.trailingAnchor.constraint(equalTo: container.trailingAnchor),
-            descriptionLabel.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -Theme.spacing(1))
-        ])
+        imageView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.size.equalTo(28)
+        }
+        
+        titleLabel.snp.makeConstraints { make in
+            make.leading.equalTo(iconContainer.snp.trailing).offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.centerY.equalToSuperview()
+        }
         
         return container
     }
     
     private func setupActions() {
         closeButton.addTarget(self, action: #selector(handleCloseTap), for: .touchUpInside)
-        subscribeButton.addTarget(self, action: #selector(handleSubscribeTap), for: .touchUpInside)
+        purchaseButton.addTarget(self, action: #selector(handlePurchaseTap), for: .touchUpInside)
     }
     
     // MARK: - Actions
     @objc private func handleCloseTap() {
-        print("Kapat butonuna basıldı")
-        dismiss(animated: true) {
-            // Ana tab bar'a geçiş yap
-            if let sceneDelegate = UIApplication.shared.connectedScenes.first?.delegate as? SceneDelegate {
-                sceneDelegate.window?.rootViewController = MainTabBarController()
+        dismiss(animated: true)
+    }
+    
+    @objc private func handlePurchaseTap() {
+        print("Premium satın alma işlemi başlatıldı")
+        // In-app purchase işlemleri burada başlatılabilir
+        
+        // Animation effect for button tap
+        UIView.animate(withDuration: 0.1, animations: {
+            self.purchaseButton.transform = CGAffineTransform(scaleX: 0.98, y: 0.98)
+        }) { _ in
+            UIView.animate(withDuration: 0.1) {
+                self.purchaseButton.transform = CGAffineTransform.identity
             }
         }
     }
     
-    @objc private func handleSubscribeTap() {
-        // TODO: In-App Purchase işlemleri
-        print("Premium satın alma başlatılacak")
+    @objc private func handleWatchAdTap() {
+        print("Reklam izleme işlemi başlatıldı")
+        // Reklam izleme işlemleri burada başlatılabilir
+        
+        // Günlük kelime limitini azalt
+        reduceDailyWordCount(by: 5)
     }
     
-    @objc private func handleCloseTouchDown() {
-        UIView.animate(withDuration: 0.2) {
-            self.closeButton.transform = CGAffineTransform(scaleX: 0.9, y: 0.9)
-            self.closeButton.alpha = 0.8
-        }
+    private func reduceDailyWordCount(by amount: Int) {
+        // Kullanıcının günlük kelime limitini azaltma işlemi
+        // Bu işlemi gerçekleştirmek için Firestore veya başka bir veri kaynağı kullanılabilir
+        print("Günlük kelime limiti \(amount) azaltıldı")
     }
-    
-    @objc private func handleCloseTouchUp() {
-        UIView.animate(withDuration: 0.2) {
-            self.closeButton.transform = .identity
-            self.closeButton.alpha = 1.0
-        }
-    }
-} 
+}

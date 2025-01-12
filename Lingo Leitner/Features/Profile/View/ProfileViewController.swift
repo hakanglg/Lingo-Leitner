@@ -1,226 +1,192 @@
 import UIKit
 import SnapKit
-import SDWebImage
 
-final class ProfileViewController: UIViewController {
+final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
     
     // MARK: - Properties
     private let viewModel = ProfileViewModel()
     
+    // MARK: - UI Components
     private let scrollView: UIScrollView = {
-        let sv = UIScrollView()
-        sv.showsVerticalScrollIndicator = false
-        return sv
+        let scroll = UIScrollView()
+        scroll.showsVerticalScrollIndicator = false
+        scroll.alwaysBounceVertical = true
+        return scroll
     }()
     
-    private let containerView = UIView()
+    private let contentView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
+    private let headerView: UIView = {
+        let view = UIView()
+        view.backgroundColor = Theme.accent.withAlphaComponent(0.1)
+        view.layer.cornerRadius = 24
+        return view
+    }()
     
     private let profileImageView: UIImageView = {
         let iv = UIImageView()
         iv.contentMode = .scaleAspectFill
         iv.clipsToBounds = true
-        iv.backgroundColor = Theme.secondary
-        iv.tintColor = .systemGray3
-        iv.image = UIImage(systemName: "person.circle.fill")
+        iv.layer.cornerRadius = 50
+        iv.backgroundColor = .secondarySystemBackground
+        iv.layer.borderWidth = 3
+        iv.layer.borderColor = Theme.accent.cgColor
         
-        // Yükleme animasyonu için
-        iv.layer.allowsEdgeAntialiasing = true
-        iv.layer.minificationFilter = .trilinear
-        
+        // Default profile image
+        let config = UIImage.SymbolConfiguration(pointSize: 40, weight: .medium)
+        iv.image = UIImage(systemName: "person.circle.fill", withConfiguration: config)?.withTintColor(.systemGray, renderingMode: .alwaysOriginal)
         return iv
     }()
     
     private let nameLabel: UILabel = {
         let label = UILabel()
-        label.font = Theme.font(.title2, .semibold)
+        label.font = .systemFont(ofSize: 24, weight: .bold)
+        label.textColor = .label
         label.textAlignment = .center
         return label
     }()
     
     private let emailLabel: UILabel = {
         let label = UILabel()
-        label.font = Theme.font(.subheadline)
+        label.font = .systemFont(ofSize: 16, weight: .regular)
         label.textColor = .secondaryLabel
         label.textAlignment = .center
         return label
     }()
     
-    private let statsStackView: UIStackView = {
-        let sv = UIStackView()
-        sv.axis = .horizontal
-        sv.distribution = .fillEqually
-        sv.spacing = Theme.spacing(2)
-        sv.backgroundColor = Theme.secondary
-        sv.layer.cornerRadius = 12
-        sv.layoutMargins = UIEdgeInsets(top: 16, left: 16, bottom: 16, right: 16)
-        sv.isLayoutMarginsRelativeArrangement = true
-        return sv
+    private let statsView: UIView = {
+        let view = UIView()
+        view.backgroundColor = .secondarySystemBackground
+        view.layer.cornerRadius = 16
+        return view
     }()
     
-    private let settingsButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Ayarlar", for: .normal)
-        button.titleLabel?.font = Theme.font(.body, .medium)
-        button.backgroundColor = Theme.secondary
-        button.layer.cornerRadius = 12
-        button.tintColor = .label
-        button.contentHorizontalAlignment = .leading
-        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        return button
-    }()
+    private let wordsCountView = StatItemView(title: "Toplam Kelime", icon: "textformat.alt")
+    private let streakCountView = StatItemView(title: "Günlük Seri", icon: "flame.fill")
+    private let masteredWordsView = StatItemView(title: "Öğrenilen", icon: "checkmark.circle.fill")
     
-    private let premiumButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Premium'a Yükselt", for: .normal)
-        button.titleLabel?.font = Theme.font(.body, .medium)
-        button.backgroundColor = Theme.secondary
-        button.layer.cornerRadius = 12
-        button.tintColor = Theme.gradient[0]
-        button.contentHorizontalAlignment = .leading
-        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        return button
-    }()
-    
-    private let signOutButton: UIButton = {
+    private let logoutButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Çıkış Yap", for: .normal)
-        button.titleLabel?.font = Theme.font(.body, .medium)
-        button.backgroundColor = Theme.secondary
-        button.layer.cornerRadius = 12
-        button.tintColor = .systemRed
-        button.contentHorizontalAlignment = .leading
-        button.contentEdgeInsets = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
+        button.setTitleColor(.systemRed, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        button.backgroundColor = .systemRed.withAlphaComponent(0.1)
+        button.layer.cornerRadius = 16
+        button.heightAnchor.constraint(equalToConstant: 56).isActive = true
         return button
     }()
     
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        viewModel.delegate = self
         setupUI()
         setupActions()
-        viewModel.delegate = self
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        Task {
-            await viewModel.fetchUserProfile()
-        }
+        loadUserData()
     }
     
     // MARK: - Setup
     private func setupUI() {
+        view.backgroundColor = .systemBackground
+        navigationItem.largeTitleDisplayMode = .never
         title = "Profil"
-        view.backgroundColor = Theme.primary
         
         view.addSubview(scrollView)
-        scrollView.addSubview(containerView)
+        scrollView.addSubview(contentView)
         
-        [profileImageView, nameLabel, emailLabel, statsStackView, 
-         settingsButton, premiumButton, signOutButton].forEach {
-            containerView.addSubview($0)
-        }
+        contentView.addSubview(headerView)
+        headerView.addSubview(profileImageView)
+        headerView.addSubview(nameLabel)
+        headerView.addSubview(emailLabel)
         
-        // Stats için 3 kutu oluştur
-        ["Toplam Kelime", "Öğrenilen", "Tekrar Bekleyen"].enumerated().forEach { index, title in
-            statsStackView.addArrangedSubview(createStatsView(title: title, value: "0"))
-        }
+        contentView.addSubview(statsView)
+        statsView.addSubview(wordsCountView)
+        statsView.addSubview(streakCountView)
+        statsView.addSubview(masteredWordsView)
         
-        profileImageView.layer.cornerRadius = 50
+        contentView.addSubview(logoutButton)
         
-        // SnapKit Constraints
+        setupConstraints()
+    }
+    
+    private func setupConstraints() {
         scrollView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
-        containerView.snp.makeConstraints { make in
+        contentView.snp.makeConstraints { make in
             make.edges.equalTo(scrollView)
             make.width.equalTo(scrollView)
         }
         
+        headerView.snp.makeConstraints { make in
+            make.top.equalTo(contentView).offset(16)
+            make.leading.trailing.equalTo(contentView).inset(16)
+        }
+        
         profileImageView.snp.makeConstraints { make in
-            make.top.equalTo(containerView).offset(Theme.spacing(4))
-            make.centerX.equalTo(containerView)
+            make.top.equalTo(headerView).offset(32)
+            make.centerX.equalTo(headerView)
             make.size.equalTo(100)
         }
         
         nameLabel.snp.makeConstraints { make in
-            make.top.equalTo(profileImageView.snp.bottom).offset(Theme.spacing(2))
-            make.leading.trailing.equalTo(containerView).inset(Theme.spacing(2))
+            make.top.equalTo(profileImageView.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(headerView).inset(16)
         }
         
         emailLabel.snp.makeConstraints { make in
-            make.top.equalTo(nameLabel.snp.bottom).offset(Theme.spacing(0.5))
-            make.leading.trailing.equalTo(containerView).inset(Theme.spacing(2))
+            make.top.equalTo(nameLabel.snp.bottom).offset(8)
+            make.leading.trailing.equalTo(headerView).inset(16)
+            make.bottom.equalTo(headerView).offset(-32)
         }
         
-        statsStackView.snp.makeConstraints { make in
-            make.top.equalTo(emailLabel.snp.bottom).offset(Theme.spacing(4))
-            make.leading.trailing.equalTo(containerView).inset(Theme.spacing(2))
-            make.height.equalTo(120)
+        statsView.snp.makeConstraints { make in
+            make.top.equalTo(headerView.snp.bottom).offset(24)
+            make.leading.trailing.equalTo(contentView).inset(16)
+            make.height.equalTo(100)
         }
         
-        settingsButton.snp.makeConstraints { make in
-            make.top.equalTo(statsStackView.snp.bottom).offset(Theme.spacing(4))
-            make.leading.trailing.equalTo(containerView).inset(Theme.spacing(2))
-            make.height.equalTo(56)
+        // Stats items layout
+        wordsCountView.snp.makeConstraints { make in
+            make.leading.equalTo(statsView).offset(16)
+            make.centerY.equalTo(statsView)
+            make.width.equalTo(statsView).multipliedBy(0.3)
         }
         
-        premiumButton.snp.makeConstraints { make in
-            make.top.equalTo(settingsButton.snp.bottom).offset(Theme.spacing(2))
-            make.leading.trailing.equalTo(containerView).inset(Theme.spacing(2))
-            make.height.equalTo(56)
+        streakCountView.snp.makeConstraints { make in
+            make.center.equalTo(statsView)
+            make.width.equalTo(statsView).multipliedBy(0.3)
         }
         
-        signOutButton.snp.makeConstraints { make in
-            make.top.equalTo(premiumButton.snp.bottom).offset(Theme.spacing(2))
-            make.leading.trailing.equalTo(containerView).inset(Theme.spacing(2))
-            make.height.equalTo(56)
-            make.bottom.equalTo(containerView).offset(-Theme.spacing(4))
+        masteredWordsView.snp.makeConstraints { make in
+            make.trailing.equalTo(statsView).offset(-16)
+            make.centerY.equalTo(statsView)
+            make.width.equalTo(statsView).multipliedBy(0.3)
+        }
+        
+        logoutButton.snp.makeConstraints { make in
+            make.top.equalTo(statsView.snp.bottom).offset(32)
+            make.leading.trailing.equalTo(contentView).inset(16)
+            make.bottom.equalTo(contentView).offset(-32)
         }
     }
     
     private func setupActions() {
-        signOutButton.addTarget(self, action: #selector(handleSignOutTap), for: .touchUpInside)
-        settingsButton.addTarget(self, action: #selector(handleSettingsTap), for: .touchUpInside)
-        premiumButton.addTarget(self, action: #selector(handlePremiumTap), for: .touchUpInside)
+        logoutButton.addTarget(self, action: #selector(handleLogoutTap), for: .touchUpInside)
     }
     
-    private func createStatsView(title: String, value: String) -> UIView {
-        let containerView = UIView()
-        containerView.backgroundColor = .clear
-        
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 8
-        stackView.alignment = .center
-        
-        let valueLabel = UILabel()
-        valueLabel.font = Theme.font(.title2, .bold)
-        valueLabel.textColor = Theme.gradient[0]
-        valueLabel.text = value
-        
-        let titleLabel = UILabel()
-        titleLabel.font = Theme.font(.caption1)
-        titleLabel.textColor = .secondaryLabel
-        titleLabel.text = title
-        titleLabel.textAlignment = .center
-        titleLabel.numberOfLines = 0
-        
-        stackView.addArrangedSubview(valueLabel)
-        stackView.addArrangedSubview(titleLabel)
-        
-        containerView.addSubview(stackView)
-        
-        stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+    private func loadUserData() {
+        Task {
+            await viewModel.fetchUserData()
         }
-        
-        return containerView
     }
     
     // MARK: - Actions
-    @objc private func handleSignOutTap() {
+    @objc private func handleLogoutTap() {
         let alert = UIAlertController(
             title: "Çıkış Yap",
             message: "Hesabınızdan çıkış yapmak istediğinize emin misiniz?",
@@ -229,79 +195,113 @@ final class ProfileViewController: UIViewController {
         
         alert.addAction(UIAlertAction(title: "İptal", style: .cancel))
         alert.addAction(UIAlertAction(title: "Çıkış Yap", style: .destructive) { [weak self] _ in
-            Task { @MainActor in
-                LoadingView.shared.show(in: self?.view ?? UIView())
-                await self?.viewModel.signOut()
-                LoadingView.shared.hide()
+            Task {
+                await self?.viewModel.logout()
             }
         })
         
         present(alert, animated: true)
     }
     
-    @objc private func handleSettingsTap() {
-        // TODO: Ayarlar ekranına git
-    }
-    
-    @objc private func handlePremiumTap() {
-        let premiumVC = PremiumViewController()
-        navigationController?.pushViewController(premiumVC, animated: true)
-    }
-}
-
-// MARK: - ProfileViewModelDelegate
-extension ProfileViewController: ProfileViewModelDelegate {
-    func didUpdateProfile(_ user: User) {
-        DispatchQueue.main.async { [weak self] in
-            self?.nameLabel.text = user.displayName ?? user.email.components(separatedBy: "@").first
-            self?.emailLabel.text = user.email
-            
-            if let photoURL = user.photoURL, let url = URL(string: photoURL) {
-                self?.profileImageView.sd_setImage(
-                    with: url,
-                    placeholderImage: UIImage(systemName: "person.circle.fill"),
-                    options: [.transformAnimatedImage],
-                    completed: { image, error, _, _ in
-                        if let error = error {
-                            print("Profil fotoğrafı yüklenirken hata: \(error.localizedDescription)")
-                        }
-                    }
-                )
-            } else {
-                self?.profileImageView.image = UIImage(systemName: "person.circle.fill")
-            }
+    // MARK: - ProfileViewModelDelegate
+    func didUpdateUserData(_ user: User, stats: UserStats) {
+        nameLabel.text = user.displayName ?? "Kullanıcı"
+        emailLabel.text = user.email
+        
+        // İstatistikleri güncelle
+        wordsCountView.setValue(stats.totalWords)
+        streakCountView.setValue(stats.currentStreak)
+        masteredWordsView.setValue(stats.masteredWords)
+        
+        // Profil fotoğrafını yükle
+        if let photoURL = user.photoURL {
+            // SDWebImage veya Kingfisher kullanarak yükle
         }
     }
     
-    func didUpdateStats(_ stats: UserStats) {
-        // UI güncellemelerini main thread'de yap
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            
-            if let totalWords = self.statsStackView.arrangedSubviews[0].subviews.first?.subviews.first as? UILabel {
-                totalWords.text = "\(stats.totalWords)"
-            }
-            
-            if let masteredWords = self.statsStackView.arrangedSubviews[1].subviews.first?.subviews.first as? UILabel {
-                masteredWords.text = "\(stats.masteredWords)"
-            }
-            
-            if let reviewDue = self.statsStackView.arrangedSubviews[2].subviews.first?.subviews.first as? UILabel {
-                reviewDue.text = "\(stats.reviewDueWords)"
-            }
-        }
+    func didLogout() {
+        // Kullanıcıyı login ekranına yönlendir
+        let authVC = AuthViewController()
+        let nav = UINavigationController(rootViewController: authVC)
+        nav.modalPresentationStyle = .fullScreen
+        present(nav, animated: true)
     }
     
     func didReceiveError(_ error: Error) {
-        // UI güncellemelerini main thread'de yap
-        DispatchQueue.main.async { [weak self] in
-            let alert = UIAlertController(
-                title: "Hata",
-                message: error.localizedDescription,
-                preferredStyle: .alert
-            )
-            alert.addAction(UIAlertAction(title: "Tamam", style: .default))
-            self?.present(alert, animated: true)
+        let alert = UIAlertController(
+            title: "Hata",
+            message: error.localizedDescription,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "Tamam", style: .default))
+        present(alert, animated: true)
+    }
+}
+
+// MARK: - StatItemView
+final class StatItemView: UIView {
+    private let iconImageView: UIImageView = {
+        let iv = UIImageView()
+        iv.contentMode = .scaleAspectFit
+        iv.tintColor = Theme.accent
+        return iv
+    }()
+    
+    private let titleLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 14, weight: .medium)
+        label.textColor = .secondaryLabel
+        label.textAlignment = .center
+        return label
+    }()
+    
+    private let valueLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 24, weight: .bold)
+        label.textColor = .label
+        label.textAlignment = .center
+        label.text = "0"
+        return label
+    }()
+    
+    init(title: String, icon: String) {
+        super.init(frame: .zero)
+        
+        titleLabel.text = title
+        let config = UIImage.SymbolConfiguration(pointSize: 24, weight: .medium)
+        iconImageView.image = UIImage(systemName: icon, withConfiguration: config)
+        
+        setupUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func setupUI() {
+        addSubview(iconImageView)
+        addSubview(titleLabel)
+        addSubview(valueLabel)
+        
+        iconImageView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.size.equalTo(32)
         }
+        
+        valueLabel.snp.makeConstraints { make in
+            make.top.equalTo(iconImageView.snp.bottom).offset(8)
+            make.centerX.equalToSuperview()
+        }
+        
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(valueLabel.snp.bottom).offset(4)
+            make.centerX.equalToSuperview()
+            make.bottom.equalToSuperview()
+        }
+    }
+    
+    func setValue(_ value: Int) {
+        valueLabel.text = "\(value)"
     }
 } 

@@ -149,6 +149,15 @@ final class SignUpViewController: UIViewController {
         }
     }
     
+    private let backButton: UIButton = {
+        let button = UIButton(type: .system)
+        let config = UIImage.SymbolConfiguration(pointSize: 20, weight: .medium)
+        let image = UIImage(systemName: "chevron.left", withConfiguration: config)
+        button.setImage(image, for: .normal)
+        button.tintColor = .label
+        return button
+    }()
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -168,6 +177,7 @@ final class SignUpViewController: UIViewController {
     }
     
     private func setupActions() {
+        backButton.addTarget(self, action: #selector(handleBackTap), for: .touchUpInside)
         termsCheckbox.addTarget(self, action: #selector(handleTermsCheckboxTap), for: .touchUpInside)
         signUpButton.addTarget(self, action: #selector(handleSignUpTap), for: .touchUpInside)
     }
@@ -231,7 +241,7 @@ final class SignUpViewController: UIViewController {
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
         
-        [titleLabel, subtitleLabel, formStackView, signUpButton, termsStackView].forEach {
+        [backButton,titleLabel, subtitleLabel, formStackView, signUpButton, termsStackView].forEach {
             containerView.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -257,7 +267,12 @@ final class SignUpViewController: UIViewController {
             containerView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
             containerView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
             
-            titleLabel.topAnchor.constraint(equalTo: containerView.topAnchor, constant: Theme.spacing(4)),
+            backButton.topAnchor.constraint(equalTo: containerView.safeAreaLayoutGuide.topAnchor, constant: Theme.spacing(2)),
+            backButton.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Theme.spacing(2)),
+            backButton.widthAnchor.constraint(equalToConstant: 44),
+            backButton.heightAnchor.constraint(equalToConstant: 44),
+            
+            titleLabel.topAnchor.constraint(equalTo: backButton.topAnchor, constant: Theme.spacing(4)),
             titleLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: Theme.spacing(2)),
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -Theme.spacing(2)),
             

@@ -35,33 +35,35 @@ final class AddWordViewModel {
     }
     
     // MARK: - Save Word
-    func saveWord(word: String, meaning: String, example: String?, difficulty: Difficulty) async {
-        guard let userId = authManager.currentUser?.id else {
-            delegate?.didReceiveError(AuthError.userNotFound)
-            return
-        }
-        
-        DispatchQueue.main.async {
-            self.delegate?.didStartLoading()
+    func saveWord(word: String, meaning: String, example: String?) async {
+        await MainActor.run {
+            delegate?.didStartLoading()
         }
         
         do {
+            guard let userId = authManager.currentUser?.id else {
+                await MainActor.run {
+                    delegate?.didFinishLoading()
+                    delegate?.didReceiveError(AuthError.userNotFound)
+                }
+                return
+            }
+            
             let newWord = Word(
                 word: word,
                 meaning: meaning,
-                example: example,
-                difficulty: difficulty
+                example: example
             )
             
-            try await firestoreService.create(newWord, in: "words", withId: newWord.id, userId: userId)
+            try await firestoreService.addWord(newWord, userId: userId)
             
-            DispatchQueue.main.async {
-                self.delegate?.didFinishLoading()
-                self.delegate?.didSaveWordSuccessfully()
+            await MainActor.run {
+                delegate?.didSaveWordSuccessfully()
             }
         } catch {
-            DispatchQueue.main.async {
-                self.delegate?.didReceiveError(error)
+            await MainActor.run {
+                delegate?.didFinishLoading()
+                delegate?.didReceiveError(error)
             }
         }
     }

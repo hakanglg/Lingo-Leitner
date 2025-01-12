@@ -3,6 +3,12 @@ import UIKit
 final class AuthViewController: UIViewController {
     
     // MARK: - Properties
+    private let authManager = AuthManager.shared
+    private let firestoreService = FirestoreService.shared
+    
+    // Kelime ekleme işlemi için kullanılacak kelime
+    private var word: Word? // Word modeline uygun şekilde tanımlayın
+    
     private let scrollView: UIScrollView = {
         let sv = UIScrollView()
         sv.showsVerticalScrollIndicator = false
@@ -281,7 +287,7 @@ final class AuthViewController: UIViewController {
             do {
                 print("AuthViewController: Google Sign In işlemi başlatılıyor...")
                 LoadingView.shared.show(in: view)
-                try await AuthManager.shared.signInWithGoogle(presenting: self)
+                try await authManager.signInWithGoogle(presenting: self)
                 LoadingView.shared.hide()
                 print("AuthViewController: Google Sign In başarılı, ana ekrana yönlendiriliyor...")
                 navigateToMainApp()
@@ -305,6 +311,29 @@ final class AuthViewController: UIViewController {
                 showError(error)
             }
         }
+    }
+    
+    @objc private func handleAddWord() {
+        guard let word = word else {
+            showError(AuthError.invalidInput) // Veya uygun bir hata mesajı
+            return
+        }
+        
+        Task {
+            do {
+                try await firestoreService.addWord(word, userId: authManager.currentUser?.id ?? "")
+            } catch FirestoreError.limitExceeded {
+                navigateToPremiumScreen()
+            } catch {
+                showError(error)
+            }
+        }
+    }
+    
+    private func navigateToPremiumScreen() {
+        let premiumVC = PremiumViewController()
+        premiumVC.modalPresentationStyle = .fullScreen
+        present(premiumVC, animated: true)
     }
     
     private func showError(_ error: Error) {

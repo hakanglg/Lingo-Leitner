@@ -10,6 +10,7 @@
 		AE47146D2D30411D0025B5B7 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = AE47146C2D30411D0025B5B7 /* SnapKit */; };
 		AE4714742D30444C0025B5B7 /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = AE4714732D30444C0025B5B7 /* SDWebImage */; };
 		AE4714762D30444C0025B5B7 /* SDWebImageMapKit in Frameworks */ = {isa = PBXBuildFile; productRef = AE4714752D30444C0025B5B7 /* SDWebImageMapKit */; };
+		AE47147D2D304AF80025B5B7 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = AE47147C2D304AF80025B5B7 /* Lottie */; };
 		AE5A4ACA2D2804A100A3B676 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = AE5A4AC92D2804A100A3B676 /* FirebaseAnalytics */; };
 		AE5A4ACC2D2804A100A3B676 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = AE5A4ACB2D2804A100A3B676 /* FirebaseAuth */; };
 		AE5A4ACE2D2804A100A3B676 /* FirebaseCore in Frameworks */ = {isa = PBXBuildFile; productRef = AE5A4ACD2D2804A100A3B676 /* FirebaseCore */; };
@@ -64,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AE47147D2D304AF80025B5B7 /* Lottie in Frameworks */,
 				AE5A4ACA2D2804A100A3B676 /* FirebaseAnalytics in Frameworks */,
 				AE5A4ADA2D28071400A3B676 /* Alamofire in Frameworks */,
 				AE5A4AD02D2804A100A3B676 /* FirebaseFirestore in Frameworks */,
@@ -131,6 +133,7 @@
 				AE47146C2D30411D0025B5B7 /* SnapKit */,
 				AE4714732D30444C0025B5B7 /* SDWebImage */,
 				AE4714752D30444C0025B5B7 /* SDWebImageMapKit */,
+				AE47147C2D304AF80025B5B7 /* Lottie */,
 			);
 			productName = "Lingo Leitner";
 			productReference = AEF10DED2D273F00008026EE /* Lingo Leitner.app */;
@@ -167,6 +170,7 @@
 				AE5A4ADD2D28072600A3B676 /* XCRemoteSwiftPackageReference "SwiftyJSON" */,
 				AE47146B2D30411D0025B5B7 /* XCRemoteSwiftPackageReference "SnapKit" */,
 				AE4714722D30444C0025B5B7 /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				AE47147B2D304AF80025B5B7 /* XCRemoteSwiftPackageReference "lottie-spm" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = AEF10DEE2D273F00008026EE /* Products */;
@@ -422,6 +426,14 @@
 				minimumVersion = 5.20.0;
 			};
 		};
+		AE47147B2D304AF80025B5B7 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.1;
+			};
+		};
 		AE5A4AC82D2804A100A3B676 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
@@ -471,6 +483,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = AE4714722D30444C0025B5B7 /* XCRemoteSwiftPackageReference "SDWebImage" */;
 			productName = SDWebImageMapKit;
+		};
+		AE47147C2D304AF80025B5B7 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AE47147B2D304AF80025B5B7 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
 		};
 		AE5A4AC92D2804A100A3B676 /* FirebaseAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;

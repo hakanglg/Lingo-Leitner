@@ -13,6 +13,7 @@ enum AuthError: LocalizedError {
     case permissionDenied
     case networkError
     case invalidCredentials
+    case invalidInput
     
     var message: String {
         switch self {
@@ -40,6 +41,8 @@ enum AuthError: LocalizedError {
             return "Ağ bağlantısı hatası"
         case .invalidCredentials:
             return "Geçersiz kimlik bilgileri"
+        case .invalidInput:
+            return "Geçersiz giriş. Lütfen tüm alanları doğru doldurun."
         }
     }
 } 
