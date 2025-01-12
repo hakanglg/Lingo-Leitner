@@ -25,7 +25,7 @@ final class LoginViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Tekrar Hoş Geldiniz"
+        label.text = "welcome_back".localized
         label.font = Theme.font(.title1, .bold)
         label.textAlignment = .center
         return label
@@ -33,7 +33,7 @@ final class LoginViewController: UIViewController {
     
     private let subtitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Kelime kartlarınıza devam edin"
+        label.text = "continue_flashcards".localized
         label.font = Theme.font(.body)
         label.textAlignment = .center
         label.textColor = .secondaryLabel
@@ -42,7 +42,7 @@ final class LoginViewController: UIViewController {
     
     private let emailTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "E-posta"
+        tf.placeholder = "email".localized
         tf.borderStyle = .roundedRect
         tf.backgroundColor = Theme.secondary
         return tf
@@ -50,7 +50,7 @@ final class LoginViewController: UIViewController {
     
     private let passwordTextField: UITextField = {
         let tf = UITextField()
-        tf.placeholder = "Şifre"
+        tf.placeholder = "password".localized
         tf.isSecureTextEntry = true
         tf.borderStyle = .roundedRect
         tf.backgroundColor = Theme.secondary
@@ -58,13 +58,13 @@ final class LoginViewController: UIViewController {
     }()
     
     private let loginButton: GradientButton = {
-        let button = GradientButton(title: "Giriş Yap")
+        let button = GradientButton(title: "login".localized)
         return button
     }()
     
     private let forgotPasswordButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Şifremi Unuttum", for: .normal)
+        button.setTitle("forgot_password".localized, for: .normal)
         button.setTitleColor(Theme.gradient[0], for: .normal)
         button.titleLabel?.font = Theme.font(.footnote)
         return button
@@ -212,11 +212,11 @@ final class LoginViewController: UIViewController {
     
     private func showError(_ error: Error) {
         let alert = UIAlertController(
-            title: "Hata",
+            title: "error".localized,
             message: (error as? AuthError)?.message ?? error.localizedDescription,
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "Tamam", style: .default))
+        alert.addAction(UIAlertAction(title: "ok".localized, style: .default))
         present(alert, animated: true)
     }
     
@@ -231,20 +231,19 @@ final class LoginViewController: UIViewController {
     }
     
     @objc private func handleForgotPasswordTap() {
-        // Şimdilik basit bir alert gösterelim
         let alert = UIAlertController(
-            title: "Şifre Sıfırlama",
-            message: "Şifre sıfırlama bağlantısı e-posta adresinize gönderilecektir.",
+            title: "reset_password".localized,
+            message: "reset_password_message".localized,
             preferredStyle: .alert
         )
         
         alert.addTextField { textField in
-            textField.placeholder = "E-posta adresiniz"
+            textField.placeholder = "enter_email".localized
             textField.keyboardType = .emailAddress
             textField.autocapitalizationType = .none
         }
         
-        let sendAction = UIAlertAction(title: "Gönder", style: .default) { [weak self] _ in
+        let sendAction = UIAlertAction(title: "send".localized, style: .default) { [weak self] _ in
             guard let email = alert.textFields?.first?.text, !email.isEmpty else {
                 self?.showError(AuthError.invalidEmail)
                 return
@@ -256,13 +255,12 @@ final class LoginViewController: UIViewController {
                     try await Auth.auth().sendPasswordReset(withEmail: email)
                     LoadingView.shared.hide()
                     
-                    // Başarılı mesajı göster
                     let successAlert = UIAlertController(
-                        title: "Başarılı",
-                        message: "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.",
+                        title: "reset_success".localized,
+                        message: "reset_success_message".localized,
                         preferredStyle: .alert
                     )
-                    successAlert.addAction(UIAlertAction(title: "Tamam", style: .default))
+                    successAlert.addAction(UIAlertAction(title: "ok".localized, style: .default))
                     self?.present(successAlert, animated: true)
                 } catch {
                     LoadingView.shared.hide()
@@ -271,7 +269,7 @@ final class LoginViewController: UIViewController {
             }
         }
         
-        let cancelAction = UIAlertAction(title: "İptal", style: .cancel)
+        let cancelAction = UIAlertAction(title: "cancel".localized, style: .cancel)
         
         alert.addAction(sendAction)
         alert.addAction(cancelAction)

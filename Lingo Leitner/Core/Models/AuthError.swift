@@ -18,31 +18,31 @@ enum AuthError: LocalizedError {
     var message: String {
         switch self {
         case .signInFailed:
-            return "Giriş yapılamadı"
+            return "auth_error_sign_in_failed".localized
         case .signUpFailed:
-            return "Üyelik oluşturulamadı"
+            return "auth_error_sign_up_failed".localized
         case .userNotFound:
-            return "Kullanıcı bulunamadı"
+            return "auth_error_user_not_found".localized
         case .invalidEmail:
-            return "Geçersiz e-posta adresi"
+            return "auth_error_invalid_email".localized
         case .weakPassword:
-            return "Şifre çok zayıf"
+            return "auth_error_weak_password".localized
         case .emailAlreadyInUse:
-            return "Bu e-posta adresi zaten kullanımda"
+            return "auth_error_email_in_use".localized
         case .notImplemented:
-            return "Bu özellik henüz kullanılamıyor"
+            return "auth_error_not_implemented".localized
         case .unknown:
-            return "Bilinmeyen bir hata oluştu"
+            return "auth_error_unknown".localized
         case .emptyFields:
-            return "Lütfen tüm alanları doldurun"
+            return "auth_error_empty_fields".localized
         case .permissionDenied:
-            return "Google hesabınıza erişim izni reddedildi. Lütfen izinleri kontrol edin ve tekrar deneyin."
+            return "auth_error_permission_denied".localized
         case .networkError:
-            return "Ağ bağlantısı hatası"
+            return "auth_error_network".localized
         case .invalidCredentials:
-            return "Geçersiz kimlik bilgileri"
+            return "auth_error_invalid_credentials".localized
         case .invalidInput:
-            return "Geçersiz giriş. Lütfen tüm alanları doğru doldurun."
+            return "auth_error_invalid_input".localized
         }
     }
 } 

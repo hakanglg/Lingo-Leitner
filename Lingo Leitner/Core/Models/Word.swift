@@ -142,11 +142,11 @@ enum ReviewStatus {
     var displayText: String {
         switch self {
         case .due:
-            return "Tekrar Vakti"
+            return "review_status_due".localized
         case .soon:
-            return "Yakında"
+            return "review_status_soon".localized
         case .upcoming:
-            return "Daha Sonra"
+            return "review_status_upcoming".localized
         }
     }
     
@@ -160,4 +160,5 @@ enum ReviewStatus {
             return .systemGreen
         }
     }
-} 
+}
+

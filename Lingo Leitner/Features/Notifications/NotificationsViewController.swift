@@ -25,8 +25,8 @@ final class NotificationsViewController: UIViewController {
     private let emptyStateView: EmptyStateView = {
         let view = EmptyStateView(
             image: UIImage(systemName: "bell.slash"),
-            title: "Bildirim Yok",
-            message: "Şu an için tekrar edilmesi gereken kelime bulunmuyor"
+            title: "no_notifications".localized,
+            message: "no_notifications_message".localized
         )
         view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -53,7 +53,7 @@ final class NotificationsViewController: UIViewController {
     // MARK: - Setup
     private func setupUI() {
     
-        title = "Bildirimler"
+        title = "notifications".localized
         view.backgroundColor = Theme.primary
         
         view.addSubview(tableView)
@@ -76,7 +76,7 @@ final class NotificationsViewController: UIViewController {
     }
     
     private func setupNavigation() {
-        title = "Bildirimler"
+        title = "notifications".localized
         navigationController?.navigationBar.prefersLargeTitles = true
     }
     
@@ -133,11 +133,11 @@ extension NotificationsViewController: NotificationsViewModelDelegate {
     
     func didReceiveError(_ error: Error) {
         let alert = UIAlertController(
-            title: "Hata",
+            title: "error".localized,
             message: error.localizedDescription,
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "Tamam", style: .default))
+        alert.addAction(UIAlertAction(title: "ok".localized, style: .default))
         present(alert, animated: true)
     }
 } 

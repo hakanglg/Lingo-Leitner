@@ -13,28 +13,28 @@ final class MainTabBarController: UITabBarController {
     private func setupTabs() {
         let boxesVC = createNavigationController(
             rootViewController: BoxesViewController(),
-            title: "Kutular",
+            title: "boxes".localized,
             image: UIImage(systemName: "square.stack.3d.up"),
             selectedImage: UIImage(systemName: "square.stack.3d.up.fill")
         )
         
         let addWordVC = createNavigationController(
             rootViewController: AddWordViewController(),
-            title: "Kelime Ekle",
+            title: "add_word".localized,
             image: UIImage(systemName: "plus.circle"),
             selectedImage: UIImage(systemName: "plus.circle.fill")
         )
         
         let notificationsVC = createNavigationController(
             rootViewController: NotificationsViewController(),
-            title: "Tekrarlar",
+            title: "notifications".localized,
             image: UIImage(systemName: "bell"),
             selectedImage: UIImage(systemName: "bell.fill")
         )
         
         let profileVC = createNavigationController(
             rootViewController: ProfileViewController(),
-            title: "Profil",
+            title: "profile".localized,
             image: UIImage(systemName: "person"),
             selectedImage: UIImage(systemName: "person.fill")
         )

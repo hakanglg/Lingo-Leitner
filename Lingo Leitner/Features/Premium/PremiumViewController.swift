@@ -24,7 +24,7 @@ final class PremiumViewController: UIViewController {
     
     private let titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Premium'a Yükselt"
+        label.text = "premium_upgrade".localized
         label.font = .systemFont(ofSize: 32, weight: .bold)
         label.textColor = .white
         label.textAlignment = .center
@@ -33,18 +33,18 @@ final class PremiumViewController: UIViewController {
     
     private let subtitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Sınırsız Kelime Ekleyin"
+        label.text = "premium_subtitle_unlimited".localized
         label.font = .systemFont(ofSize: 24, weight: .semibold)
-        label.textColor = UIColor(red: 255/255, green: 149/255, blue: 0/255, alpha: 1) // Orange color
+        label.textColor = UIColor(red: 255/255, green: 149/255, blue: 0/255, alpha: 1)
         label.textAlignment = .center
         return label
     }()
     
     private let subtitleLabel2: UILabel = {
         let label = UILabel()
-        label.text = "Reklamları kaldırın"
+        label.text = "premium_subtitle_ads".localized
         label.font = .systemFont(ofSize: 24, weight: .semibold)
-        label.textColor = UIColor(red: 255/255, green: 149/255, blue: 0/255, alpha: 1) // Orange color
+        label.textColor = UIColor(red: 255/255, green: 149/255, blue: 0/255, alpha: 1)
         label.textAlignment = .center
         return label
     }()
@@ -60,7 +60,7 @@ final class PremiumViewController: UIViewController {
     private let purchaseButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .systemOrange
-        button.setTitle("1 Hafta Ücretsiz Deneyin", for: .normal)
+        button.setTitle("premium_trial_button".localized, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 20, weight: .bold)
         button.layer.cornerRadius = 25
@@ -87,7 +87,7 @@ final class PremiumViewController: UIViewController {
     private let watchAdButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .systemBrown
-        button.setTitle("Reklam İzle ve 5 Kelime Kazan", for: .normal)
+        button.setTitle("watch_ad_button".localized, for: .normal)
         button.setTitleColor(.white, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 18, weight: .bold)
         button.layer.cornerRadius = 25
@@ -105,7 +105,7 @@ final class PremiumViewController: UIViewController {
     
     private let footerLabel: UILabel = {
         let label = UILabel()
-        let text = "1 hafta ücretsiz, ardından aylık sadece $4.99"
+        let text = "premium_footer_text".localized
         let attributedString = NSMutableAttributedString(string: text)
         let range = (text as NSString).range(of: "$4.99")
         attributedString.addAttribute(.foregroundColor, value: UIColor.systemYellow, range: range)
@@ -195,9 +195,9 @@ final class PremiumViewController: UIViewController {
     
     private func addFeatures() {
         let features = [
-            ("nosign", "Sınırsız Kelime Ekleme", ""),
-            ("clock", "Reklamsız Deneyim", ""),
-            ("4k", "Özel İçerikler", "")
+            ("nosign", "premium_feature_unlimited".localized, ""),
+            ("clock", "premium_feature_no_ads".localized, ""),
+            ("4k", "premium_feature_exclusive".localized, "")
         ]
         
         features.forEach { feature in
@@ -270,7 +270,7 @@ final class PremiumViewController: UIViewController {
     }
     
     @objc private func handlePurchaseTap() {
-        print("Premium satın alma işlemi başlatıldı")
+        print("premium_purchase_started".localized)
         // In-app purchase işlemleri burada başlatılabilir
         
         // Animation effect for button tap
@@ -284,7 +284,7 @@ final class PremiumViewController: UIViewController {
     }
     
     @objc private func handleWatchAdTap() {
-        print("Reklam izleme işlemi başlatıldı")
+        print("watch_ad_started".localized)
         // Reklam izleme işlemleri burada başlatılabilir
         
         // Günlük kelime limitini azalt
@@ -292,6 +292,7 @@ final class PremiumViewController: UIViewController {
     }
     
     private func reduceDailyWordCount(by amount: Int) {
+        print("daily_word_limit_reduced".localized + " \(amount)")
         // Kullanıcının günlük kelime limitini azaltma işlemi
         // Bu işlemi gerçekleştirmek için Firestore veya başka bir veri kaynağı kullanılabilir
         print("Günlük kelime limiti \(amount) azaltıldı")

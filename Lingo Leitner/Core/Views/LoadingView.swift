@@ -10,21 +10,22 @@ final class LoadingView {
         DispatchQueue.main.async { [weak self] in
             // Container view
             let container = UIView()
-            container.backgroundColor = UIColor.black.withAlphaComponent(0.3)
+            container.backgroundColor = .clear
             container.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(container)
             
             // Activity indicator
-            let indicator = UIActivityIndicatorView(style: .large)
-            indicator.color = .white
+            let indicator = UIActivityIndicatorView(style: .medium)
+            indicator.hidesWhenStopped = true
             indicator.translatesAutoresizingMaskIntoConstraints = false
             container.addSubview(indicator)
+            
             
             // Message label (if provided)
             if let message = message {
                 let label = UILabel()
                 label.text = message
-                label.textColor = .white
+                label.textColor = Theme.accent
                 label.font = .systemFont(ofSize: 16, weight: .medium)
                 label.translatesAutoresizingMaskIntoConstraints = false
                 container.addSubview(label)

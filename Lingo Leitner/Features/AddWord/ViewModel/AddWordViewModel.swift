@@ -75,7 +75,7 @@ enum ValidationError: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .invalidInput:
-            return "Lütfen tüm alanları doğru formatta doldurun"
+            return "error".localized
         }
     }
 } 

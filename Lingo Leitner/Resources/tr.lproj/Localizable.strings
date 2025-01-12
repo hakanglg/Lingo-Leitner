@@ -1,0 +1,137 @@
+// Auth
+"login" = "Giriş Yap";
+"signup" = "Kayıt Ol";
+"email" = "E-posta";
+"password" = "Şifre";
+"forgot_password" = "Şifremi Unuttum?";
+"continue" = "Devam Et";
+"welcome_back" = "Tekrar Hoş Geldiniz";
+"continue_flashcards" = "Kelime kartlarınıza devam edin";
+"reset_password" = "Şifre Sıfırlama";
+"reset_password_message" = "Şifre sıfırlama bağlantısı e-posta adresinize gönderilecektir.";
+"enter_email" = "E-posta adresiniz";
+"send" = "Gönder";
+"reset_success" = "Başarılı";
+"reset_success_message" = "Şifre sıfırlama bağlantısı e-posta adresinize gönderildi.";
+"confirm_password" = "Şifre Tekrar";
+"terms_and_conditions" = "Kullanım Koşullarını Kabul Ediyorum";
+"name" = "Ad Soyad";
+
+// Profile
+"profile" = "Profil";
+"settings" = "Ayarlar";
+"logout" = "Çıkış Yap";
+"statistics" = "İstatistikler";
+"words_learned" = "Öğrenilen Kelimeler";
+"streak" = "Seri";
+"user" = "Kullanıcı";
+"delete_account" = "Hesabı Sil";
+"delete_account_message" = "Hesabınızı silmek istediğinize emin misiniz? Bu işlem geri alınamaz ve tüm verileriniz silinecektir.";
+"delete_account_confirm" = "Hesabı Sil";
+"premium_member" = "Premium Üye";
+"upgrade_to_premium" = "Premium'a Geç";
+"language" = "Dil";
+"language_settings" = "Dil Ayarları";
+"english" = "İngilizce";
+"turkish" = "Türkçe";
+"system_language" = "Sistem Dili";
+"language_change_message" = "Dil değişikliğinin uygulanması için uygulama yeniden başlatılacak";
+"restart" = "Yeniden Başlat";
+
+// Boxes
+"boxes" = "Kutular";
+"add_word" = "Kelime Ekle";
+"word" = "Kelime";
+"meaning" = "Anlam";
+"example" = "Örnek";
+"save" = "Kaydet";
+"empty_boxes" = "Kutularınız Boş";
+"empty_boxes_message" = "Kelimeleriniz kutuları doldurmayı bekliyor";
+"add_word_title" = "Yeni Kelime Ekle";
+"add_word_subtitle" = "Öğrenmek istediğiniz kelimeyi ekleyin";
+"add_word_tip" = "İpucu: Örnek cümle eklemek, kelimenin bağlamını anlamanıza yardımcı olur.";
+"remember" = "Hatırladım";
+"forgot" = "Unuttum";
+
+// Notifications
+"notifications" = "Bildirimler";
+"no_notifications" = "Bildirim Yok";
+"no_notifications_message" = "Şu an için tekrar edilmesi gereken kelime bulunmuyor";
+
+// Premium
+"premium" = "Premium";
+"get_premium" = "Premium'a Geç";
+"restore_purchase" = "Satın Alımı Geri Yükle";
+"watch_ad" = "Reklam İzle";
+"daily_word_limit" = "Günlük Kelime Limiti";
+
+// Common
+"cancel" = "İptal";
+"delete" = "Sil";
+"edit" = "Düzenle";
+"done" = "Tamam";
+"error" = "Hata";
+"success" = "Başarılı";
+"ok" = "Tamam";
+
+// Error Messages
+"error_invalid_url" = "Geçersiz URL";
+"error_no_data" = "Veri bulunamadı";
+"error_decoding" = "Veri işlenirken hata oluştu";
+
+// Review Status
+"review_status_due" = "Tekrar Vakti";
+"review_status_soon" = "Yakında";
+"review_status_upcoming" = "Daha Sonra";
+
+// Delete Account
+"delete_confirmation_title" = "Son Onay";
+"delete_confirmation_message" = "Hesabınızı silmek için 'SİL' yazın.";
+"delete_confirmation_placeholder" = "SİL yazın";
+"delete_confirmation_error" = "Lütfen 'SİL' yazarak onaylayın";
+
+// Auth Errors
+"auth_error_sign_in_failed" = "Giriş yapılamadı";
+"auth_error_sign_up_failed" = "Üyelik oluşturulamadı";
+"auth_error_user_not_found" = "Kullanıcı bulunamadı";
+"auth_error_invalid_email" = "Geçersiz e-posta adresi";
+"auth_error_weak_password" = "Şifre çok zayıf";
+"auth_error_email_in_use" = "Bu e-posta adresi zaten kullanımda";
+"auth_error_not_implemented" = "Bu özellik henüz kullanılamıyor";
+"auth_error_unknown" = "Bilinmeyen bir hata oluştu";
+"auth_error_empty_fields" = "Lütfen tüm alanları doldurun";
+"auth_error_permission_denied" = "Google hesabınıza erişim izni reddedildi. Lütfen izinleri kontrol edin ve tekrar deneyin.";
+"auth_error_network" = "Ağ bağlantısı hatası";
+"auth_error_invalid_credentials" = "Geçersiz kimlik bilgileri";
+"auth_error_invalid_input" = "Geçersiz giriş. Lütfen tüm alanları doğru doldurun.";
+
+// Character Limit
+"character_limit" = "%d/%d";
+
+// Statistics
+"stats_total_words" = "Toplam Kelime";
+"stats_daily_streak" = "Günlük Seri";
+"stats_words_mastered" = "Öğrenilen";
+
+// Box Descriptions
+"box_1_description" = "Kutu 1: Her gün";
+"box_2_description" = "Kutu 2: 2 günde bir";
+"box_3_description" = "Kutu 3: 4 günde bir";
+"box_4_description" = "Kutu 4: 7 günde bir";
+"box_5_description" = "Kutu 5: 14 günde bir"; 
+
+
+// Premium
+
+"premium_upgrade" = "Premium'a Yükselt";
+"premium_subtitle_unlimited" = "Sınırsız Kelime Ekleyin";
+"premium_subtitle_ads" = "Reklamları kaldırın";
+"premium_trial_button" = "1 Hafta Ücretsiz Deneyin";
+"watch_ad_button" = "Reklam İzle ve 5 Kelime Kazan";
+"premium_footer_text" = "1 hafta ücretsiz, ardından aylık sadece $4.99";
+"premium_feature_unlimited" = "Sınırsız Kelime Ekleme";
+"premium_feature_no_ads" = "Reklamsız Deneyim";
+"premium_feature_exclusive" = "Özel İçerikler";
+"premium_purchase_started" = "Premium satın alma işlemi başlatıldı";
+"watch_ad_started" = "Reklam izleme işlemi başlatıldı";
+"daily_word_limit_reduced" = "Günlük kelime limiti azaltıldı:";

@@ -79,6 +79,17 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
         return button
     }()
     
+    private let languageButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.setTitle("language".localized, for: .normal)
+        button.setTitleColor(Theme.accent, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
+        button.backgroundColor = Theme.accent.withAlphaComponent(0.1)
+        button.layer.cornerRadius = 16
+        button.heightAnchor.constraint(equalToConstant: 56).isActive = true
+        return button
+    }()
+    
     private let logoutButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Çıkış Yap", for: .normal)
@@ -99,20 +110,36 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
         return button
     }()
     
+    private let loadingView: UIActivityIndicatorView = {
+        let indicator = UIActivityIndicatorView(style: .large)
+        indicator.hidesWhenStopped = true
+        indicator.color = Theme.accent
+        return indicator
+    }()
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
+        navigationItem.largeTitleDisplayMode = .never
+        title = "profile".localized
+        
         viewModel.delegate = self
-        setupUI()
-        setupActions()
-        loadUserData()
+        
+        // LoadingView'ı göster
+        LoadingView.shared.show(in: view)
+        
+        // Verileri yükle
+        Task {
+            await viewModel.fetchUserData()
+        }
     }
     
     // MARK: - Setup
     private func setupUI() {
         view.backgroundColor = .systemBackground
         navigationItem.largeTitleDisplayMode = .never
-        title = "Profil"
+        title = "profile".localized
         
         view.addSubview(scrollView)
         scrollView.addSubview(contentView)
@@ -128,6 +155,7 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
         statsView.addSubview(masteredWordsView)
         
         contentView.addSubview(premiumButton)
+        contentView.addSubview(languageButton)
         contentView.addSubview(logoutButton)
         contentView.addSubview(deleteAccountButton)
         
@@ -196,9 +224,15 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
             make.leading.trailing.equalTo(contentView).inset(16)
         }
         
-        // Logout button constraints'i güncelle
-        logoutButton.snp.makeConstraints { make in
+        // Language button constraints
+        languageButton.snp.makeConstraints { make in
             make.top.equalTo(premiumButton.snp.bottom).offset(16)
+            make.leading.trailing.equalTo(contentView).inset(16)
+        }
+        
+        // Update logout button constraints
+        logoutButton.snp.makeConstraints { make in
+            make.top.equalTo(languageButton.snp.bottom).offset(16)
             make.leading.trailing.equalTo(contentView).inset(16)
         }
         
@@ -214,6 +248,7 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
         logoutButton.addTarget(self, action: #selector(handleLogoutTap), for: .touchUpInside)
         premiumButton.addTarget(self, action: #selector(handlePremiumTap), for: .touchUpInside)
         deleteAccountButton.addTarget(self, action: #selector(handleDeleteAccountTap), for: .touchUpInside)
+        languageButton.addTarget(self, action: #selector(handleLanguageTap), for: .touchUpInside)
     }
     
     private func loadUserData() {
@@ -225,13 +260,13 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
     // MARK: - Actions
     @objc private func handleLogoutTap() {
         let alert = UIAlertController(
-            title: "Çıkış Yap",
-            message: "Hesabınızdan çıkış yapmak istediğinize emin misiniz?",
+            title: "logout".localized,
+            message: nil,
             preferredStyle: .alert
         )
         
-        alert.addAction(UIAlertAction(title: "İptal", style: .cancel))
-        alert.addAction(UIAlertAction(title: "Çıkış Yap", style: .destructive) { [weak self] _ in
+        alert.addAction(UIAlertAction(title: "cancel".localized, style: .cancel))
+        alert.addAction(UIAlertAction(title: "logout".localized, style: .destructive) { [weak self] _ in
             Task {
                 await self?.viewModel.logout()
             }
@@ -248,42 +283,93 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
     
     @objc private func handleDeleteAccountTap() {
         let alert = UIAlertController(
-            title: "Hesabı Sil",
-            message: "Hesabınızı silmek istediğinize emin misiniz? Bu işlem geri alınamaz ve tüm verileriniz silinecektir.",
+            title: "delete_account".localized,
+            message: "delete_account_message".localized,
             preferredStyle: .alert
         )
         
-        // İptal butonu
-        alert.addAction(UIAlertAction(title: "İptal", style: .cancel))
-        
-        // Silme butonu
-        let deleteAction = UIAlertAction(title: "Hesabı Sil", style: .destructive) { [weak self] _ in
-            // Tekrar onay al
-            self?.showFinalDeleteConfirmation()
+        alert.addAction(UIAlertAction(title: "cancel".localized, style: .cancel))
+        let deleteAction = UIAlertAction(title: "delete_account_confirm".localized, style: .destructive) { [weak self] _ in
+            Task {
+                await self?.viewModel.deleteAccount()
+            }
         }
+        
         alert.addAction(deleteAction)
+        present(alert, animated: true)
+    }
+    
+    @objc private func handleLanguageTap() {
+        let alert = UIAlertController(
+            title: "language_settings".localized,
+            message: nil,
+            preferredStyle: .actionSheet
+        )
+        
+        alert.addAction(UIAlertAction(title: "system_language".localized, style: .default) { [weak self] _ in
+            self?.changeLanguage(to: nil)
+        })
+        
+        alert.addAction(UIAlertAction(title: "english".localized, style: .default) { [weak self] _ in
+            self?.changeLanguage(to: "en")
+        })
+        
+        alert.addAction(UIAlertAction(title: "turkish".localized, style: .default) { [weak self] _ in
+            self?.changeLanguage(to: "tr")
+        })
+        
+        alert.addAction(UIAlertAction(title: "cancel".localized, style: .cancel))
+        
+        if let popoverController = alert.popoverPresentationController {
+            popoverController.sourceView = languageButton
+            popoverController.sourceRect = languageButton.bounds
+        }
+        
+        present(alert, animated: true)
+    }
+    
+    private func changeLanguage(to languageCode: String?) {
+        // Dil değişikliğini UserDefaults'a kaydet
+        if let languageCode = languageCode {
+            UserDefaults.standard.set([languageCode], forKey: "AppleLanguages")
+        } else {
+            UserDefaults.standard.removeObject(forKey: "AppleLanguages")
+        }
+        UserDefaults.standard.synchronize()
+        
+        // Kullanıcıya uygulamanın yeniden başlatılacağını bildir
+        let alert = UIAlertController(
+            title: "language_settings".localized,
+            message: "language_change_message".localized,
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "restart".localized, style: .default) { _ in
+            // Uygulamayı yeniden başlat
+            exit(0)
+        })
         
         present(alert, animated: true)
     }
     
     private func showFinalDeleteConfirmation() {
         let alert = UIAlertController(
-            title: "Son Onay",
-            message: "Hesabınızı silmek için 'SİL' yazın.",
+            title: "delete_confirmation_title".localized,
+            message: "delete_confirmation_message".localized,
             preferredStyle: .alert
         )
         
         alert.addTextField { textField in
-            textField.placeholder = "SİL yazın"
+            textField.placeholder = "delete_confirmation_placeholder".localized
         }
         
-        alert.addAction(UIAlertAction(title: "İptal", style: .cancel))
+        alert.addAction(UIAlertAction(title: "cancel".localized, style: .cancel))
         
         let confirmAction = UIAlertAction(title: "Onayla", style: .destructive) { [weak self] _ in
             guard let text = alert.textFields?.first?.text,
                   text.uppercased() == "SİL" else {
                 // Yanlış yazıldıysa uyarı göster
-                self?.showError("Lütfen 'SİL' yazarak onaylayın")
+                self?.showError("delete_confirmation_error".localized)
                 return
             }
             
@@ -299,41 +385,54 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
     
     private func showError(_ message: String) {
         let alert = UIAlertController(
-            title: "Hata",
+            title: "error".localized,
             message: message,
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "Tamam", style: .default))
+        alert.addAction(UIAlertAction(title: "ok".localized, style: .default))
         present(alert, animated: true)
     }
     
     // MARK: - ProfileViewModelDelegate
     func didUpdateUserData(_ user: User, stats: UserStats) {
-        nameLabel.text = user.displayName ?? "Kullanıcı"
-        emailLabel.text = user.email
-        
-        // İstatistikleri güncelle
-        wordsCountView.setValue(stats.totalWords)
-        streakCountView.setValue(stats.currentStreak)
-        masteredWordsView.setValue(stats.masteredWords)
-        
-        // Premium durumuna göre butonu güncelle
-        updatePremiumButton(isPremium: user.isPremium)
-        
-        // Profil fotoğrafını yükle
-        if let photoURL = user.photoURL {
-            // SDWebImage veya Kingfisher kullanarak yükle
+        // Ana thread'de UI'ı kur ve verileri göster
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            // Loading'i gizle
+            LoadingView.shared.hide()
+            
+            // UI'ı kur
+            self.setupUI()
+            self.setupActions()
+            
+            // Verileri göster
+            self.nameLabel.text = user.displayName ?? "user".localized
+            self.emailLabel.text = user.email
+            
+            // İstatistikleri güncelle
+            self.wordsCountView.setValue(stats.totalWords)
+            self.streakCountView.setValue(stats.currentStreak)
+            self.masteredWordsView.setValue(stats.masteredWords)
+            
+            // Premium durumuna göre butonu güncelle
+            self.updatePremiumButton(isPremium: user.isPremium)
+            
+            // Profil fotoğrafını yükle
+            if let photoURL = user.photoURL {
+                // SDWebImage veya Kingfisher kullanarak yükle
+            }
         }
     }
     
     private func updatePremiumButton(isPremium: Bool) {
         if isPremium {
-            premiumButton.setTitle("Premium Üye", for: .normal)
+            premiumButton.setTitle("premium_member".localized, for: .normal)
             premiumButton.isEnabled = false
             premiumButton.backgroundColor = .systemGray5
             premiumButton.setTitleColor(.systemGray, for: .normal)
         } else {
-            premiumButton.setTitle("Premium'a Geç", for: .normal)
+            premiumButton.setTitle("upgrade_to_premium".localized, for: .normal)
             premiumButton.isEnabled = true
             premiumButton.backgroundColor = Theme.accent.withAlphaComponent(0.1)
             premiumButton.setTitleColor(Theme.accent, for: .normal)
@@ -349,13 +448,20 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
     }
     
     func didReceiveError(_ error: Error) {
-        let alert = UIAlertController(
-            title: "Hata",
-            message: error.localizedDescription,
-            preferredStyle: .alert
-        )
-        alert.addAction(UIAlertAction(title: "Tamam", style: .default))
-        present(alert, animated: true)
+        DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            // Loading'i gizle
+            LoadingView.shared.hide()
+            
+            let alert = UIAlertController(
+                title: "error".localized,
+                message: error.localizedDescription,
+                preferredStyle: .alert
+            )
+            alert.addAction(UIAlertAction(title: "ok".localized, style: .default))
+            self.present(alert, animated: true)
+        }
     }
 }
 

@@ -36,7 +36,7 @@ final class AddWordViewController: UIViewController {
     
     private let headerLabel: UILabel = {
         let label = UILabel()
-        label.text = "Yeni Kelime"
+        label.text = "add_word_title".localized
         label.font = .systemFont(ofSize: 28, weight: .bold)
         label.textColor = .label
         return label
@@ -44,7 +44,7 @@ final class AddWordViewController: UIViewController {
     
     private let subtitleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Öğrenmek istediğiniz kelimeyi ekleyin"
+        label.text = "add_word_subtitle".localized
         label.font = .systemFont(ofSize: 17, weight: .regular)
         label.textColor = .secondaryLabel
         return label
@@ -64,7 +64,7 @@ final class AddWordViewController: UIViewController {
         let field = CustomTextField()
         field.configure(
             icon: "textformat.alt",
-            placeholder: "Kelime",
+            placeholder: "word".localized,
             keyboardType: .default,
             returnKeyType: .next
         )
@@ -74,8 +74,8 @@ final class AddWordViewController: UIViewController {
     private let meaningTextField: CustomTextField = {
         let field = CustomTextField()
         field.configure(
-            icon: "text.book.closed.fill",
-            placeholder: "Anlamı",
+            icon: "text.book.closed",
+            placeholder: "meaning".localized,
             keyboardType: .default,
             returnKeyType: .next
         )
@@ -86,7 +86,7 @@ final class AddWordViewController: UIViewController {
         let field = CustomTextField()
         field.configure(
             icon: "text.quote",
-            placeholder: "Örnek Cümle (İsteğe Bağlı)",
+            placeholder: "example".localized,
             keyboardType: .default,
             returnKeyType: .done
         )
@@ -144,7 +144,7 @@ final class AddWordViewController: UIViewController {
     
     private let tipLabel: UILabel = {
         let label = UILabel()
-        label.text = "İpucu: Örnek cümle eklemek, kelimenin bağlamını anlamanıza yardımcı olur."
+        label.text = "add_word_tip".localized
         label.font = .systemFont(ofSize: 14, weight: .regular)
         label.textColor = .secondaryLabel
         label.numberOfLines = 0
@@ -347,21 +347,20 @@ extension AddWordViewController: AddWordViewModelDelegate {
             
             let message = (error as? FirestoreError)?.message ?? error.localizedDescription
             let alert = UIAlertController(
-                title: "Hata",
+                title: "error".localized,
                 message: message,
                 preferredStyle: .alert
             )
             
-            // Eğer limit hatası ise Premium'a yönlendir
             if error as? FirestoreError == .limitExceeded {
-                alert.addAction(UIAlertAction(title: "Premium'a Yükselt", style: .default) { [weak self] _ in
+                alert.addAction(UIAlertAction(title: "upgrade_to_premium".localized, style: .default) { [weak self] _ in
                     let premiumVC = PremiumViewController()
                     premiumVC.modalPresentationStyle = .fullScreen
                     self?.present(premiumVC, animated: true)
                 })
             }
             
-            alert.addAction(UIAlertAction(title: "Tamam", style: .cancel))
+            alert.addAction(UIAlertAction(title: "ok".localized, style: .cancel))
             self?.present(alert, animated: true)
         }
     }

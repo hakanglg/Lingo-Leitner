@@ -19,18 +19,11 @@ final class BoxesViewController: UIViewController {
         return collectionView
     }()
     
-    private let loadingView: UIActivityIndicatorView = {
-        let view = UIActivityIndicatorView(style: .medium)
-        view.hidesWhenStopped = true
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
     private let emptyStateView: EmptyStateView = {
         let view = EmptyStateView(
             image: UIImage(systemName: "square.stack.3d.up"),
-            title: "Kutularınız Boş",
-            message: "Kelimeleriniz kutuları doldurmayı bekliyor"
+            title: "empty_boxes".localized,
+            message: "empty_boxes_message".localized
         )
         view.isHidden = true
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -69,7 +62,6 @@ final class BoxesViewController: UIViewController {
         view.backgroundColor = Theme.primary
         
         view.addSubview(collectionView)
-        view.addSubview(loadingView)
         view.addSubview(emptyStateView)
         
         NSLayoutConstraint.activate([
@@ -78,9 +70,6 @@ final class BoxesViewController: UIViewController {
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
-            loadingView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            
             emptyStateView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             emptyStateView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             emptyStateView.widthAnchor.constraint(equalTo: view.widthAnchor, multiplier: 0.8)
@@ -88,7 +77,7 @@ final class BoxesViewController: UIViewController {
     }
     
     private func setupNavigation() {
-        title = "Kutular"
+        title = "boxes".localized
 //        navigationController?.navigationBar.prefersLargeTitles = true
     }
     
@@ -151,9 +140,10 @@ extension BoxesViewController: UICollectionViewDelegate {
 extension BoxesViewController: BoxesViewModelDelegate {
     func didStartLoading() {
         DispatchQueue.main.async { [weak self] in
-            self?.loadingView.startAnimating()
-            self?.emptyStateView.isHidden = true
-            self?.collectionView.isHidden = true
+            guard let self = self else { return }
+            LoadingView.shared.show(in: self.view)
+            self.emptyStateView.isHidden = true
+            self.collectionView.isHidden = true
         }
     }
     
@@ -161,7 +151,7 @@ extension BoxesViewController: BoxesViewModelDelegate {
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             
-            self.loadingView.stopAnimating()
+            LoadingView.shared.hide()
             
             // Tüm kutulardaki toplam kelime sayısını kontrol et
             let totalWords = (1...5).reduce(0) { $0 + self.viewModel.wordCount(forBox: $1) }
@@ -180,13 +170,17 @@ extension BoxesViewController: BoxesViewModelDelegate {
     
     func didReceiveError(_ error: Error) {
         DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            LoadingView.shared.hide()
+            
             let alert = UIAlertController(
-                title: "Hata",
+                title: "error".localized,
                 message: error.localizedDescription,
                 preferredStyle: .alert
             )
-            alert.addAction(UIAlertAction(title: "Tamam", style: .default))
-            self?.present(alert, animated: true)
+            alert.addAction(UIAlertAction(title: "ok".localized, style: .default))
+            self.present(alert, animated: true)
         }
     }
 } 

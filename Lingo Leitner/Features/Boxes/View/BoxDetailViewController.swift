@@ -38,25 +38,15 @@ final class BoxDetailViewController: UIViewController {
         return label
     }()
     
-    private lazy var rememberButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Hatırladım", for: .normal)
-        button.titleLabel?.font = Theme.font(.headline, .medium)
-        button.backgroundColor = .systemGreen
-        button.tintColor = .white
-        button.layer.cornerRadius = 12
+    private lazy var rememberButton: GradientButton = {
+        let button = GradientButton(title: "remember".localized)
         button.addTarget(self, action: #selector(handleRememberTap), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
     }()
     
-    private lazy var forgotButton: UIButton = {
-        let button = UIButton(type: .system)
-        button.setTitle("Hatırlamadım", for: .normal)
-        button.titleLabel?.font = Theme.font(.headline, .medium)
-        button.backgroundColor = .systemRed
-        button.tintColor = .white
-        button.layer.cornerRadius = 12
+    private lazy var forgotButton: GradientButton = {
+        let button = GradientButton(title: "forgot".localized)
         button.addTarget(self, action: #selector(handleForgotTap), for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
         return button
@@ -228,11 +218,11 @@ final class BoxDetailViewController: UIViewController {
     
     private func showError(_ error: Error) {
         let alert = UIAlertController(
-            title: "Hata",
+            title: "error".localized,
             message: error.localizedDescription,
             preferredStyle: .alert
         )
-        alert.addAction(UIAlertAction(title: "Tamam", style: .default))
+        alert.addAction(UIAlertAction(title: "ok".localized, style: .default))
         present(alert, animated: true)
     }
 }

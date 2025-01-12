@@ -1,0 +1,137 @@
+// Auth
+"login" = "Login";
+"signup" = "Sign Up";
+"email" = "Email";
+"password" = "Password";
+"forgot_password" = "Forgot Password?";
+"continue" = "Continue";
+"welcome_back" = "Welcome Back";
+"continue_flashcards" = "Continue with your flashcards";
+"reset_password" = "Reset Password";
+"reset_password_message" = "A password reset link will be sent to your email address.";
+"enter_email" = "Enter your email";
+"send" = "Send";
+"reset_success" = "Success";
+"reset_success_message" = "Password reset link has been sent to your email.";
+"confirm_password" = "Confirm Password";
+"terms_and_conditions" = "I agree to the Terms and Conditions";
+"name" = "Name";
+
+// Profile
+"profile" = "Profile";
+"settings" = "Settings";
+"logout" = "Logout";
+"statistics" = "Statistics";
+"words_learned" = "Words Learned";
+"streak" = "Streak";
+"user" = "User";
+"delete_account" = "Delete Account";
+"delete_account_message" = "Are you sure you want to delete your account? This action cannot be undone and all your data will be deleted.";
+"delete_account_confirm" = "Delete Account";
+"premium_member" = "Premium Member";
+"upgrade_to_premium" = "Upgrade to Premium";
+"language" = "Language";
+"language_settings" = "Language Settings";
+"english" = "English";
+"turkish" = "Turkish";
+"system_language" = "System Language";
+"language_change_message" = "The app will restart to apply the language change";
+"restart" = "Restart";
+
+// Boxes
+"boxes" = "Boxes";
+"add_word" = "Add Word";
+"word" = "Word";
+"meaning" = "Meaning";
+"example" = "Example";
+"save" = "Save";
+"empty_boxes" = "Your Boxes are Empty";
+"empty_boxes_message" = "Your words are waiting to fill the boxes";
+"add_word_title" = "Add a New Word";
+"add_word_subtitle" = "Add the word you want to learn";
+"add_word_tip" = "Tip: Adding an example sentence helps you understand the context of the word.";
+"remember" = "Remember";
+"forgot" = "Forgot";
+
+// Notifications
+"notifications" = "Notifications";
+"no_notifications" = "No Notifications";
+"no_notifications_message" = "There are no words to review at the moment";
+
+// Premium
+"premium" = "Premium";
+"get_premium" = "Get Premium";
+"restore_purchase" = "Restore Purchase";
+"watch_ad" = "Watch Ad";
+"daily_word_limit" = "Daily Word Limit";
+
+// Common
+"cancel" = "Cancel";
+"delete" = "Delete";
+"edit" = "Edit";
+"done" = "Done";
+"error" = "Error";
+"success" = "Success";
+"ok" = "OK";
+
+// Error Messages
+"error_invalid_url" = "Invalid URL";
+"error_no_data" = "No data found";
+"error_decoding" = "Error processing data";
+
+// Review Status
+"review_status_due" = "Review Time";
+"review_status_soon" = "Soon";
+"review_status_upcoming" = "Later";
+
+// Delete Account
+"delete_confirmation_title" = "Final Confirmation";
+"delete_confirmation_message" = "Type 'DELETE' to delete your account.";
+"delete_confirmation_placeholder" = "Type DELETE";
+"delete_confirmation_error" = "Please type 'DELETE' to confirm";
+
+// Auth Errors
+"auth_error_sign_in_failed" = "Sign in failed";
+"auth_error_sign_up_failed" = "Sign up failed";
+"auth_error_user_not_found" = "User not found";
+"auth_error_invalid_email" = "Invalid email address";
+"auth_error_weak_password" = "Password is too weak";
+"auth_error_email_in_use" = "This email is already in use";
+"auth_error_not_implemented" = "This feature is not available yet";
+"auth_error_unknown" = "An unknown error occurred";
+"auth_error_empty_fields" = "Please fill in all fields";
+"auth_error_permission_denied" = "Access to your Google account was denied. Please check permissions and try again.";
+"auth_error_network" = "Network connection error";
+"auth_error_invalid_credentials" = "Invalid credentials";
+"auth_error_invalid_input" = "Invalid input. Please fill in all fields correctly.";
+
+// Character Limit
+"character_limit" = "%d/%d";
+
+// Statistics
+"stats_total_words" = "Total Words";
+"stats_daily_streak" = "Daily Streak";
+"stats_words_mastered" = "Words Mastered";
+
+// Box Descriptions
+"box_1_description" = "Box 1: Every day";
+"box_2_description" = "Box 2: Every 2 days";
+"box_3_description" = "Box 3: Every 4 days";
+"box_4_description" = "Box 4: Every 7 days";
+"box_5_description" = "Box 5: Every 14 days"; 
+
+
+// Premium
+
+"premium_upgrade" = "Upgrade to Premium";
+"premium_subtitle_unlimited" = "Add Unlimited Words";
+"premium_subtitle_ads" = "Remove Ads";
+"premium_trial_button" = "Try 1 Week Free";
+"watch_ad_button" = "Watch Ad & Get 5 Words";
+"premium_footer_text" = "1 week free, then only $4.99 per month";
+"premium_feature_unlimited" = "Unlimited Word Adding";
+"premium_feature_no_ads" = "Ad-Free Experience";
+"premium_feature_exclusive" = "Exclusive Content";
+"premium_purchase_started" = "Premium purchase process started";
+"watch_ad_started" = "Ad watching process started";
+"daily_word_limit_reduced" = "Daily word limit reduced by";

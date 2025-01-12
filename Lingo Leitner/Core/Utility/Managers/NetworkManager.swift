@@ -10,9 +10,9 @@ enum NetworkError: Error {
     
     var message: String {
         switch self {
-        case .invalidURL: return "Geçersiz URL"
-        case .noData: return "Veri bulunamadı"
-        case .decodingError: return "Veri işlenirken hata oluştu"
+        case .invalidURL: return "error_invalid_url".localized
+        case .noData: return "error_no_data".localized
+        case .decodingError: return "error_decoding".localized
         case .serverError(let message): return message
         }
     }
