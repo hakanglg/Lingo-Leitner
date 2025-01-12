@@ -11,24 +11,30 @@
 <div align="center">
   <table>
     <tr>
-      <td><img src="Screenshots/screenshot1.png" alt="Onboarding" width="200"/></td>
-      <td><img src="Screenshots/screenshot2.png" alt="Login" width="200"/></td>
-      <td><img src="Screenshots/screenshot3.png" alt="Word Boxes" width="200"/></td>
+      <td><img src="Screenshots/auth.png" alt="Auth" width="200"/></td>
+      <td><img src="Screenshots/signup.png" alt="Sign Up" width="200"/></td>
+      <td><img src="Screenshots/signin.png" alt="Sign In" width="200"/></td>
     </tr>
     <tr>
-      <td align="center">Onboarding</td>
-      <td align="center">Giriş</td>
-      <td align="center">Kelime Kutuları</td>
+      <td align="center">Auth</td>
+      <td align="center">Sign Up</td>
+      <td align="center">Sign In</td>
     </tr>
     <tr>
-      <td><img src="Screenshots/screenshot4.png" alt="Add Word" width="200"/></td>
-      <td><img src="Screenshots/screenshot5.png" alt="Statistics" width="200"/></td>
-      <td><img src="Screenshots/screenshot6.png" alt="Profile" width="200"/></td>
+      <td><img src="Screenshots/boxes.png" alt="Boxes" width="200"/></td>
+      <td><img src="Screenshots/add_word.png" alt="Add Word" width="200"/></td>
+      <td><img src="Screenshots/notifications.png" alt="Notifications" width="200"/></td>
+      <td><img src="Screenshots/profile.png" alt="Profile" width="200"/></td>
+      <td><img src="Screenshots/purchase.png" alt="Purchase" width="200"/></td>
+      <td><img src="Screenshots/flashcard.png" alt="Flashcard" width="200"/></td>
     </tr>
     <tr>
-      <td align="center">Kelime Ekleme</td>
-      <td align="center">İstatistikler</td>
-      <td align="center">Profil</td>
+      <td align="center">Boxes/td>
+      <td align="center">Add Word</td>
+      <td align="center">Notifications</td>
+      <td align="center">Profile</td>
+      <td align="center">Purchase</td>
+      <td align="center">Flashcard</td>
     </tr>
   </table>
 </div>
