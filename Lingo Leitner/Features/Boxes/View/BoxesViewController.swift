@@ -44,12 +44,23 @@ final class BoxesViewController: UIViewController {
         setupNavigation()
         setupCollectionView()
         setupViewModel()
+        
+        // CollectionView'ı başlangıçta gizle
+        collectionView.isHidden = true
+        
+        // Verileri yükle
+        Task {
+            await viewModel.fetchBoxes()
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        Task {
-            await viewModel.fetchBoxes()
+        // Eğer collectionView görünürse (yani kelime varsa) verileri yenile
+        if !collectionView.isHidden {
+            Task {
+                await viewModel.fetchBoxes()
+            }
         }
     }
     
@@ -142,6 +153,7 @@ extension BoxesViewController: BoxesViewModelDelegate {
         DispatchQueue.main.async { [weak self] in
             self?.loadingView.startAnimating()
             self?.emptyStateView.isHidden = true
+            self?.collectionView.isHidden = true
         }
     }
     
@@ -153,8 +165,14 @@ extension BoxesViewController: BoxesViewModelDelegate {
             
             // Tüm kutulardaki toplam kelime sayısını kontrol et
             let totalWords = (1...5).reduce(0) { $0 + self.viewModel.wordCount(forBox: $1) }
-            self.emptyStateView.isHidden = totalWords > 0
-            self.collectionView.isHidden = totalWords == 0
+            
+            if totalWords > 0 {
+                self.emptyStateView.isHidden = true
+                self.collectionView.isHidden = false
+            } else {
+                self.emptyStateView.isHidden = false
+                self.collectionView.isHidden = true
+            }
             
             self.collectionView.reloadData()
         }
