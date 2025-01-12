@@ -89,6 +89,7 @@ pod install
 Aşağıdaki dosyalar güvenlik nedeniyle repository'de bulunmamaktadır:
 
 - `GoogleService-Info.plist`: Firebase yapılandırması
+- `Info.plist`: Uygulama yapılandırması ve hassas bilgiler
 - Sertifikalar ve provizyon profilleri
 - Ortam yapılandırma dosyaları
 
