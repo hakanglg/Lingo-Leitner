@@ -12,23 +12,6 @@ Lingo Leitner, Leitner sistemini kullanarak yabancı dil öğrenmeyi kolaylaşt�
 - ☁️ Firebase ile bulut senkronizasyonu
 - 🌙 Karanlık mod desteği
 
-## 📄 Lisans
-
-Bu proje Creative Commons Attribution-NonCommercial-NoDerivs 4.0 International (CC BY-NC-ND 4.0) lisansı altında lisanslanmıştır.
-
-Bu lisans kapsamında:
-
-✅ **Yapabilecekleriniz:**
-- Projeyi paylaşabilirsiniz
-- Kaynak göstererek alıntı yapabilirsiniz
-
-❌ **Yapamazsınız:**
-- Ticari amaçla kullanamazsınız
-- Değişiklik yapamazsınız
-- Türev çalışmalar oluşturamazsınız
-
-Detaylı bilgi için: [Creative Commons BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
-
 ## 📋 Gereksinimler
 
 - iOS 15.0+
@@ -63,7 +46,6 @@ pod install
 ### Temel Teknolojiler
 - Swift 5
 - UIKit
-- SwiftUI (Bazı bileşenlerde)
 - Combine Framework
 
 ### Veritabanı ve Backend
@@ -84,18 +66,27 @@ pod install
 - Dependency Injection
 - Repository Pattern (Veri katmanı için)
 
-## 🔐 Güvenlik ve Yapılandırma
-
-Aşağıdaki dosyalar güvenlik nedeniyle repository'de bulunmamaktadır:
-
-- `GoogleService-Info.plist`: Firebase yapılandırması
-- Sertifikalar ve provizyon profilleri
-- Ortam yapılandırma dosyaları
-
-Bu dosyaları proje yöneticisinden güvenli bir şekilde temin edebilirsiniz.
 
 ## 🤝 İletişim
 
 Hakan Gölge - [@hakangolge](https://twitter.com/hakangolge)
 
 Proje Linki: [https://github.com/yourusername/Lingo-Leitner](https://github.com/yourusername/Lingo-Leitner) 
+
+
+## 📄 Lisans
+
+Bu proje Creative Commons Attribution-NonCommercial-NoDerivs 4.0 International (CC BY-NC-ND 4.0) lisansı altında lisanslanmıştır.
+
+Bu lisans kapsamında:
+
+✅ **Yapabilecekleriniz:**
+- Projeyi paylaşabilirsiniz
+- Kaynak göstererek alıntı yapabilirsiniz
+
+❌ **Yapamazsınız:**
+- Ticari amaçla kullanamazsınız
+- Değişiklik yapamazsınız
+- Türev çalışmalar oluşturamazsınız
+
+Detaylı bilgi için: [Creative Commons BY-NC-ND 4.0](https://creativecommons.org/licenses/by-nc-nd/4.0/)
