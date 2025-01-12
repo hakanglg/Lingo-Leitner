@@ -6,6 +6,7 @@ protocol BoxesViewModelDelegate: AnyObject {
     func didReceiveError(_ error: Error)
 }
 
+@MainActor
 final class BoxesViewModel {
     // MARK: - Properties
     private let firestoreService: FirestoreServiceProtocol
@@ -27,31 +28,38 @@ final class BoxesViewModel {
     // MARK: - Public Methods
     func fetchBoxes() async {
         guard let userId = authManager.currentUser?.id else {
-            DispatchQueue.main.async {
-                self.delegate?.didReceiveError(AuthError.userNotFound)
-            }
+            delegate?.didReceiveError(AuthError.userNotFound)
             return
         }
         
-        DispatchQueue.main.async {
-            self.delegate?.didStartLoading()
-        }
+        delegate?.didStartLoading()
         
         do {
+            // Dictionary'leri temizle
+            boxCounts.removeAll()
+            reviewCounts.removeAll()
+            
             // Her kutu için kelimeleri al
             for box in 1...5 {
-                let words = try await firestoreService.getWordsInBox(box: box, userId: userId)
-                boxCounts[box] = words.count
-                reviewCounts[box] = words.filter { $0.needsReview }.count
+                do {
+                    let words = try await firestoreService.getWordsInBox(box: box, userId: userId)
+                    boxCounts[box] = words.count
+                    reviewCounts[box] = words.filter { $0.needsReview }.count
+                } catch {
+                    print("Box \(box) için hata: \(error.localizedDescription)")
+                    // Hata olsa bile devam et, sadece o kutuyu 0 olarak işaretle
+                    boxCounts[box] = 0
+                    reviewCounts[box] = 0
+                }
             }
             
-            DispatchQueue.main.async {
-                self.delegate?.didFinishLoading()
-            }
+            // Her durumda yüklemeyi bitir
+            delegate?.didFinishLoading()
         } catch {
-            DispatchQueue.main.async {
-                self.delegate?.didReceiveError(error)
-            }
+            print("Genel hata: \(error.localizedDescription)")
+            delegate?.didReceiveError(error)
+            // Hata durumunda da yüklemeyi bitir
+            delegate?.didFinishLoading()
         }
     }
     

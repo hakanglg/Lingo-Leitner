@@ -3,6 +3,7 @@ import UIKit
 final class BoxesViewController: UIViewController {
     // MARK: - Properties
     private let viewModel = BoxesViewModel()
+    private var isLoading = false
     
     // MARK: - UI Components
     private let collectionView: UICollectionView = {
@@ -37,24 +38,19 @@ final class BoxesViewController: UIViewController {
         setupNavigation()
         setupCollectionView()
         setupViewModel()
+        setupNotifications()
         
         // CollectionView'ı başlangıçta gizle
         collectionView.isHidden = true
         
-        // Verileri yükle
-        Task {
-            await viewModel.fetchBoxes()
-        }
+        // İlk yüklemeyi yap
+        refreshBoxes()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        // Eğer collectionView görünürse (yani kelime varsa) verileri yenile
-        if !collectionView.isHidden {
-            Task {
-                await viewModel.fetchBoxes()
-            }
-        }
+        // Sadece loading durumunda değilse yenile
+        refreshBoxes()
     }
     
     // MARK: - Setup
@@ -88,6 +84,31 @@ final class BoxesViewController: UIViewController {
     
     private func setupViewModel() {
         viewModel.delegate = self
+    }
+    
+    private func setupNotifications() {
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(handleWordAdded),
+            name: .wordAdded,
+            object: nil
+        )
+    }
+    
+    private func refreshBoxes() {
+        guard !isLoading else { return }
+        
+        Task { @MainActor in
+            await viewModel.fetchBoxes()
+        }
+    }
+    
+    @objc private func handleWordAdded() {
+        refreshBoxes()
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
 }
 
@@ -139,48 +160,60 @@ extension BoxesViewController: UICollectionViewDelegate {
 // MARK: - BoxesViewModelDelegate
 extension BoxesViewController: BoxesViewModelDelegate {
     func didStartLoading() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            LoadingView.shared.show(in: self.view)
-            self.emptyStateView.isHidden = true
-            self.collectionView.isHidden = true
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async { [weak self] in
+                self?.didStartLoading()
+            }
+            return
         }
+        
+        isLoading = true
+        LoadingView.shared.show(in: view)
+        emptyStateView.isHidden = true
+        collectionView.isHidden = true
     }
     
     func didFinishLoading() {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            
-            LoadingView.shared.hide()
-            
-            // Tüm kutulardaki toplam kelime sayısını kontrol et
-            let totalWords = (1...5).reduce(0) { $0 + self.viewModel.wordCount(forBox: $1) }
-            
-            if totalWords > 0 {
-                self.emptyStateView.isHidden = true
-                self.collectionView.isHidden = false
-            } else {
-                self.emptyStateView.isHidden = false
-                self.collectionView.isHidden = true
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async { [weak self] in
+                self?.didFinishLoading()
             }
-            
-            self.collectionView.reloadData()
+            return
         }
+        
+        isLoading = false
+        LoadingView.shared.hide()
+        
+        let totalWords = (1...5).reduce(0) { $0 + viewModel.wordCount(forBox: $1) }
+        
+        if totalWords > 0 {
+            emptyStateView.isHidden = true
+            collectionView.isHidden = false
+        } else {
+            emptyStateView.isHidden = false
+            collectionView.isHidden = true
+        }
+        
+        collectionView.reloadData()
     }
     
     func didReceiveError(_ error: Error) {
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            
-            LoadingView.shared.hide()
-            
-            let alert = UIAlertController(
-                title: "error".localized,
-                message: error.localizedDescription,
-                preferredStyle: .alert
-            )
-            alert.addAction(UIAlertAction(title: "ok".localized, style: .default))
-            self.present(alert, animated: true)
+        guard Thread.isMainThread else {
+            DispatchQueue.main.async { [weak self] in
+                self?.didReceiveError(error)
+            }
+            return
         }
+        
+        isLoading = false
+        LoadingView.shared.hide()
+        
+        let alert = UIAlertController(
+            title: "error".localized,
+            message: error.localizedDescription,
+            preferredStyle: .alert
+        )
+        alert.addAction(UIAlertAction(title: "ok".localized, style: .default))
+        present(alert, animated: true)
     }
 } 

@@ -2,39 +2,40 @@ import UIKit
 
 final class LoadingView {
     static let shared = LoadingView()
-    private var activityIndicator: UIActivityIndicatorView?
+    private var isShowing = false
+    private var currentView: UIView?
     private var containerView: UIView?
+    
     private init() {}
     
-    func show(in view: UIView, message: String? = nil) {
+    func show(in view: UIView) {
         DispatchQueue.main.async { [weak self] in
+            guard let self = self else { return }
+            
+            // Eğer aynı view'da zaten gösteriliyorsa, tekrar gösterme
+            if self.isShowing && self.currentView == view {
+                return
+            }
+            
+            // Farklı bir view'da gösteriliyorsa, önce onu kaldır
+            if self.isShowing {
+                self.hide()
+            }
+            
+            self.isShowing = true
+            self.currentView = view
+            
             // Container view
             let container = UIView()
-            container.backgroundColor = .clear
             container.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview(container)
+            self.containerView = container
             
             // Activity indicator
             let indicator = UIActivityIndicatorView(style: .medium)
             indicator.hidesWhenStopped = true
             indicator.translatesAutoresizingMaskIntoConstraints = false
             container.addSubview(indicator)
-            
-            
-            // Message label (if provided)
-            if let message = message {
-                let label = UILabel()
-                label.text = message
-                label.textColor = Theme.accent
-                label.font = .systemFont(ofSize: 16, weight: .medium)
-                label.translatesAutoresizingMaskIntoConstraints = false
-                container.addSubview(label)
-                
-                NSLayoutConstraint.activate([
-                    label.centerXAnchor.constraint(equalTo: container.centerXAnchor),
-                    label.topAnchor.constraint(equalTo: indicator.bottomAnchor, constant: 16)
-                ])
-            }
             
             // Constraints
             NSLayoutConstraint.activate([
@@ -48,18 +49,17 @@ final class LoadingView {
             ])
             
             indicator.startAnimating()
-            
-            self?.activityIndicator = indicator
-            self?.containerView = container
         }
     }
     
     func hide() {
         DispatchQueue.main.async { [weak self] in
-            self?.activityIndicator?.stopAnimating()
-            self?.containerView?.removeFromSuperview()
-            self?.activityIndicator = nil
-            self?.containerView = nil
+            guard let self = self, self.isShowing else { return }
+            
+            self.containerView?.removeFromSuperview()
+            self.containerView = nil
+            self.isShowing = false
+            self.currentView = nil
         }
     }
 } 

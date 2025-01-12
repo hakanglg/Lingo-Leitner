@@ -1,6 +1,37 @@
 # Lingo Leitner
 
-Lingo Leitner, Leitner sistemini kullanarak yabancı dil öğrenmeyi kolaylaştıran bir iOS uygulamasıdır. Uygulama, kullanıcıların kelime ve deyimleri tekrar kartları (flashcards) yöntemiyle öğrenmesini sağlar.
+<div align="center">
+  <img src="Screenshots/app_icon.png" alt="Lingo Leitner Icon" width="120"/>
+  
+  Lingo Leitner, Leitner sistemini kullanarak yabancı dil öğrenmeyi kolaylaştıran bir iOS uygulamasıdır. Uygulama, kullanıcıların kelime ve deyimleri tekrar kartları (flashcards) yöntemiyle öğrenmesini sağlar.
+</div>
+
+## 📱 Ekran Görüntüleri
+
+<div align="center">
+  <table>
+    <tr>
+      <td><img src="Screenshots/screenshot1.png" alt="Onboarding" width="200"/></td>
+      <td><img src="Screenshots/screenshot2.png" alt="Login" width="200"/></td>
+      <td><img src="Screenshots/screenshot3.png" alt="Word Boxes" width="200"/></td>
+    </tr>
+    <tr>
+      <td align="center">Onboarding</td>
+      <td align="center">Giriş</td>
+      <td align="center">Kelime Kutuları</td>
+    </tr>
+    <tr>
+      <td><img src="Screenshots/screenshot4.png" alt="Add Word" width="200"/></td>
+      <td><img src="Screenshots/screenshot5.png" alt="Statistics" width="200"/></td>
+      <td><img src="Screenshots/screenshot6.png" alt="Profile" width="200"/></td>
+    </tr>
+    <tr>
+      <td align="center">Kelime Ekleme</td>
+      <td align="center">İstatistikler</td>
+      <td align="center">Profil</td>
+    </tr>
+  </table>
+</div>
 
 ## 🚀 Özellikler
 

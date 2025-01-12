@@ -372,6 +372,9 @@ extension AddWordViewController: AddWordViewModelDelegate {
             // Önce LoadingView'ı gizle
             LoadingView.shared.hide()
             
+            // Bildirim yayınla
+            NotificationCenter.default.post(name: .wordAdded, object: nil)
+            
             // Haptic feedback
             let generator = UINotificationFeedbackGenerator()
             generator.notificationOccurred(.success)
