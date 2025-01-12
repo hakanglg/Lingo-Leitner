@@ -9,4 +9,11 @@
 "premium_feature_exclusive" = "Exclusive Content";
 "premium_purchase_started" = "Premium purchase process started";
 "watch_ad_started" = "Ad watching process started";
-"daily_word_limit_reduced" = "Daily word limit reduced by"; 
+"daily_word_limit_reduced" = "Daily word limit reduced by";
+"total_words" = "Total Words";
+"daily_streak" = "Daily Streak";
+"mastered_words" = "Mastered";
+"upgrade_to_premium" = "Upgrade to Premium";
+"premium_member" = "Premium Member";
+"logout" = "Logout";
+"delete_account" = "Delete Account"; 

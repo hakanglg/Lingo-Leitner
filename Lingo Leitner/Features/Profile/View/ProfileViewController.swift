@@ -64,13 +64,13 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
         return view
     }()
     
-    private let wordsCountView = StatItemView(title: "Toplam Kelime", icon: "textformat.alt")
-    private let streakCountView = StatItemView(title: "Günlük Seri", icon: "flame.fill")
-    private let masteredWordsView = StatItemView(title: "Öğrenilen", icon: "checkmark.circle.fill")
+    private let wordsCountView = StatItemView(title: "stats_total_words".localized, icon: "textformat.alt")
+    private let streakCountView = StatItemView(title: "stats_daily_streak".localized, icon: "flame.fill")
+    private let masteredWordsView = StatItemView(title: "stats_words_mastered".localized, icon: "checkmark.circle.fill")
     
     private let premiumButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Premium'a Geç", for: .normal)
+        button.setTitle("upgrade_to_premium".localized, for: .normal)
         button.setTitleColor(Theme.accent, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
         button.backgroundColor = Theme.accent.withAlphaComponent(0.1)
@@ -92,7 +92,7 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
     
     private let logoutButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Çıkış Yap", for: .normal)
+        button.setTitle("logout".localized, for: .normal)
         button.setTitleColor(.systemRed, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
         button.backgroundColor = .systemRed.withAlphaComponent(0.1)
@@ -103,7 +103,7 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
     
     private let deleteAccountButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Hesabı Sil", for: .normal)
+        button.setTitle("delete_account".localized, for: .normal)
         button.setTitleColor(.systemRed, for: .normal)
         button.titleLabel?.font = .systemFont(ofSize: 15, weight: .regular)
         button.backgroundColor = .clear
@@ -260,7 +260,7 @@ final class ProfileViewController: UIViewController, ProfileViewModelDelegate {
     // MARK: - Actions
     @objc private func handleLogoutTap() {
         let alert = UIAlertController(
-            title: "logout".localized,
+            title: "logoutsure".localized,
             message: nil,
             preferredStyle: .alert
         )

@@ -9,4 +9,11 @@
 "premium_feature_exclusive" = "Özel İçerikler";
 "premium_purchase_started" = "Premium satın alma işlemi başlatıldı";
 "watch_ad_started" = "Reklam izleme işlemi başlatıldı";
-"daily_word_limit_reduced" = "Günlük kelime limiti azaltıldı:"; 
+"daily_word_limit_reduced" = "Günlük kelime limiti azaltıldı:";
+"total_words" = "Toplam Kelime";
+"daily_streak" = "Günlük Seri";
+"mastered_words" = "Öğrenilen";
+"upgrade_to_premium" = "Premium'a Geç";
+"premium_member" = "Premium Üye";
+"logout" = "Çıkış Yap";
+"delete_account" = "Hesabı Sil"; 

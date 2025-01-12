@@ -21,6 +21,7 @@
 "profile" = "Profil";
 "settings" = "Ayarlar";
 "logout" = "Çıkış Yap";
+"logoutsure" = "Çıkış yapmak istediğinize emin misiniz?";
 "statistics" = "İstatistikler";
 "words_learned" = "Öğrenilen Kelimeler";
 "streak" = "Seri";
@@ -57,13 +58,6 @@
 "notifications" = "Bildirimler";
 "no_notifications" = "Bildirim Yok";
 "no_notifications_message" = "Şu an için tekrar edilmesi gereken kelime bulunmuyor";
-
-// Premium
-"premium" = "Premium";
-"get_premium" = "Premium'a Geç";
-"restore_purchase" = "Satın Alımı Geri Yükle";
-"watch_ad" = "Reklam İzle";
-"daily_word_limit" = "Günlük Kelime Limiti";
 
 // Common
 "cancel" = "İptal";
@@ -123,6 +117,11 @@
 
 // Premium
 
+"premium" = "Premium";
+"get_premium" = "Premium'a Geç";
+"restore_purchase" = "Satın Alımı Geri Yükle";
+"watch_ad" = "Reklam İzle";
+"daily_word_limit" = "Günlük Kelime Limiti";
 "premium_upgrade" = "Premium'a Yükselt";
 "premium_subtitle_unlimited" = "Sınırsız Kelime Ekleyin";
 "premium_subtitle_ads" = "Reklamları kaldırın";

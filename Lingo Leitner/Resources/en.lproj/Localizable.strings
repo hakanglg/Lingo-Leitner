@@ -21,6 +21,7 @@
 "profile" = "Profile";
 "settings" = "Settings";
 "logout" = "Logout";
+"logoutsure" = "Are you sure you want to logout?";
 "statistics" = "Statistics";
 "words_learned" = "Words Learned";
 "streak" = "Streak";
@@ -58,12 +59,6 @@
 "no_notifications" = "No Notifications";
 "no_notifications_message" = "There are no words to review at the moment";
 
-// Premium
-"premium" = "Premium";
-"get_premium" = "Get Premium";
-"restore_purchase" = "Restore Purchase";
-"watch_ad" = "Watch Ad";
-"daily_word_limit" = "Daily Word Limit";
 
 // Common
 "cancel" = "Cancel";
@@ -123,6 +118,11 @@
 
 // Premium
 
+"premium" = "Premium";
+"get_premium" = "Get Premium";
+"restore_purchase" = "Restore Purchase";
+"watch_ad" = "Watch Ad";
+"daily_word_limit" = "Daily Word Limit";
 "premium_upgrade" = "Upgrade to Premium";
 "premium_subtitle_unlimited" = "Add Unlimited Words";
 "premium_subtitle_ads" = "Remove Ads";
